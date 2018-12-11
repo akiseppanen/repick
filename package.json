@@ -1,0 +1,39 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "build": "lerna run build",
+    "watch": "lerna run --parallel watch"
+  },
+  "devDependencies": {
+    "lerna": "^3.4.3",
+    "lint-staged": "^8.0.5",
+    "prettier": "^1.15.2",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.1.6",
+    "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "tslint.json": [
+      "tslint-config-prettier-check"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "repick-react",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "react": "^16.6.3",
+    "repick-core": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.7.13"
+  }
+}

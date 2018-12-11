@@ -1,0 +1,38 @@
+{
+  "name": "repick-core",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "jest --env=jsdom"
+  },
+  "dependencies": {
+    "date-fns": "^1.29.0"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/test/**/?(*.)(spec|test).ts?(x)"
+    ],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  }
+}
