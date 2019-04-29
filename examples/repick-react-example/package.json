@@ -6,6 +6,7 @@
   "scripts": {
     "start": "parcel public/index.html"
   },
+  "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
     "date-fns": "^1.30.1",
