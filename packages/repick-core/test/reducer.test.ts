@@ -3,8 +3,6 @@ import { reducer, State } from '../src/reducer'
 const state: State = {
   date: new Date('2018-01-01 00:00:00'),
   selected: null,
-  isOpen: true,
-  inputValue: null,
 }
 
 describe('reducer', () => {
@@ -12,15 +10,14 @@ describe('reducer', () => {
     const expectedDate = new Date('2018-01-10 00:00:00')
 
     const newState = reducer(state, {
-      type: 'SelectDate',
       date: expectedDate,
+      type: 'SelectDate',
     })
 
     expect(newState).toEqual({
       ...state,
       date: expectedDate,
       selected: expectedDate,
-      isOpen: false,
     })
   })
 
@@ -35,7 +32,6 @@ describe('reducer', () => {
       ...state,
       date: expectedDate,
       selected: expectedDate,
-      isOpen: false,
     })
   })
 
@@ -124,43 +120,6 @@ describe('reducer', () => {
     expect(newState).toEqual({
       ...state,
       date: new Date('2018-01-06 00:00:00'),
-    })
-  })
-
-  it('InputChange', () => {
-    const newState = reducer(state, {
-      type: 'InputChange',
-      value: 'Hello World',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      inputValue: 'Hello World',
-    })
-  })
-
-  it('OpenCalendar', () => {
-    const newState = reducer(state, {
-      type: 'OpenCalendar',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      isOpen: true,
-    })
-  })
-
-  it('CloseCalendar', () => {
-    const newState = reducer(
-      { ...state, isOpen: true },
-      {
-        type: 'CloseCalendar',
-      },
-    )
-
-    expect(newState).toEqual({
-      ...state,
-      isOpen: false,
     })
   })
 })
