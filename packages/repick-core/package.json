@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "test": "jest --env=jsdom"
+    "test": "jest --env=jsdom",
+    "prepublish": "npm build"
   },
   "dependencies": {
     "date-fns": "^1.29.0"
