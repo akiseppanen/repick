@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import format from 'date-fns/format'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import Repick from 'repick-react'
@@ -15,67 +16,101 @@ const ArrowRight = () => (
   </svg>
 )
 
-const DatePicker = () => (
-  <Repick weekStartsOn={1}>
-    {({
-      days,
-      monthLong,
-      year,
-      weekdays,
-      getInputProps,
-      getDateProps,
-      getPrevMonthProps,
-      getNextMonthProps,
-      getCalendarProps,
-      isOpen,
-    }) => (
-      <>
-        <input type="text" {...getInputProps()} />
-        {isOpen && (
-          <div {...getCalendarProps()} className="calendar">
-            <div className="calendarMonths">
-              <div {...getPrevMonthProps()} className="calendarMonthPrev">
-                <ArrowLeft />
-              </div>
-              <div className="calendarCurrentMonth">
-                {monthLong} {year}
-              </div>
-              <div {...getNextMonthProps()} className="calendarMonthNext">
-                <ArrowRight />
-              </div>
-            </div>
-            <div className="calendarWeekdays">
-              {weekdays.map(weekday => (
-                <div
-                  key={`weekday-${weekday.short}`}
-                  className="calendarWeekday"
-                >
-                  {weekday.short}
+const DatePicker = () => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const open = () => setIsOpen(true)
+  const close = () => {
+    setIsOpen(false)
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }
+  return (
+    <Repick weekStartsOn={1} onChange={close}>
+      {({
+        selected,
+        days,
+        monthLong,
+        year,
+        weekdays,
+        getDateProps,
+        getPrevMonthProps,
+        getNextMonthProps,
+        getCalendarProps,
+        handleKeyDown,
+        setFocusToCalendar,
+      }) => (
+        <>
+          <input
+            type="text"
+            onClick={open}
+            value={selected ? format(selected, 'MM/DD/YYYY') : ''}
+            onKeyDown={e => {
+              if (e.key === 'ArrowDown') {
+                open()
+                setFocusToCalendar()
+              }
+            }}
+            ref={inputRef}
+            readOnly
+          />
+          {isOpen && (
+            <div
+              {...getCalendarProps()}
+              onKeyDown={e => {
+                if (e.key === 'Escape') {
+                  close()
+                }
+
+                handleKeyDown(e)
+              }}
+              className="calendar"
+            >
+              <div className="calendarMonths">
+                <div {...getPrevMonthProps()} className="calendarMonthPrev">
+                  <ArrowLeft />
                 </div>
-              ))}
+                <div className="calendarCurrentMonth">
+                  {monthLong} {year}
+                </div>
+                <div {...getNextMonthProps()} className="calendarMonthNext">
+                  <ArrowRight />
+                </div>
+              </div>
+              <div className="calendarWeekdays">
+                {weekdays.map(weekday => (
+                  <div
+                    key={`weekday-${weekday.short}`}
+                    className="calendarWeekday"
+                  >
+                    {weekday.short}
+                  </div>
+                ))}
+              </div>
+              <div className="calendarDayContainer">
+                {days.map(calendarDay => (
+                  <button
+                    {...getDateProps(calendarDay)}
+                    key={calendarDay.date.toISOString()}
+                    className={classnames('calendarDay', {
+                      nextMonth: calendarDay.nextMonth,
+                      prevMonth: calendarDay.prevMonth,
+                      selected: calendarDay.selected,
+                      today: calendarDay.today,
+                    })}
+                  >
+                    {calendarDay.day}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="calendarDayContainer">
-              {days.map(calendarDay => (
-                <button
-                  {...getDateProps(calendarDay)}
-                  key={calendarDay.date.toISOString()}
-                  className={classnames('calendarDay', {
-                    nextMonth: calendarDay.nextMonth,
-                    prevMonth: calendarDay.prevMonth,
-                    selected: calendarDay.selected,
-                    today: calendarDay.today,
-                  })}
-                >
-                  {calendarDay.day}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </>
-    )}
-  </Repick>
-)
+          )}
+        </>
+      )}
+    </Repick>
+  )
+}
 
 const App = () => <DatePicker />
 

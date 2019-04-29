@@ -37,16 +37,6 @@ export interface ActionStartOfWeek {
 export interface ActionEndOfWeek {
   type: 'EndOfWeek'
 }
-export interface ActionInputChange {
-  type: 'InputChange'
-  value: string
-}
-export interface ActionOpenCalendar {
-  type: 'OpenCalendar'
-}
-export interface ActionCloseCalendar {
-  type: 'CloseCalendar'
-}
 
 export type Action =
   | ActionSelectDate
@@ -59,15 +49,10 @@ export type Action =
   | ActionNextMonth
   | ActionStartOfWeek
   | ActionEndOfWeek
-  | ActionInputChange
-  | ActionOpenCalendar
-  | ActionCloseCalendar
 
 export interface State {
   date: Date
   selected: Date | null
-  inputValue: string | null
-  isOpen: boolean
 }
 
 export function reducer(
@@ -84,9 +69,8 @@ export function reducer(
 
       return {
         ...state,
-        selected: d,
         date: d,
-        isOpen: false,
+        selected: d,
       }
     }
     case 'SelectCurrent': {
@@ -94,7 +78,6 @@ export function reducer(
         ? {
             ...state,
             selected: state.date,
-            isOpen: false,
           }
         : state
     }
@@ -151,24 +134,6 @@ export function reducer(
           }),
           6,
         ),
-      }
-    }
-    case 'InputChange': {
-      return {
-        ...state,
-        inputValue: action.value,
-      }
-    }
-    case 'OpenCalendar': {
-      return {
-        ...state,
-        isOpen: true,
-      }
-    }
-    case 'CloseCalendar': {
-      return {
-        ...state,
-        isOpen: false,
       }
     }
 

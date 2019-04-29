@@ -36,9 +36,6 @@ export function keyToAction(key: string): Action | null {
     case 'Enter': {
       return { type: 'SelectCurrent' }
     }
-    case 'Escape': {
-      return { type: 'CloseCalendar' }
-    }
   }
 
   return null

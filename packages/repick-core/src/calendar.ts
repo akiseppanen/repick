@@ -91,11 +91,11 @@ export function buildCalendar(
   })
 
   return {
+    date: date || null,
+    selected: selected || null,
     month: date.getMonth() + 1,
     monthLong: format(date, 'MMMM', { locale: options.locale }),
     monthShort: format(date, 'MMM', { locale: options.locale }),
-    selected: selected || null,
-    date: date || null,
     year: date.getFullYear(),
     weekdays: buildWeekdays(options),
     days: Array.apply(null, Array(42)).map(
