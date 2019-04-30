@@ -4678,20 +4678,20 @@ repeat-string@^1.6.1:
   resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
   integrity sha1-jcrkcOHIirwtYA//Sndihtp15jc=
 
-repick-core@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/repick-core/-/repick-core-0.0.1.tgz#4a7d392697edd8797bf441037c2cc8293c1c49cd"
-  integrity sha512-A8LI90Pgd0DIhkIkp91In3zx/aiMBTHxzt1p7/PUZ2T4rQoov9kIoGS/ykXJzezTUJHKlZE1O+efKr1yxdAAvA==
+repick-core@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/repick-core/-/repick-core-0.0.2.tgz#5448898b9d8dd7cc1b1386779d9582f7db9f38e9"
+  integrity sha512-Z+Ov5L57I0YnkeeXCnkJQcorRIaIWaPyV6xN/UAYd2jqLwMBP6zczC9+4894l2dxn95Rqitovsx5U4ZbQTab2A==
   dependencies:
     date-fns "^1.29.0"
 
-repick-react@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/repick-react/-/repick-react-0.0.1.tgz#6f81fb3f6c367d6d230de65893e17815c88ec587"
-  integrity sha512-sSzOLMsFYFyQrlrH5OwgF5KW83YxrDX4mQx8WbxuTS3tQCPi0JPMp9OFTsmUA9XYlEYGBnxA31sAHWcmEKJMuQ==
+repick-react@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/repick-react/-/repick-react-0.0.2.tgz#b0e06bad6ed5a5712a651d0bf3247d934511bb44"
+  integrity sha512-ymrfdD3ivjXbxL9LMdDz+xHwjDZdn+tllRJZ02yIdBgKt0hwhuoJx36Q89Tri1jZKINyq4sY1gzdd4Omn3W30Q==
   dependencies:
     react "^16.6.3"
-    repick-core "^0.0.1"
+    repick-core "^0.0.2"
 
 request-promise-core@1.1.2:
   version "1.1.2"
