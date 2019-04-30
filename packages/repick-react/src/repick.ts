@@ -52,7 +52,6 @@ interface RepickProps {
   onUpdate?: (calendar: Calendar) => void
   weekStartsOn?: number
   locale?: object
-  format?: string
   date?: Date
   initialDate?: Date
   selected?: Date | null
