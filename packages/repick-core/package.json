@@ -13,8 +13,8 @@
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5"
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2"
   },
   "jest": {
     "collectCoverageFrom": [

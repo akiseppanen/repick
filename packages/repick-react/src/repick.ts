@@ -49,7 +49,7 @@ export interface Props extends Calendar {
   setFocusToDate: (date: Date) => void
 }
 
-interface RepickProps {
+export interface RepickProps {
   onChange?: (date: Date) => void
   onUpdate?: (calendar: Calendar) => void
   weekStartsOn?: number
@@ -61,7 +61,7 @@ interface RepickProps {
 }
 
 interface Children {
-  children: (s: Props) => React.ReactElement
+  children: (s: Props) => React.ReactElement | null
 }
 
 export const useRepick = (props: RepickProps): Props => {
