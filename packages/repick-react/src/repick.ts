@@ -4,11 +4,10 @@ import {
   buildCalendar,
   Calendar,
   CalendarDay,
-  defaultOptions,
   keyToAction,
-  Options,
   reducer,
 } from 'repick-core'
+import { useControllableReducer } from './use-controllable-reducer'
 
 export interface CalendarProps {
   onKeyDown: (e: React.KeyboardEvent) => void
@@ -65,21 +64,33 @@ interface Children {
 export const useRepick = (props: RepickProps): Props => {
   const dateRefs: Record<string, HTMLElement> = {}
 
+  const controlledProps = {
+    date: props.date,
+    locale: props.locale,
+    selected: props.selected,
+    weekStartsOn: props.weekStartsOn,
+  }
+
   const initialState = {
     date:
+      props.date ||
+      props.selected ||
       props.initialDate ||
       props.initialSelected ||
-      props.selected ||
       startOfDay(new Date()),
-    selected: props.initialSelected || null,
+    selected: props.selected || props.initialSelected || null,
   }
 
-  const [dispatcherState, dispatch] = React.useReducer(reducer, initialState)
-
-  const state = {
-    date: props.date || dispatcherState.date,
-    selected: props.selected || dispatcherState.selected,
-  }
+  const [state, dispatch] = useControllableReducer(
+    reducer,
+    initialState,
+    controlledProps,
+    s => {
+      if (props.onChange && s.selected && s.selected !== state.selected) {
+        props.onChange(s.selected)
+      }
+    },
+  )
 
   const setFocusToDate = (date: Date) => {
     window.requestAnimationFrame(() => {
@@ -95,21 +106,6 @@ export const useRepick = (props: RepickProps): Props => {
     },
     [state.date],
   )
-
-  React.useEffect(
-    () => {
-      if (props.onChange && state.selected) {
-        props.onChange(state.selected)
-      }
-    },
-    [state.selected],
-  )
-
-  const options: Options = {
-    ...defaultOptions,
-    locale: props.locale,
-    weekStartsOn: props.weekStartsOn,
-  }
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
@@ -169,7 +165,7 @@ export const useRepick = (props: RepickProps): Props => {
   }
 
   return {
-    ...buildCalendar(state, options),
+    ...buildCalendar(state),
     selectDate: (date: string | number | Date) =>
       dispatch({ type: 'SelectDate', date }),
     prevDay: () => dispatch({ type: 'PrevDay' }),

@@ -9,7 +9,8 @@ import * as startOfMonth from 'date-fns/start_of_month'
 import * as startOfWeek from 'date-fns/start_of_week'
 import * as subMonths from 'date-fns/sub_months'
 
-import { defaultOptions, Options } from './options'
+import { extractOptionsFromState, Options } from './options'
+import { State } from './reducer'
 import { wrapWeekDay } from './utils'
 
 export interface CalendarDay {
@@ -39,8 +40,6 @@ export interface Calendar {
 }
 
 export function buildWeekdays(options: Options = {}): Weekday[] {
-  options = { ...defaultOptions, ...options }
-
   return Array.apply(null, Array(7)).map((v: null, i: number) => {
     const day = setDay(new Date(), wrapWeekDay(i + (options.weekStartsOn || 0)))
 
@@ -51,16 +50,7 @@ export function buildWeekdays(options: Options = {}): Weekday[] {
   })
 }
 
-export function buildDate(
-  {
-    date,
-    selected,
-  }: {
-    date: Date
-    selected: Date | null
-  },
-  d: Date,
-): CalendarDay {
+export function buildDate({ date, selected }: State, d: Date): CalendarDay {
   const prevMonth = subMonths(date, 1)
   const nextMonth = addMonths(date, 1)
 
@@ -75,16 +65,9 @@ export function buildDate(
   }
 }
 
-export function buildCalendar(
-  state: {
-    date: Date
-    selected: Date | null
-  },
-  options: Options = {},
-): Calendar {
-  options = { ...defaultOptions, ...options }
-
+export function buildCalendar(state: State): Calendar {
   const { date, selected } = state
+  const options = extractOptionsFromState(state)
   const firstDayOfMonth = startOfMonth(date)
   const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
     weekStartsOn: options.weekStartsOn,

@@ -3,8 +3,7 @@ import * as addMonths from 'date-fns/add_months'
 import * as startOfWeek from 'date-fns/start_of_week'
 import * as subDays from 'date-fns/sub_days'
 import * as subMonths from 'date-fns/sub_months'
-
-import { defaultOptions, Options } from './options'
+import { Options } from './options'
 
 export interface ActionSelectDate {
   type: 'SelectDate'
@@ -50,18 +49,12 @@ export type Action =
   | ActionStartOfWeek
   | ActionEndOfWeek
 
-export interface State {
+export interface State extends Options {
   date: Date
   selected: Date | null
 }
 
-export function reducer(
-  state: State,
-  action: Action,
-  options?: Options,
-): State {
-  options = { ...defaultOptions, ...options }
-
+export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'SelectDate': {
       const d =
@@ -121,7 +114,7 @@ export function reducer(
       return {
         ...state,
         date: startOfWeek(state.date, {
-          weekStartsOn: options.weekStartsOn,
+          weekStartsOn: state.weekStartsOn,
         }),
       }
     }
@@ -130,7 +123,7 @@ export function reducer(
         ...state,
         date: addDays(
           startOfWeek(state.date, {
-            weekStartsOn: options.weekStartsOn,
+            weekStartsOn: state.weekStartsOn,
           }),
           6,
         ),
