@@ -31,12 +31,15 @@ export interface DateProps {
 
 export interface Props extends Calendar {
   selectDate: (date: string | number | Date) => void
+  selectCurrent: () => void
   prevDay: () => void
   nextDay: () => void
   prevWeek: () => void
   nextWeek: () => void
   prevMonth: () => void
   nextMonth: () => void
+  startOfWeek: () => void
+  endOfWeek: () => void
   getCalendarProps: () => CalendarProps
   getDateProps: (calendarDay: CalendarDay) => DateProps
   getNextMonthProps: () => MonthProps
@@ -168,12 +171,15 @@ export const useRepick = (props: RepickProps): Props => {
     ...buildCalendar(state),
     selectDate: (date: string | number | Date) =>
       dispatch({ type: 'SelectDate', date }),
+    selectCurrent: () => dispatch({ type: 'SelectCurrent' }),
     prevDay: () => dispatch({ type: 'PrevDay' }),
     nextDay: () => dispatch({ type: 'NextDay' }),
     prevWeek: () => dispatch({ type: 'PrevWeek' }),
     nextWeek: () => dispatch({ type: 'NextWeek' }),
     prevMonth: () => dispatch({ type: 'PrevMonth' }),
     nextMonth: () => dispatch({ type: 'NextMonth' }),
+    startOfWeek: () => dispatch({ type: 'StartOfWeek' }),
+    endOfWeek: () => dispatch({ type: 'EndOfWeek' }),
     getCalendarProps,
     getDateProps,
     getNextMonthProps,
