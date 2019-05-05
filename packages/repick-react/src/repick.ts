@@ -190,10 +190,7 @@ export const useRepick = (props: RepickProps): Props => {
   }
 }
 
-export const Repick: React.FunctionComponent<RepickProps & Children> = ({
-  children,
-  ...props
-}) => {
+export function Repick({ children, ...props }: RepickProps & Children) {
   const childProps = useRepick(props)
 
   return children(childProps)
