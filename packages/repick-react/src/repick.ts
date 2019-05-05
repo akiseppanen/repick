@@ -51,7 +51,7 @@ export interface Props extends Calendar {
 
 export interface RepickProps {
   onChange?: (date: Date) => void
-  onUpdate?: (calendar: Calendar) => void
+  onDateChange?: (date: Date) => void
   weekStartsOn?: number
   locale?: object
   date?: Date
@@ -91,6 +91,9 @@ export const useRepick = (props: RepickProps): Props => {
     s => {
       if (props.onChange && s.selected && s.selected !== state.selected) {
         props.onChange(s.selected)
+      }
+      if (props.onDateChange && s.date && s.date !== state.date) {
+        props.onDateChange(s.date)
       }
     },
   )
