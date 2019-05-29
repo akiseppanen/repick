@@ -1,4 +1,15 @@
-import { Action } from './reducer'
+import {
+  Action,
+  actionEndOfWeek,
+  actionNextDay,
+  actionNextMonth,
+  actionNextWeek,
+  actionPrevDay,
+  actionPrevMonth,
+  actionPrevWeek,
+  actionSelectCurrent,
+  actionStartOfWeek,
+} from './reducer'
 
 export const wrap = (min: number, max: number) => (x: number) => {
   const d = max - min
@@ -10,31 +21,31 @@ export const wrapWeekDay = wrap(0, 7)
 export function keyToAction(key: string): Action | null {
   switch (key) {
     case 'ArrowLeft': {
-      return { type: 'PrevDay' }
+      return { type: actionPrevDay }
     }
     case 'ArrowRight': {
-      return { type: 'NextDay' }
+      return { type: actionNextDay }
     }
     case 'ArrowUp': {
-      return { type: 'PrevWeek' }
+      return { type: actionPrevWeek }
     }
     case 'ArrowDown': {
-      return { type: 'NextWeek' }
+      return { type: actionNextWeek }
     }
     case 'PageDown': {
-      return { type: 'PrevMonth' }
+      return { type: actionPrevMonth }
     }
     case 'PageUp': {
-      return { type: 'NextMonth' }
+      return { type: actionNextMonth }
     }
     case 'Home': {
-      return { type: 'StartOfWeek' }
+      return { type: actionStartOfWeek }
     }
     case 'End': {
-      return { type: 'EndOfWeek' }
+      return { type: actionEndOfWeek }
     }
     case 'Enter': {
-      return { type: 'SelectCurrent' }
+      return { type: actionSelectCurrent }
     }
   }
 
