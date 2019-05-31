@@ -29,7 +29,7 @@ export interface DateProps {
   ref: (el: HTMLElement | null) => void
 }
 
-export interface Props extends Calendar {
+export interface RepickContext extends Calendar {
   selectDate: (date: string | number | Date) => void
   selectCurrent: () => void
   prevDay: () => void
@@ -49,7 +49,7 @@ export interface Props extends Calendar {
   setFocusToDate: (date: Date) => void
 }
 
-export interface RepickProps {
+export interface RepickOptions {
   onChange?: (date: Date) => void
   onDateChange?: (date: Date) => void
   weekStartsOn?: number
@@ -60,11 +60,11 @@ export interface RepickProps {
   initialSelected?: Date
 }
 
-interface Children {
-  children: (s: Props) => React.ReactElement | null
+export interface RepickProps extends RepickOptions {
+  children: (s: RepickContext) => React.ReactElement | null
 }
 
-export const useRepick = (props: RepickProps): Props => {
+export const useRepick = (props: RepickOptions): RepickContext => {
   const dateRefs: Record<string, HTMLElement> = {}
 
   const controlledProps = {
@@ -193,7 +193,7 @@ export const useRepick = (props: RepickProps): Props => {
   }
 }
 
-export function Repick({ children, ...props }: RepickProps & Children) {
+export function Repick({ children, ...props }: RepickProps) {
   const childProps = useRepick(props)
 
   return children(childProps)
