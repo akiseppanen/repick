@@ -3,7 +3,7 @@ import 'jest-dom/extend-expect'
 import * as React from 'react'
 import { act, fireEvent, render, RenderResult } from 'react-testing-library'
 import { Action, buildCalendar, keyToAction, reducer } from 'repick-core'
-import Repick, { Props, RepickProps } from '../src'
+import Repick, { RepickContext, RepickOptions } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
 const options = {
@@ -12,9 +12,9 @@ const options = {
 }
 
 function setup(
-  repickProps: RepickProps = {},
-  children: (props: Props) => React.ReactElement | null = () => null,
-): [Props, RenderResult] {
+  repickProps: RepickOptions = {},
+  children: (props: RepickContext) => React.ReactElement | null = () => null,
+): [RepickContext, RenderResult] {
   const childProps: any = {}
   const renderResult = render(
     <Repick {...repickProps}>
@@ -25,7 +25,7 @@ function setup(
     </Repick>,
   )
 
-  return [childProps! as Props, renderResult]
+  return [childProps! as RepickContext, renderResult]
 }
 
 const mockedBuildCalendar = buildCalendar as jest.Mock
@@ -219,7 +219,7 @@ describe('actions', () => {
   const date = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
-  let props: Props
+  let props: RepickContext
 
   beforeEach(() => {
     props = setup({ date })[0]
