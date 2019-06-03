@@ -1,109 +1,124 @@
-import getDate from 'date-fns/get_date'
-import startOfDay from 'date-fns/start_of_day'
+import MockDate from 'mockdate'
 
-import fiLocale from 'date-fns/locale/fi'
-
-import { buildCalendar, buildDate, buildWeekdays } from '../src/calendar'
-
-describe('buildWeekdays', () => {
-  it('default locale', () => {
-    expect(buildWeekdays()).toEqual([
-      { long: 'Sunday', short: 'Sun' },
-      { long: 'Monday', short: 'Mon' },
-      { long: 'Tuesday', short: 'Tue' },
-      { long: 'Wednesday', short: 'Wed' },
-      { long: 'Thursday', short: 'Thu' },
-      { long: 'Friday', short: 'Fri' },
-      { long: 'Saturday', short: 'Sat' },
-    ])
-  })
-  it('default locale starting monday', () => {
-    expect(buildWeekdays({ weekStartsOn: 1 })).toEqual([
-      { long: 'Monday', short: 'Mon' },
-      { long: 'Tuesday', short: 'Tue' },
-      { long: 'Wednesday', short: 'Wed' },
-      { long: 'Thursday', short: 'Thu' },
-      { long: 'Friday', short: 'Fri' },
-      { long: 'Saturday', short: 'Sat' },
-      { long: 'Sunday', short: 'Sun' },
-    ])
-  })
-  it('finnish locale starting monday', () => {
-    expect(buildWeekdays({ locale: fiLocale, weekStartsOn: 1 })).toEqual([
-      { long: 'maanantai', short: 'ma' },
-      { long: 'tiistai', short: 'ti' },
-      { long: 'keskiviikko', short: 'ke' },
-      { long: 'torstai', short: 'to' },
-      { long: 'perjantai', short: 'pe' },
-      { long: 'lauantai', short: 'la' },
-      { long: 'sunnuntai', short: 'su' },
-    ])
-  })
-})
+import { buildCalendar, buildDate } from '../src/calendar'
+import { State } from '../src/types'
 
 describe('buildDate', () => {
+  describe('mode: single', () => {
+    const date = new Date('2018-01-01')
+
+    const state: State = {
+      current: date,
+      mode: 'single',
+      selected: date,
+    }
+
+    it('selected', () => {
+      expect(buildDate(state, date)).toMatchObject({ selected: true })
+    })
+
+    it('not selected', () => {
+      expect(buildDate(state, new Date('2018-02-01'))).toMatchObject({
+        selected: false,
+      })
+    })
+  })
+
+  describe('mode: multi', () => {
+    const dates = [
+      new Date('2018-01-01'),
+      new Date('2018-01-02'),
+      new Date('2018-01-03'),
+    ]
+
+    const state: State = {
+      current: new Date('2018-01-01'),
+      mode: 'multi',
+      selected: dates,
+    }
+
+    it('selected, 1st', () => {
+      expect(buildDate(state, dates[0])).toMatchObject({ selected: true })
+    })
+    it('selected, 2nd', () => {
+      expect(buildDate(state, dates[1])).toMatchObject({ selected: true })
+    })
+    it('selected, 3rd', () => {
+      expect(buildDate(state, dates[2])).toMatchObject({ selected: true })
+    })
+    it('not selected', () => {
+      expect(buildDate(state, new Date('2018-02-01'))).toMatchObject({
+        selected: false,
+      })
+    })
+  })
+
+  describe('mode: range', () => {
+    const range = [new Date('2018-01-01'), new Date('2018-01-31')] as [
+      Date,
+      Date,
+    ]
+
+    const state: State = {
+      current: new Date('2018-01-01'),
+      mode: 'multi',
+      selected: range,
+    }
+
+    it('selected 1st', () => {
+      expect(buildDate(state, range[0])).toMatchObject({ selected: true })
+    })
+
+    it('selected 2nd', () => {
+      expect(buildDate(state, range[1])).toMatchObject({ selected: true })
+    })
+
+    it('selected in range', () => {
+      expect(buildDate(state, new Date('2018-01-15'))).toMatchObject({
+        selected: false,
+      })
+    })
+    it('not selected', () => {
+      expect(buildDate(state, new Date('2018-02-01'))).toMatchObject({
+        selected: false,
+      })
+    })
+  })
+
   it('today', () => {
-    const today = startOfDay(new Date())
+    const date = new Date('2018-02-01')
+    MockDate.set(date)
+
     expect(
       buildDate(
         {
-          date: today,
+          current: new Date('2018-01-01'),
+          mode: 'single',
           selected: null,
         },
-        today,
+        date,
       ),
-    ).toEqual({
-      current: true,
-      date: today,
-      day: getDate(today),
-      nextMonth: false,
-      prevMonth: false,
-      selected: false,
+    ).toMatchObject({
       today: true,
     })
+
+    MockDate.reset()
   })
 
-  it('selected, not current', () => {
-    const date = new Date('2018-01-01')
+  it('current', () => {
+    const date = new Date('2018-02-01')
 
     expect(
       buildDate(
         {
-          date,
-          selected: date,
+          current: date,
+          mode: 'single',
+          selected: null,
         },
         date,
       ),
-    ).toEqual({
-      date,
+    ).toMatchObject({
       current: true,
-      day: 1,
-      nextMonth: false,
-      prevMonth: false,
-      selected: true,
-      today: false,
-    })
-  })
-
-  it('selected, current', () => {
-    const date = new Date('2018-01-01')
-
-    expect(
-      buildDate(
-        {
-          date,
-          selected: date,
-        },
-        date,
-      ),
-    ).toEqual({
-      date,
-      current: true,
-      day: 1,
-      nextMonth: false,
-      prevMonth: false,
-      selected: true,
-      today: false,
     })
   })
 
@@ -113,41 +128,33 @@ describe('buildDate', () => {
     expect(
       buildDate(
         {
-          date: new Date('2018-02-01'),
+          current: new Date('2018-02-01'),
+          mode: 'single',
           selected: null,
         },
         date,
       ),
-    ).toEqual({
-      date,
-      current: false,
-      day: 1,
+    ).toMatchObject({
       nextMonth: false,
       prevMonth: true,
-      selected: false,
-      today: false,
     })
   })
 
   it('next month', () => {
-    const date = new Date('2018-02-02')
+    const date = new Date('2018-02-01')
 
     expect(
       buildDate(
         {
-          date: new Date('2018-01-01'),
+          current: new Date('2018-01-01'),
+          mode: 'single',
           selected: null,
         },
         date,
       ),
-    ).toEqual({
-      date,
-      current: false,
-      day: 2,
+    ).toMatchObject({
       nextMonth: true,
       prevMonth: false,
-      selected: false,
-      today: false,
     })
   })
 })
@@ -165,7 +172,8 @@ it('buildCalendar', () => {
     weekdays,
     days,
   } = buildCalendar({
-    date: expectedDate,
+    current: expectedDate,
+    mode: 'single',
     selected: expectedSelected,
   })
 
@@ -180,43 +188,19 @@ it('buildCalendar', () => {
   expect(days).toBeInstanceOf(Array)
   expect(days).toHaveLength(42)
 
-  expect(days[0]).toEqual({
-    current: false,
+  expect(days[0]).toMatchObject({
     date: new Date('2017-12-31 00:00:00'),
-    day: 31,
-    nextMonth: false,
-    prevMonth: true,
-    selected: false,
-    today: false,
   })
 
-  expect(days[1]).toEqual({
-    current: true,
+  expect(days[1]).toMatchObject({
     date: new Date('2018-01-01 00:00:00'),
-    day: 1,
-    nextMonth: false,
-    prevMonth: false,
-    selected: false,
-    today: false,
   })
 
-  expect(days[10]).toEqual({
-    current: false,
+  expect(days[10]).toMatchObject({
     date: new Date('2018-01-10 00:00:00'),
-    day: 10,
-    nextMonth: false,
-    prevMonth: false,
-    selected: true,
-    today: false,
   })
 
-  expect(days[41]).toEqual({
-    current: false,
+  expect(days[41]).toMatchObject({
     date: new Date('2018-02-10 00:00:00'),
-    day: 10,
-    nextMonth: true,
-    prevMonth: false,
-    selected: false,
-    today: false,
   })
 })

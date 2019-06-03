@@ -3,128 +3,109 @@ import addMonths from 'date-fns/add_months'
 import startOfWeek from 'date-fns/start_of_week'
 import subDays from 'date-fns/sub_days'
 import subMonths from 'date-fns/sub_months'
-import { Options } from './options'
 
-export const actionSelectDate = 'SelectDate'
-export const actionSelectCurrent = 'SelectCurrent'
-export const actionPrevDay = 'PrevDay'
-export const actionNextDay = 'NextDay'
-export const actionPrevWeek = 'PrevWeek'
-export const actionNextWeek = 'NextWeek'
-export const actionPrevMonth = 'PrevMonth'
-export const actionNextMonth = 'NextMonth'
-export const actionStartOfWeek = 'StartOfWeek'
-export const actionEndOfWeek = 'EndOfWeek'
-
-export interface ActionSelectDate {
-  type: typeof actionSelectDate
-  date: string | number | Date
-}
-export interface ActionSelectCurrent {
-  type: typeof actionSelectCurrent
-}
-export interface ActionPrevDay {
-  type: typeof actionPrevDay
-}
-export interface ActionNextDay {
-  type: typeof actionNextDay
-}
-export interface ActionPrevWeek {
-  type: typeof actionPrevWeek
-}
-export interface ActionNextWeek {
-  type: typeof actionNextWeek
-}
-export interface ActionPrevMonth {
-  type: typeof actionPrevMonth
-}
-export interface ActionNextMonth {
-  type: typeof actionNextMonth
-}
-export interface ActionStartOfWeek {
-  type: typeof actionStartOfWeek
-}
-export interface ActionEndOfWeek {
-  type: typeof actionEndOfWeek
-}
-
-export type Action =
-  | ActionSelectDate
-  | ActionSelectCurrent
-  | ActionPrevDay
-  | ActionNextDay
-  | ActionPrevWeek
-  | ActionNextWeek
-  | ActionPrevMonth
-  | ActionNextMonth
-  | ActionStartOfWeek
-  | ActionEndOfWeek
-
-export interface State extends Options {
-  date: Date
-  selected: Date | null
-}
+import {
+  Action,
+  actionEndOfWeek,
+  actionNextDay,
+  actionNextMonth,
+  actionNextWeek,
+  actionPrevDay,
+  actionPrevMonth,
+  actionPrevWeek,
+  actionSelectCurrent,
+  actionSelectDate,
+  actionStartOfWeek,
+} from './actions'
+import { State } from './types'
+import { selectDateMulti, selectDateRange, selectDateSingle } from './utils'
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case actionSelectDate: {
-      const d =
+      const date =
         action.date instanceof Date ? action.date : new Date(action.date)
 
-      return {
-        ...state,
-        date: d,
-        selected: d,
+      switch (state.mode) {
+        case 'single':
+          return {
+            ...state,
+            current: date,
+            selected: selectDateSingle(state.selected, date),
+          }
+
+        case 'multi':
+          return {
+            ...state,
+            current: date,
+            selected: selectDateMulti(state.selected, date),
+          }
+
+        case 'range':
+          return {
+            ...state,
+            current: date,
+            selected: selectDateRange(state.selected, date),
+          }
+
+        default:
+          const _: never = state
+          return _
       }
     }
+
     case actionSelectCurrent: {
-      return state.date
-        ? {
+      const date = state.current
+
+      switch (state.mode) {
+        case 'single':
+          return {
             ...state,
-            selected: state.date,
+            current: date,
+            selected: selectDateSingle(state.selected, date),
           }
-        : state
+
+        case 'multi':
+          return {
+            ...state,
+            current: date,
+            selected: selectDateMulti(state.selected, date),
+          }
+
+        case 'range':
+          return {
+            ...state,
+            current: date,
+            selected: selectDateRange(state.selected, date),
+          }
+
+        default:
+          const _: never = state
+          return _
+      }
     }
     case actionPrevDay: {
-      return {
-        ...state,
-        date: subDays(state.date, 1),
-      }
+      return { ...state, current: subDays(state.current, 1) }
     }
     case actionNextDay: {
-      return {
-        ...state,
-        date: addDays(state.date, 1),
-      }
+      return { ...state, current: addDays(state.current, 1) }
     }
     case actionPrevWeek: {
-      return {
-        ...state,
-        date: subDays(state.date, 7),
-      }
+      return { ...state, current: subDays(state.current, 7) }
     }
     case actionNextWeek: {
-      return {
-        ...state,
-        date: addDays(state.date, 7),
-      }
+      return { ...state, current: addDays(state.current, 7) }
     }
     case actionPrevMonth: {
-      return {
-        ...state,
-        date: subMonths(state.date, 1),
-      }
+      return { ...state, current: subMonths(state.current, 1) }
     }
     case actionNextMonth: {
-      return {
-        ...state,
-        date: addMonths(state.date, 1),
-      }
+      return { ...state, current: addMonths(state.current, 1) }
     }
     case actionStartOfWeek: {
       return {
         ...state,
-        date: startOfWeek(state.date, {
+        current: startOfWeek(state.current, {
           weekStartsOn: state.weekStartsOn,
         }),
       }
@@ -132,8 +113,8 @@ export function reducer(state: State, action: Action): State {
     case actionEndOfWeek: {
       return {
         ...state,
-        date: addDays(
-          startOfWeek(state.date, {
+        current: addDays(
+          startOfWeek(state.current, {
             weekStartsOn: state.weekStartsOn,
           }),
           6,

@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Repick, { RepickContextSingle } from 'repick-react'
+import Repick, { RepickContextRange } from 'repick-react'
 
 const ArrowLeft = () => (
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17">
@@ -18,8 +18,6 @@ const ArrowRight = () => (
 
 const DatePicker = () => {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [date, setDate] = React.useState(new Date())
-  const [selected, setSelected] = React.useState<Date | null>(null)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const open = () => setIsOpen(true)
   const close = () => {
@@ -29,17 +27,9 @@ const DatePicker = () => {
     }
   }
   return (
-    <Repick
-      weekStartsOn={1}
-      onChange={(d: Date | null) => {
-        setSelected(d)
-        close()
-      }}
-      onCurrentChange={setDate}
-      selected={selected}
-      current={date}
-    >
+    <Repick mode="range" weekStartsOn={1}>
       {({
+        selected,
         days,
         monthLong,
         year,
@@ -50,12 +40,19 @@ const DatePicker = () => {
         getCalendarProps,
         handleKeyDown,
         setFocusToCalendar,
-      }: RepickContextSingle) => (
+      }: RepickContextRange) => (
         <>
           <input
+            size={100}
             type="text"
             onClick={open}
-            value={selected ? format(selected, 'MM/DD/YYYY') : ''}
+            value={
+              selected
+                ? selected
+                    .map(x => x !== undefined && format(x, 'MM/DD/YYYY'))
+                    .join(' - ')
+                : ''
+            }
             onKeyDown={e => {
               if (e.key === 'ArrowDown') {
                 open()

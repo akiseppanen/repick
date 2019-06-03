@@ -2,8 +2,8 @@ jest.mock('repick-core')
 import '@testing-library/jest-dom/extend-expect'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import React from 'react'
-import { Action, buildCalendar, keyToAction, reducer } from 'repick-core'
-import Repick, { RepickContext, RepickOptions } from '../src'
+import { Action, buildCalendar, keyToAction, reducer, State } from 'repick-core'
+import Repick, { PropsSingle, RepickContext } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
 const options = {
@@ -12,20 +12,21 @@ const options = {
 }
 
 function setup(
-  repickProps: RepickOptions = {},
-  children: (props: RepickContext) => React.ReactElement | null = () => null,
-): [RepickContext, RenderResult] {
+  repickProps: PropsSingle = {},
+  children: (props: RepickContext<Date>) => React.ReactElement | null = () =>
+    null,
+): [RepickContext<Date>, RenderResult] {
   const childProps: any = {}
   const renderResult = render(
     <Repick {...repickProps}>
-      {props => {
-        Object.assign(childProps, props)
-        return children(props)
+      {(context: RepickContext<Date>) => {
+        Object.assign(childProps, context)
+        return children(context)
       }}
     </Repick>,
   )
 
-  return [childProps! as RepickContext, renderResult]
+  return [childProps! as RepickContext<Date>, renderResult]
 }
 
 const mockedBuildCalendar = buildCalendar as jest.Mock
@@ -34,7 +35,8 @@ const mockedKeyToAction = keyToAction as jest.Mock
 
 describe('calendar', () => {
   const state = {
-    date: calendarFixture.date,
+    current: calendarFixture.date,
+    mode: 'single',
     selected: calendarFixture.selected,
   }
 
@@ -109,7 +111,7 @@ describe('calendar', () => {
   it('keyPress is handled correctly', () => {
     const [, view] = setup(
       {
-        date: calendarFixture.date || undefined,
+        current: calendarFixture.date || undefined,
         selected: calendarFixture.selected || undefined,
       },
       ({ getCalendarProps }) => <div {...getCalendarProps()} />,
@@ -176,30 +178,32 @@ describe('calendar', () => {
 })
 
 it('dispatch', () => {
-  const date = new Date('2018-01-01 00:00:00')
+  const current = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
-  const state = {
-    date,
+  const state: State = {
+    current,
+    mode: 'single',
     selected: null,
     ...options,
   }
 
   mockedBuildCalendar.mockImplementation(s => ({
-    date: s.date,
+    date: s.current,
     selected: s.selected,
   }))
 
   mockedReducer.mockReturnValue({
-    date: expected,
+    current: expected,
+    mode: 'single',
     selected: expected,
   })
 
   const onChange = jest.fn()
 
-  const [props] = setup({ onChange, initialDate: date, ...options })
+  const [props] = setup({ onChange, initialDate: current, ...options })
 
-  expect(props.date).toEqual(date)
+  expect(props.date).toEqual(current)
   expect(props.selected).toBeNull()
 
   act(() => props.selectDate(expected))
@@ -219,10 +223,10 @@ describe('actions', () => {
   const date = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
-  let props: RepickContext
+  let props: RepickContext<Date>
 
   beforeEach(() => {
-    props = setup({ date })[0]
+    props = setup({ current: date })[0]
     mockedReducer.mockReturnValue({ date: expected, selected: expected })
   })
 
@@ -231,7 +235,10 @@ describe('actions', () => {
   })
 
   const assertAction = (action: Action) => {
-    expect(mockedReducer).toHaveBeenCalledWith({ date, selected: null }, action)
+    expect(mockedReducer).toHaveBeenCalledWith(
+      { current: date, selected: null, mode: 'single' },
+      action,
+    )
   }
   it('selectDate', () => {
     act(() => props.selectDate(expected))

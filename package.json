@@ -8,11 +8,11 @@
   },
   "devDependencies": {
     "lerna": "^3.4.3",
-    "lint-staged": "^8.0.5",
-    "prettier": "^1.15.2",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.17.0",
-    "typescript": "^3.1.6",
+    "lint-staged": "^8.1.7",
+    "prettier": "^1.17.1",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.5.1",
     "yorkie": "^2.0.0"
   },
   "gitHooks": {

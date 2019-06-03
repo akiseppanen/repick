@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Repick from 'repick-react'
+import Repick, { RepickContextSingle } from 'repick-react'
 
 const ArrowLeft = () => (
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17">
@@ -40,7 +40,7 @@ const DatePicker = () => {
         getCalendarProps,
         handleKeyDown,
         setFocusToCalendar,
-      }) => (
+      }: RepickContextSingle) => (
         <>
           <input
             type="text"
