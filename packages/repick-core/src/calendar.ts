@@ -40,7 +40,7 @@ export interface Calendar {
 }
 
 export function buildWeekdays(options: Options = {}): Weekday[] {
-  return Array.apply(null, Array(7)).map((v: null, i: number) => {
+  return Array.apply(null, Array(7)).map((_, i) => {
     const day = setDay(new Date(), wrapWeekDay(i + (options.weekStartsOn || 0)))
 
     return {
@@ -82,7 +82,7 @@ export function buildCalendar(state: State): Calendar {
     year: date.getFullYear(),
     weekdays: buildWeekdays(options),
     days: Array.apply(null, Array(42)).map(
-      (v: null, i: number): CalendarDay => {
+      (_, i): CalendarDay => {
         return buildDate(state, addDays(firstWeekOfMonth, i))
       },
     ),

@@ -1,7 +1,7 @@
 jest.mock('repick-core')
+import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import 'jest-dom/extend-expect'
 import * as React from 'react'
-import { act, fireEvent, render, RenderResult } from 'react-testing-library'
 import { Action, buildCalendar, keyToAction, reducer } from 'repick-core'
 import Repick, { RepickContext, RepickOptions } from '../src'
 import { calendarFixture } from './fixtures/calendar'
