@@ -1,5 +1,5 @@
-import * as startOfDay from 'date-fns/start_of_day'
-import * as React from 'react'
+import startOfDay from 'date-fns/start_of_day'
+import React from 'react'
 import {
   buildCalendar,
   Calendar,
@@ -106,12 +106,9 @@ export const useRepick = (props: RepickOptions): RepickContext => {
     })
   }
 
-  React.useEffect(
-    () => {
-      setFocusToDate(state.date)
-    },
-    [state.date],
-  )
+  React.useEffect(() => {
+    setFocusToDate(state.date)
+  }, [state.date])
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {

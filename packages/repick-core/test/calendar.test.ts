@@ -1,7 +1,7 @@
-import * as getDate from 'date-fns/get_date'
-import * as startOfDay from 'date-fns/start_of_day'
+import getDate from 'date-fns/get_date'
+import startOfDay from 'date-fns/start_of_day'
 
-import * as fiLocale from 'date-fns/locale/fi'
+import fiLocale from 'date-fns/locale/fi'
 
 import { buildCalendar, buildDate, buildWeekdays } from '../src/calendar'
 

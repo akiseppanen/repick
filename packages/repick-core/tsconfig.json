@@ -1,11 +1,27 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "esnext",
+    "lib": ["esnext"],
+    "importHelpers": true,
     "declaration": true,
-    "outDir": "./dist",
+    "sourceMap": true,
+    "rootDir": "./",
     "strict": true,
-    "lib": ["es5", "es6", "es7", "es2017", "dom"]
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "outDir": "./dist"
   },
   "include": ["src/**/*.ts"]
 }

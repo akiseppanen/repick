@@ -1,7 +1,7 @@
 jest.mock('repick-core')
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import 'jest-dom/extend-expect'
-import * as React from 'react'
+import React from 'react'
 import { Action, buildCalendar, keyToAction, reducer } from 'repick-core'
 import Repick, { RepickContext, RepickOptions } from '../src'
 import { calendarFixture } from './fixtures/calendar'
@@ -70,7 +70,7 @@ describe('calendar', () => {
   })
 
   it('date click dispatches correct action', () => {
-    const [_, view] = setup(
+    const [, view] = setup(
       {
         initialDate: calendarFixture.date || undefined,
         initialSelected: calendarFixture.selected || undefined,
@@ -107,7 +107,7 @@ describe('calendar', () => {
   })
 
   it('keyPress is handled correctly', () => {
-    const [_, view] = setup(
+    const [, view] = setup(
       {
         date: calendarFixture.date || undefined,
         selected: calendarFixture.selected || undefined,
@@ -149,7 +149,7 @@ describe('calendar', () => {
   })
 
   it('prevMonth and nextMonth click dispatches correct action', () => {
-    const [_, view] = setup(
+    const [, view] = setup(
       {
         initialDate: calendarFixture.date || undefined,
         initialSelected: calendarFixture.selected || undefined,

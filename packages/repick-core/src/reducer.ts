@@ -1,8 +1,8 @@
-import * as addDays from 'date-fns/add_days'
-import * as addMonths from 'date-fns/add_months'
-import * as startOfWeek from 'date-fns/start_of_week'
-import * as subDays from 'date-fns/sub_days'
-import * as subMonths from 'date-fns/sub_months'
+import addDays from 'date-fns/add_days'
+import addMonths from 'date-fns/add_months'
+import startOfWeek from 'date-fns/start_of_week'
+import subDays from 'date-fns/sub_days'
+import subMonths from 'date-fns/sub_months'
 import { Options } from './options'
 
 export const actionSelectDate = 'SelectDate'
@@ -143,7 +143,7 @@ export function reducer(state: State, action: Action): State {
 
     default: {
       const _: never = action
-      return state
+      return _
     }
   }
 }
