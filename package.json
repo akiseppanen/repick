@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "test": "lerna run test",
     "watch": "lerna run --parallel watch"
   },
   "devDependencies": {
