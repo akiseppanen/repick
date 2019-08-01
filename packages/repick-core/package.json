@@ -2,39 +2,27 @@
   "name": "repick-core",
   "version": "0.0.3",
   "main": "dist/index.js",
+  "module": "dist/repick-core.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "test": "jest --env=jsdom",
+    "build": "tsdx build",
+    "watch": "tsdx watch",
+    "test": "tsdx test",
     "prepublish": "npm build"
   },
   "dependencies": {
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.1"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
-    "transform": {
-      ".(ts|tsx)": "ts-jest"
-    },
-    "testMatch": [
-      "<rootDir>/test/**/?(*.)(spec|test).ts?(x)"
-    ],
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
+    "@types/jest": "^24.0.16",
+    "@types/mockdate": "^2.0.0",
+    "mockdate": "^2.0.2",
+    "tsdx": "^0.7.2",
+    "tslib": "^1.10.0",
+    "typescript": "^3.5.3"
   }
 }
