@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "clean": "rm -rf node_modules; lerna run clean",
     "test": "lerna run test",
     "watch": "lerna run --parallel watch"
   },

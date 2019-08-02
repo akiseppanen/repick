@@ -10,9 +10,10 @@
   "license": "MIT",
   "scripts": {
     "build": "tsdx build",
-    "watch": "tsdx watch",
+    "clean": "rm -rf node_modules .rts2_cache_cjs .rts2_cache_esm dist;",
     "test": "tsdx test",
-    "prepublish": "npm build"
+    "prepublish": "npm build",
+    "watch": "tsdx watch"
   },
   "dependencies": {
     "date-fns": "^1.29.0"
