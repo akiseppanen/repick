@@ -1,8 +1,8 @@
-import addDays from 'date-fns/add_days'
-import addMonths from 'date-fns/add_months'
-import startOfWeek from 'date-fns/start_of_week'
-import subDays from 'date-fns/sub_days'
-import subMonths from 'date-fns/sub_months'
+import addDays from 'date-fns/addDays'
+import addMonths from 'date-fns/addMonths'
+import startOfWeek from 'date-fns/startOfWeek'
+import subDays from 'date-fns/subDays'
+import subMonths from 'date-fns/subMonths'
 
 import {
   Action,

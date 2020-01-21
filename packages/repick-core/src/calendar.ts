@@ -1,13 +1,13 @@
-import addDays from 'date-fns/add_days'
-import addMonths from 'date-fns/add_months'
+import addDays from 'date-fns/addDays'
+import addMonths from 'date-fns/addMonths'
 import format from 'date-fns/format'
-import getDate from 'date-fns/get_date'
-import isSameDay from 'date-fns/is_same_day'
-import isSameMonth from 'date-fns/is_same_month'
-import isWithinRange from 'date-fns/is_within_range'
-import startOfMonth from 'date-fns/start_of_month'
-import startOfWeek from 'date-fns/start_of_week'
-import subMonths from 'date-fns/sub_months'
+import getDate from 'date-fns/getDate'
+import isSameDay from 'date-fns/isSameDay'
+import isSameMonth from 'date-fns/isSameMonth'
+import isWithinInterval from 'date-fns/isWithinInterval'
+import startOfMonth from 'date-fns/startOfMonth'
+import startOfWeek from 'date-fns/startOfWeek'
+import subMonths from 'date-fns/subMonths'
 
 import { Calendar, CalendarDay, State, StateType } from './types'
 import { buildWeekdays, extractOptionsFromState } from './utils'
@@ -22,7 +22,7 @@ export function isSelectedMulti(selected: Date[], date: Date) {
 
 export function isSelectedRange(selected: [Date, Date?], date: Date) {
   return selected[1] !== undefined
-    ? isWithinRange(date, selected[0], selected[1])
+    ? isWithinInterval(date, { start: selected[0], end: selected[1] })
     : isSameDay(date, selected[0])
 }
 

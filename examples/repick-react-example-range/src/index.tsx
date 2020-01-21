@@ -49,7 +49,7 @@ const DatePicker = () => {
             value={
               selected
                 ? selected
-                    .map(x => x !== undefined && format(x, 'MM/DD/YYYY'))
+                    .map(x => x !== undefined && format(x, 'MM/dd/yyyy'))
                     .join(' - ')
                 : ''
             }

@@ -1,3 +1,5 @@
+import { Locale } from 'date-fns'
+
 export interface CalendarDay {
   date: Date
   day: number
@@ -25,8 +27,8 @@ export interface Calendar<Selected> {
 }
 
 export interface Options {
-  locale?: object
-  weekStartsOn?: number
+  locale?: Locale
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 
 export type Mode = 'single' | 'multi' | 'range'

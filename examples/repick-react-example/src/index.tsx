@@ -45,7 +45,7 @@ const DatePicker = () => {
           <input
             type="text"
             onClick={open}
-            value={selected ? format(selected, 'MM/DD/YYYY') : ''}
+            value={selected ? format(selected, 'MM/dd/yyyy') : ''}
             onKeyDown={e => {
               if (e.key === 'ArrowDown') {
                 open()

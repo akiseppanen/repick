@@ -2,12 +2,18 @@ jest.mock('repick-core')
 import '@testing-library/jest-dom/extend-expect'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import React from 'react'
-import { Action, buildCalendar, keyToAction, reducer, State } from 'repick-core'
+import {
+  Action,
+  buildCalendar,
+  keyToAction,
+  Options,
+  reducer,
+  State,
+} from 'repick-core'
 import Repick, { PropsSingle, RepickContext } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
-const options = {
-  locale: { test: 'TEST' },
+const options: Options = {
   weekStartsOn: 6,
 }
 

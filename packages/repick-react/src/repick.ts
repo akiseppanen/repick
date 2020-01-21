@@ -1,4 +1,4 @@
-import startOfDay from 'date-fns/start_of_day'
+import startOfDay from 'date-fns/startOfDay'
 import React from 'react'
 import {
   buildCalendar,

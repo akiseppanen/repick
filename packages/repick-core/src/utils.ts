@@ -1,7 +1,7 @@
-import compareAsc from 'date-fns/compare_asc'
+import compareAsc from 'date-fns/compareAsc'
 import format from 'date-fns/format'
-import isSameDay from 'date-fns/is_same_day'
-import setDay from 'date-fns/set_day'
+import isSameDay from 'date-fns/isSameDay'
+import setDay from 'date-fns/setDay'
 
 import {
   Action,
@@ -65,8 +65,8 @@ export function buildWeekdays(options: Options = {}): Weekday[] {
     const day = setDay(date, wrapWeekDay(i + (options.weekStartsOn || 0)))
 
     return {
-      long: format(day, 'dddd', { locale: options.locale }),
-      short: format(day, 'ddd', { locale: options.locale }),
+      long: format(day, 'iiii', { locale: options.locale }),
+      short: format(day, 'iii', { locale: options.locale }),
     }
   })
 }
