@@ -1,6 +1,6 @@
 import { Locale } from 'date-fns'
 
-export interface CalendarDay {
+export type CalendarContextDayCommon = {
   date: Date
   day: number
   nextMonth: boolean
@@ -10,23 +10,53 @@ export interface CalendarDay {
   today: boolean
 }
 
-export interface Weekday {
+export type CalendarContextDaySingle = CalendarContextDayCommon
+export type CalendarContextDayMulti = CalendarContextDayCommon
+export type CalendarContextDayRange = CalendarContextDayCommon & {
+  rangeStart: boolean
+  rangeEnd: boolean
+}
+
+export type CalendarContextDay =
+  | CalendarContextDaySingle
+  | CalendarContextDayMulti
+  | CalendarContextDayRange
+
+export type Weekday = {
   long: string
   short: string
 }
 
-export interface Calendar<Selected> {
+export type CalendarContextCommon = {
   date: Date
-  selected: Selected | null
   month: number
   monthLong: string
   monthShort: string
   year: number
   weekdays: Weekday[]
-  days: CalendarDay[]
 }
 
-export interface Options {
+export type CalendarContextSingle = CalendarContextCommon & {
+  selected: Date
+  days: CalendarContextDaySingle[]
+}
+
+export type CalendarContextMulti = CalendarContextCommon & {
+  selected: Date[]
+  days: CalendarContextDayMulti[]
+}
+
+export type CalendarContextRange = CalendarContextCommon & {
+  selected: [Date, Date?]
+  days: CalendarContextDayRange[]
+}
+
+export type CalendarContext =
+  | CalendarContextSingle
+  | CalendarContextMulti
+  | CalendarContextRange
+
+export type Options = {
   locale?: Locale
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }

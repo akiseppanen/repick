@@ -81,13 +81,20 @@
   outline: none;
 }
 
-.calendarDayContainer .calendarDay.selected {
+.calendarDay.selected {
   border-radius: 0;
   background: #569ff7;
   border: none;
 }
-.calendarDayContainer .calendarDay.selected:last-of-type {
-  border-radius: 100%;
+
+.calendarDay.rangeStart {
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+}
+
+.calendarDay.rangeEnd {
+  border-top-right-radius: 100%;
+  border-bottom-right-radius: 100%;
 }
 
 .calendarDay:hover {
