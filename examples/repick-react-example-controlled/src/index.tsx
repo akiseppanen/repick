@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Repick, { RepickContextSingle } from 'repick-react'
+import { useRepick } from 'repick-react'
 
 const ArrowLeft = () => (
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17">
@@ -28,97 +28,93 @@ const DatePicker = () => {
       inputRef.current.focus()
     }
   }
-  return (
-    <Repick
-      weekStartsOn={1}
-      onChange={(d: Date | null) => {
-        setSelected(d)
-        close()
-      }}
-      onCurrentChange={setDate}
-      selected={selected}
-      current={date}
-    >
-      {({
-        days,
-        monthLong,
-        year,
-        weekdays,
-        getDateProps,
-        getPrevMonthProps,
-        getNextMonthProps,
-        getCalendarProps,
-        handleKeyDown,
-        setFocusToCalendar,
-      }: RepickContextSingle) => (
-        <>
-          <input
-            type="text"
-            onClick={open}
-            value={selected ? format(selected, 'MM/dd/yyyy') : ''}
-            onKeyDown={e => {
-              if (e.key === 'ArrowDown') {
-                open()
-                setFocusToCalendar()
-              }
-            }}
-            ref={inputRef}
-            readOnly
-          />
-          {isOpen && (
-            <div
-              {...getCalendarProps()}
-              onKeyDown={e => {
-                if (e.key === 'Escape') {
-                  close()
-                }
 
-                handleKeyDown(e)
-              }}
-              className="calendar"
-            >
-              <div className="calendarMonths">
-                <div {...getPrevMonthProps()} className="calendarMonthPrev">
-                  <ArrowLeft />
-                </div>
-                <div className="calendarCurrentMonth">
-                  {monthLong} {year}
-                </div>
-                <div {...getNextMonthProps()} className="calendarMonthNext">
-                  <ArrowRight />
-                </div>
-              </div>
-              <div className="calendarWeekdays">
-                {weekdays.map(weekday => (
-                  <div
-                    key={`weekday-${weekday.short}`}
-                    className="calendarWeekday"
-                  >
-                    {weekday.short}
-                  </div>
-                ))}
-              </div>
-              <div className="calendarDayContainer">
-                {days.map(calendarDay => (
-                  <button
-                    {...getDateProps(calendarDay)}
-                    key={calendarDay.date.toISOString()}
-                    className={classnames('calendarDay', {
-                      nextMonth: calendarDay.nextMonth,
-                      prevMonth: calendarDay.prevMonth,
-                      selected: calendarDay.selected,
-                      today: calendarDay.today,
-                    })}
-                  >
-                    {calendarDay.day}
-                  </button>
-                ))}
-              </div>
+  const {
+    days,
+    monthLong,
+    year,
+    weekdays,
+    getDateProps,
+    getPrevMonthProps,
+    getNextMonthProps,
+    getCalendarProps,
+    handleKeyDown,
+    setFocusToCalendar,
+  } = useRepick({
+    weekStartsOn: 1,
+    onChange: (d: Date | null) => {
+      setSelected(d)
+      close()
+    },
+    onCurrentChange: setDate,
+    selected,
+    current: date,
+  })
+
+  return (
+    <>
+      <input
+        type="text"
+        onClick={open}
+        value={selected ? format(selected, 'MM/dd/yyyy') : ''}
+        onKeyDown={e => {
+          if (e.key === 'ArrowDown') {
+            open()
+            setFocusToCalendar()
+          }
+        }}
+        ref={inputRef}
+        readOnly
+      />
+      {isOpen && (
+        <div
+          {...getCalendarProps()}
+          onKeyDown={e => {
+            if (e.key === 'Escape') {
+              close()
+            }
+
+            handleKeyDown(e)
+          }}
+          className="calendar"
+        >
+          <div className="calendarMonths">
+            <div {...getPrevMonthProps()} className="calendarMonthPrev">
+              <ArrowLeft />
             </div>
-          )}
-        </>
+            <div className="calendarCurrentMonth">
+              {monthLong} {year}
+            </div>
+            <div {...getNextMonthProps()} className="calendarMonthNext">
+              <ArrowRight />
+            </div>
+          </div>
+          <div className="calendarWeekdays">
+            {weekdays.map(weekday => (
+              <div key={`weekday-${weekday.short}`} className="calendarWeekday">
+                {weekday.short}
+              </div>
+            ))}
+          </div>
+          <div className="calendarDayContainer">
+            {days.map(calendarDay => (
+              <button
+                {...getDateProps(calendarDay)}
+                key={calendarDay.date.toISOString()}
+                className={classnames('calendarDay', {
+                  nextMonth: calendarDay.nextMonth,
+                  prevMonth: calendarDay.prevMonth,
+                  selected: calendarDay.selected,
+                  today: calendarDay.today,
+                })}
+              >
+                {calendarDay.day}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
-    </Repick>
+    </>
   )
 }
 
