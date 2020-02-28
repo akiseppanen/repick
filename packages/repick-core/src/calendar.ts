@@ -9,7 +9,21 @@ import startOfMonth from 'date-fns/startOfMonth'
 import startOfWeek from 'date-fns/startOfWeek'
 import subMonths from 'date-fns/subMonths'
 
-import { Calendar, CalendarDay, State, StateType } from './types'
+import {
+  CalendarContext,
+  CalendarContextCommon,
+  CalendarContextDayCommon,
+  CalendarContextDayMulti,
+  CalendarContextDayRange,
+  CalendarContextDaySingle,
+  CalendarContextMulti,
+  CalendarContextRange,
+  CalendarContextSingle,
+  State,
+  StateMulti,
+  StateRange,
+  StateSingle,
+} from './types'
 import { buildWeekdays, extractOptionsFromState } from './utils'
 
 export function isSelectedSingle(selected: Date, date: Date) {
@@ -41,7 +55,10 @@ export function isSelected(state: State, date: Date): boolean {
   }
 }
 
-export function buildDate(state: State, date: Date): CalendarDay {
+export function buildCalendarContextDayCommon(
+  state: State,
+  date: Date,
+): CalendarContextDayCommon {
   const prevMonth = subMonths(state.current, 1)
   const nextMonth = addMonths(state.current, 1)
 
@@ -56,24 +73,98 @@ export function buildDate(state: State, date: Date): CalendarDay {
   }
 }
 
-export function buildCalendar(state: State): Calendar<StateType<State>> {
-  const { current, selected } = state
+export function buildCalendarContextDaySingle(
+  state: StateSingle,
+  date: Date,
+): CalendarContextDaySingle {
+  return buildCalendarContextDayCommon(state, date)
+}
+
+export function buildCalendarContextDayMulti(
+  state: StateMulti,
+  date: Date,
+): CalendarContextDayMulti {
+  return buildCalendarContextDayCommon(state, date)
+}
+
+export function buildCalendarContextDayRange(
+  state: StateRange,
+  date: Date,
+): CalendarContextDayRange {
+  return {
+    ...buildCalendarContextDayCommon(state, date),
+    rangeStart: !!state.selected && isSameDay(date, state.selected[0]),
+    rangeEnd:
+      !!state.selected &&
+      !!state.selected[1] &&
+      isSameDay(date, state.selected[1]),
+  }
+}
+
+export function buildCalendarContextCommon(
+  state: State,
+): CalendarContextCommon {
+  const { current } = state
   const options = extractOptionsFromState(state)
-  const firstDayOfMonth = startOfMonth(current)
-  const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
-    weekStartsOn: options.weekStartsOn,
-  })
 
   return {
     date: current || null,
-    selected: selected || null,
     month: current.getMonth() + 1,
     monthLong: format(current, 'MMMM', { locale: options.locale }),
     monthShort: format(current, 'MMM', { locale: options.locale }),
     year: current.getFullYear(),
     weekdays: buildWeekdays(options),
-    days: Array.apply(null, Array(42)).map((_, i) => {
-      return buildDate(state, addDays(firstWeekOfMonth, i))
-    }),
+  }
+}
+
+export function buildCalendarContext(state: State): CalendarContext {
+  const { current } = state
+  const options = extractOptionsFromState(state)
+  const firstDayOfMonth = startOfMonth(current)
+  const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
+    weekStartsOn: options.weekStartsOn,
+  })
+  switch (state.mode) {
+    case 'single': {
+      return {
+        ...buildCalendarContextCommon(state),
+        selected: state.selected,
+        days: Array.apply(null, Array(42)).map((_, i) => {
+          return buildCalendarContextDaySingle(
+            state,
+            addDays(firstWeekOfMonth, i),
+          )
+        }),
+      } as CalendarContextSingle
+    }
+    case 'multi': {
+      return {
+        ...buildCalendarContextCommon(state),
+        selected: state.selected,
+        days: Array.apply(null, Array(42)).map((_, i) => {
+          return buildCalendarContextDayMulti(
+            state,
+            addDays(firstWeekOfMonth, i),
+          )
+        }),
+      } as CalendarContextMulti
+    }
+    case 'range': {
+      return {
+        ...buildCalendarContextCommon(state),
+        selected: state.selected,
+        days: Array.apply(null, Array(42)).map((_, i) => {
+          return buildCalendarContextDayRange(
+            state,
+            addDays(firstWeekOfMonth, i),
+          )
+        }),
+      } as CalendarContextRange
+    }
+
+    default: {
+      const _: never = state
+      return _
+    }
   }
 }

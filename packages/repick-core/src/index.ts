@@ -1,5 +1,5 @@
 export { reducer } from './reducer'
-export { buildCalendar } from './calendar'
+export { buildCalendarContext } from './calendar'
 export * from './actions'
 export * from './utils'
 export * from './types'

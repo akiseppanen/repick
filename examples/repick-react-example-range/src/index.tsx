@@ -105,6 +105,8 @@ const DatePicker = () => {
                       prevMonth: calendarDay.prevMonth,
                       selected: calendarDay.selected,
                       today: calendarDay.today,
+                      rangeStart: calendarDay.rangeStart,
+                      rangeEnd: calendarDay.rangeEnd,
                     })}
                   >
                     {calendarDay.day}

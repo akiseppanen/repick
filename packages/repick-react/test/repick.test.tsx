@@ -4,13 +4,13 @@ import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import React from 'react'
 import {
   Action,
-  buildCalendar,
+  buildCalendarContext,
   keyToAction,
   Options,
   reducer,
   State,
 } from 'repick-core'
-import Repick, { PropsSingle, RepickContext } from '../src'
+import Repick, { PropsSingle, RepickContext, RepickContextSingle } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
 const options: Options = {
@@ -19,23 +19,23 @@ const options: Options = {
 
 function setup(
   repickProps: PropsSingle = {},
-  children: (props: RepickContext<Date>) => React.ReactElement | null = () =>
+  children: (props: RepickContextSingle) => React.ReactElement | null = () =>
     null,
-): [RepickContext<Date>, RenderResult] {
+): [RepickContextSingle, RenderResult] {
   const childProps: any = {}
   const renderResult = render(
     <Repick {...repickProps}>
-      {(context: RepickContext<Date>) => {
+      {(context: RepickContextSingle) => {
         Object.assign(childProps, context)
         return children(context)
       }}
     </Repick>,
   )
 
-  return [childProps! as RepickContext<Date>, renderResult]
+  return [childProps! as RepickContextSingle, renderResult]
 }
 
-const mockedBuildCalendar = buildCalendar as jest.Mock
+const mockedBuildCalendar = buildCalendarContext as jest.Mock
 const mockedReducer = reducer as jest.Mock
 const mockedKeyToAction = keyToAction as jest.Mock
 
@@ -83,7 +83,7 @@ describe('calendar', () => {
         initialDate: calendarFixture.date || undefined,
         initialSelected: calendarFixture.selected || undefined,
       },
-      ({ days, getDateProps }) => (
+      ({ days, getDateProps }: RepickContextSingle) => (
         <>
           {days.map((calendarDay, idx) => (
             <button {...getDateProps(calendarDay)} key={idx}>
@@ -229,7 +229,7 @@ describe('actions', () => {
   const date = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
-  let props: RepickContext<Date>
+  let props: RepickContext
 
   beforeEach(() => {
     props = setup({ current: date })[0]
