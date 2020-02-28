@@ -79,6 +79,14 @@ export function sort<T>(compareFn: (a: T, b: T) => number, array: T[]) {
   return result
 }
 
+export function arrayIncludes<T>(
+  compareFn: (a: T, b: T) => boolean,
+  array: T[],
+  value: T,
+) {
+  return array.findIndex(x => compareFn(x, value)) !== -1
+}
+
 export function toggleValue<T>(
   compareFn: (a: T, b: T) => boolean,
   orig: T[],

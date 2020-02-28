@@ -3,6 +3,7 @@ import addMonths from 'date-fns/addMonths'
 import startOfWeek from 'date-fns/startOfWeek'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
+import isSameDay from 'date-fns/isSameDay'
 
 import {
   Action,
@@ -18,13 +19,25 @@ import {
   actionStartOfWeek,
 } from './actions'
 import { State } from './types'
-import { selectDateMulti, selectDateRange, selectDateSingle } from './utils'
+import {
+  selectDateMulti,
+  selectDateRange,
+  selectDateSingle,
+  arrayIncludes,
+} from './utils'
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case actionSelectDate: {
       const date =
         action.date instanceof Date ? action.date : new Date(action.date)
+
+      if (
+        !!state.disabledDates &&
+        arrayIncludes(isSameDay, state.disabledDates, date)
+      ) {
+        return state
+      }
 
       switch (state.mode) {
         case 'single':
@@ -56,6 +69,13 @@ export function reducer(state: State, action: Action): State {
 
     case actionSelectCurrent: {
       const date = state.current
+
+      if (
+        state.disabledDates &&
+        arrayIncludes(isSameDay, state.disabledDates, date)
+      ) {
+        return state
+      }
 
       switch (state.mode) {
         case 'single':

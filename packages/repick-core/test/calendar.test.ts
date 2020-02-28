@@ -189,6 +189,24 @@ describe('buildCalendarContextDayCommon', () => {
       prevMonth: false,
     })
   })
+
+  it('disabled', () => {
+    const disabledDate = new Date('2018-02-01')
+
+    expect(
+      buildCalendarContextDayCommon(
+        {
+          current: new Date('2018-01-01'),
+          mode: 'single',
+          selected: null,
+          disabledDates: [disabledDate],
+        },
+        disabledDate,
+      ),
+    ).toMatchObject({
+      disabled: true,
+    })
+  })
 })
 
 it('buildCalendarContext', () => {

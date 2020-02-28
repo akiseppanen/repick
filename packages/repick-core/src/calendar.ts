@@ -24,7 +24,7 @@ import {
   StateRange,
   StateSingle,
 } from './types'
-import { buildWeekdays, extractOptionsFromState } from './utils'
+import { buildWeekdays, extractOptionsFromState, arrayIncludes } from './utils'
 
 export function isSelectedSingle(selected: Date, date: Date) {
   return isSameDay(selected, date)
@@ -69,6 +69,9 @@ export function buildCalendarContextDayCommon(
     prevMonth: isSameMonth(prevMonth, date),
     selected: isSelected(state, date),
     current: isSameDay(state.current, date),
+    disabled:
+      !!state.disabledDates &&
+      arrayIncludes(isSameDay, state.disabledDates, date),
     today: isSameDay(new Date(), date),
   }
 }

@@ -2,7 +2,33 @@ import {
   selectDateMulti,
   selectDateRange,
   selectDateSingle,
+  arrayIncludes,
 } from '../src/utils'
+
+describe('arrayIncludes', () => {
+  it.only('returns correct value and comparison function called correct times', () => {
+    const mockFn = jest.fn((a, b) => a === b)
+
+    const array = [1, 4, 8]
+
+    expect(arrayIncludes(mockFn, array, 4)).toBe(true)
+
+    expect(mockFn.mock.calls).toEqual([
+      [1, 4],
+      [4, 4],
+    ])
+
+    mockFn.mockReset()
+
+    expect(arrayIncludes(mockFn, array, 12)).toBe(false)
+
+    expect(mockFn.mock.calls).toEqual([
+      [1, 12],
+      [4, 12],
+      [8, 12],
+    ])
+  })
+})
 
 describe('selectDateSingle', () => {
   it('return given date when dates does not match', () => {

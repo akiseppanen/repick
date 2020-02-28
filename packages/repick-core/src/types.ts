@@ -8,6 +8,7 @@ export type CalendarContextDayCommon = {
   selected: boolean
   current: boolean
   today: boolean
+  disabled: boolean
 }
 
 export type CalendarContextDaySingle = CalendarContextDayCommon
@@ -58,6 +59,7 @@ export type CalendarContext =
 
 export type Options = {
   locale?: Locale
+  disabledDates?: Date[]
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 

@@ -88,6 +88,7 @@ export type PropsGeneric<M, T> = {
   initialDate?: Date
   selected?: T | null
   initialSelected?: T
+  disabledDates?: Date[]
 }
 
 export type PropsGenericRequireMode<M, T> = PropsGeneric<M, T> & {
@@ -178,6 +179,7 @@ function getControlledProps(
     mode: props.mode,
     selected: props.selected,
     weekStartsOn: props.weekStartsOn,
+    disabledDates: props.disabledDates,
   } as Partial<State>
 }
 
