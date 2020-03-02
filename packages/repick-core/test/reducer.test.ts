@@ -1,5 +1,3 @@
-jest.mock('../src/utils')
-
 import { reducer } from '../src/reducer'
 import { State } from '../src/types'
 import {
@@ -7,6 +5,8 @@ import {
   selectDateRange,
   selectDateSingle,
 } from '../src/utils'
+
+jest.mock('../src/utils')
 
 const mockedSelectDateSingle = selectDateSingle as jest.Mock
 const mockedSelectDateMulti = selectDateMulti as jest.Mock

@@ -4,6 +4,8 @@
   "scripts": {
     "build": "lerna run build",
     "clean": "rm -rf node_modules; lerna run clean",
+    "lint": "lerna run lint",
+    "lint:fix": "lerna run lint -- --fix",
     "test": "lerna run test",
     "watch": "lerna run --parallel watch"
   },
@@ -11,24 +13,21 @@
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.1",
     "prettier": "^1.19.1",
-    "tslint": "^6.0.0",
-    "tslint-config-prettier": "^1.18.0",
+    "tsdx": "^0.12.3",
     "typescript": "^3.7.5",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "tslib": "^1.10.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tslint --fix",
+      "tsdx lint --fix",
       "prettier --write"
     ],
     "*.{js,jsx,json}": [
       "prettier --write"
-    ],
-    "tslint.json": [
-      "tslint-config-prettier-check"
     ]
   },
   "prettier": {
