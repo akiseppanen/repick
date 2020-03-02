@@ -4,13 +4,16 @@ import {
   selectDateMulti,
   selectDateRange,
   selectDateSingle,
+  arrayIncludes,
 } from '../src/utils'
+import isSameDay from 'date-fns/isSameDay'
 
 jest.mock('../src/utils')
 
 const mockedSelectDateSingle = selectDateSingle as jest.Mock
 const mockedSelectDateMulti = selectDateMulti as jest.Mock
 const mockedSelectDateRange = selectDateRange as jest.Mock
+const mockedArrayIncludes = arrayIncludes as jest.Mock
 
 const initialCurrent = new Date('2018-01-01 00:00:00')
 
@@ -108,6 +111,31 @@ describe('reducer', () => {
         expectedDate,
       )
     })
+
+    it('disabled dates', () => {
+      mockedArrayIncludes.mockReturnValue(true)
+
+      const disabledDate = new Date('2018-01-05 00:00:00')
+
+      const state: State = {
+        current: initialCurrent,
+        mode: 'single',
+        selected: null,
+        disabledDates: [disabledDate],
+      }
+
+      const newState = reducer(state, {
+        date: disabledDate,
+        type: 'SelectDate',
+      })
+
+      expect(newState).toEqual(state)
+      expect(mockedArrayIncludes).toHaveBeenCalledWith(
+        isSameDay,
+        [disabledDate],
+        disabledDate,
+      )
+    })
   })
   describe('SelectCurrent', () => {
     it('mode: single', () => {
@@ -159,6 +187,30 @@ describe('reducer', () => {
       expect(mockedSelectDateRange).toHaveBeenCalledWith(
         dateRange,
         initialCurrent,
+      )
+    })
+
+    it('disabled dates', () => {
+      mockedArrayIncludes.mockReturnValue(true)
+
+      const disabledDate = new Date('2018-01-05 00:00:00')
+
+      const state: State = {
+        current: disabledDate,
+        mode: 'single',
+        selected: null,
+        disabledDates: [disabledDate],
+      }
+
+      const newState = reducer(state, {
+        type: 'SelectCurrent',
+      })
+
+      expect(newState).toEqual(state)
+      expect(mockedArrayIncludes).toHaveBeenCalledWith(
+        isSameDay,
+        [disabledDate],
+        disabledDate,
       )
     })
   })

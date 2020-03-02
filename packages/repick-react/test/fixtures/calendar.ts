@@ -25,6 +25,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2017-12-31T22:00:00.000Z'),
@@ -34,6 +35,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: true,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-01T22:00:00.000Z'),
@@ -43,6 +45,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-02T22:00:00.000Z'),
@@ -52,6 +55,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-03T22:00:00.000Z'),
@@ -61,6 +65,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-04T22:00:00.000Z'),
@@ -70,6 +75,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-05T22:00:00.000Z'),
@@ -79,6 +85,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-06T22:00:00.000Z'),
@@ -88,6 +95,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-07T22:00:00.000Z'),
@@ -97,6 +105,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-08T22:00:00.000Z'),
@@ -106,6 +115,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-09T22:00:00.000Z'),
@@ -115,6 +125,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: true,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-10T22:00:00.000Z'),
@@ -124,6 +135,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-11T22:00:00.000Z'),
@@ -133,6 +145,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-12T22:00:00.000Z'),
@@ -142,6 +155,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-13T22:00:00.000Z'),
@@ -151,6 +165,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-14T22:00:00.000Z'),
@@ -160,6 +175,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-15T22:00:00.000Z'),
@@ -169,6 +185,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-16T22:00:00.000Z'),
@@ -178,6 +195,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-17T22:00:00.000Z'),
@@ -187,6 +205,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-18T22:00:00.000Z'),
@@ -196,6 +215,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-19T22:00:00.000Z'),
@@ -205,6 +225,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-20T22:00:00.000Z'),
@@ -214,6 +235,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-21T22:00:00.000Z'),
@@ -223,6 +245,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-22T22:00:00.000Z'),
@@ -232,6 +255,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-23T22:00:00.000Z'),
@@ -241,6 +265,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-24T22:00:00.000Z'),
@@ -250,6 +275,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-25T22:00:00.000Z'),
@@ -259,6 +285,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-26T22:00:00.000Z'),
@@ -268,6 +295,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-27T22:00:00.000Z'),
@@ -277,6 +305,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-28T22:00:00.000Z'),
@@ -286,6 +315,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-29T22:00:00.000Z'),
@@ -295,6 +325,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-30T22:00:00.000Z'),
@@ -304,6 +335,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-01-31T22:00:00.000Z'),
@@ -313,6 +345,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-01T22:00:00.000Z'),
@@ -322,6 +355,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-02T22:00:00.000Z'),
@@ -331,6 +365,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-03T22:00:00.000Z'),
@@ -340,6 +375,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-04T22:00:00.000Z'),
@@ -349,6 +385,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-05T22:00:00.000Z'),
@@ -358,6 +395,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-06T22:00:00.000Z'),
@@ -367,6 +405,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-07T22:00:00.000Z'),
@@ -376,6 +415,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-08T22:00:00.000Z'),
@@ -385,6 +425,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
     {
       date: new Date('2018-02-09T22:00:00.000Z'),
@@ -394,6 +435,7 @@ export const calendarFixture: CalendarContextSingle = {
       selected: false,
       current: false,
       today: false,
+      disabled: false,
     },
   ],
 }
