@@ -197,6 +197,7 @@ function handleChange<T>(
 export function useRepick(props: PropsSingle): RepickContextSingle
 export function useRepick(props: PropsMulti): RepickContextMulti
 export function useRepick(props: PropsRange): RepickContextRange
+export function useRepick(props: Props): RepickContext
 export function useRepick(props: Props): RepickContext {
   const dateRefs: Record<string, HTMLElement> = {}
 
@@ -230,17 +231,20 @@ export function useRepick(props: Props): RepickContext {
     },
   )
 
-  const setFocusToDate = (date: Date) => {
-    window.requestAnimationFrame(() => {
-      if (dateRefs[date.toISOString()]) {
-        dateRefs[date.toISOString()].focus()
-      }
-    })
-  }
+  const setFocusToDate = React.useCallback(
+    (date: Date) => {
+      window.requestAnimationFrame(() => {
+        if (dateRefs[date.toISOString()]) {
+          dateRefs[date.toISOString()].focus()
+        }
+      })
+    },
+    [dateRefs],
+  )
 
   React.useEffect(() => {
     setFocusToDate(state.current)
-  }, [state.current])
+  }, [setFocusToDate, state])
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
@@ -324,30 +328,11 @@ export function useRepick(props: Props): RepickContext {
 }
 
 export function Repick(props: PropsWithChildren) {
-  switch (props.mode) {
-    case undefined:
-    case 'single': {
-      const { children, ...hookProps } = props
-      const context = useRepick(hookProps)
+  const { children, ...hookProps } = props
 
-      return props.children(context)
-    }
-    case 'multi': {
-      const { children, ...hookProps } = props
-      const context = useRepick(hookProps)
+  const context = useRepick(hookProps as any)
 
-      return children(context)
-    }
-    case 'range': {
-      const { children, ...hookProps } = props
-      const context = useRepick(hookProps)
-
-      return children(context)
-    }
-    default:
-      const _: never = props
-      return _
-  }
+  return children(context as any)
 }
 
 export default Repick

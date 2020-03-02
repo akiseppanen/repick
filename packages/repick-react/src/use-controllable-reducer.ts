@@ -47,7 +47,7 @@ export const useControllableReducer = <R extends Reducer<any, any>, I>(
 
         setState(newState)
       },
-      [changeHandler],
+      [changeHandler, effectiveState, reducer, state],
     ),
   ]
 }

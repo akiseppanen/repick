@@ -1,4 +1,3 @@
-jest.mock('repick-core')
 import '@testing-library/jest-dom/extend-expect'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import React from 'react'
@@ -12,6 +11,7 @@ import {
 } from 'repick-core'
 import Repick, { PropsSingle, RepickContext, RepickContextSingle } from '../src'
 import { calendarFixture } from './fixtures/calendar'
+jest.mock('repick-core')
 
 const options: Options = {
   weekStartsOn: 6,
