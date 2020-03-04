@@ -1,19 +1,17 @@
 import startOfDay from 'date-fns/startOfDay'
 import React from 'react'
 import {
-  CalendarContext,
-  CalendarContextMulti,
-  CalendarContextRange,
-  CalendarContextSingle,
+  buildCalendarContext,
+  CalendarContextDay,
+  CalendarContextDayGeneric,
+  CalendarContextDayMulti,
+  CalendarContextDayRange,
+  CalendarContextDaySingle,
+  CalendarContextGeneric,
   keyToAction,
   reducer,
   State,
   StateGeneric,
-  CalendarContextDay,
-  CalendarContextDayMulti,
-  CalendarContextDaySingle,
-  CalendarContextDayRange,
-  buildCalendarContext,
 } from 'repick-core'
 import { useControllableReducer } from './use-controllable-reducer'
 
@@ -37,10 +35,11 @@ export type DateProps = {
   ref: (el: HTMLElement | null) => void
 }
 
-type RepickContextGeneric<
-  C extends CalendarContext,
-  CD extends CalendarContextDay
-> = {
+export type RepickContextGeneric<
+  M,
+  T,
+  D extends CalendarContextDayGeneric<{}>
+> = CalendarContextGeneric<M, T, D> & {
   selectDate: (date: string | number | Date) => void
   selectCurrent: () => void
   prevDay: () => void
@@ -52,24 +51,29 @@ type RepickContextGeneric<
   startOfWeek: () => void
   endOfWeek: () => void
   getCalendarProps: () => CalendarProps
-  getDateProps: (calendarDay: CD) => DateProps
+  getDateProps: (calendarDay: D) => DateProps
   getNextMonthProps: () => MonthProps
   getPrevMonthProps: () => MonthProps
   handleKeyDown: (e: React.KeyboardEvent) => void
   setFocusToCalendar: () => void
   setFocusToDate: (date: Date) => void
-} & C
+}
 
 export type RepickContextSingle = RepickContextGeneric<
-  CalendarContextSingle,
+  'single',
+  Date,
   CalendarContextDaySingle
 >
+
 export type RepickContextMulti = RepickContextGeneric<
-  CalendarContextMulti,
+  'multi',
+  Date[],
   CalendarContextDayMulti
 >
+
 export type RepickContextRange = RepickContextGeneric<
-  CalendarContextRange,
+  'range',
+  [Date, Date?],
   CalendarContextDayRange
 >
 
@@ -91,24 +95,45 @@ export type PropsGeneric<M, T> = {
   disabledDates?: Date[]
 }
 
-export type PropsGenericRequireMode<M, T> = PropsGeneric<M, T> & {
-  mode: M
-}
+export type PropsGenericRequireMode<M, T> = PropsGeneric<M, T> & { mode: M }
 
 export type PropsSingle = PropsGeneric<'single', Date>
 export type PropsMulti = PropsGenericRequireMode<'multi', Date[]>
 export type PropsRange = PropsGenericRequireMode<'range', [Date, Date?]>
+
 export type Props = PropsSingle | PropsMulti | PropsRange
 
-export type PropsWithChildrenSingle = PropsSingle & {
-  children: (context: RepickContextSingle) => React.ReactElement | null
+export type PropsWithChildrenGeneric<
+  M,
+  T,
+  C extends RepickContextGeneric<M, T, any>
+> = PropsGeneric<M, T> & {
+  children: (context: C) => React.ReactElement | null
 }
-export type PropsWithChildrenMulti = PropsMulti & {
-  children: (context: RepickContextMulti) => React.ReactElement | null
+
+export type PropsWithChildrenGenericRequireMode<
+  M,
+  T,
+  C extends RepickContextGeneric<M, T, any>
+> = PropsGenericRequireMode<M, T> & {
+  children: (context: C) => React.ReactElement | null
 }
-export type PropsWithChildrenRange = PropsRange & {
-  children: (context: RepickContextRange) => React.ReactElement | null
-}
+
+export type PropsWithChildrenSingle = PropsWithChildrenGeneric<
+  'single',
+  Date,
+  RepickContextSingle
+>
+export type PropsWithChildrenMulti = PropsWithChildrenGenericRequireMode<
+  'multi',
+  Date[],
+  RepickContextMulti
+>
+export type PropsWithChildrenRange = PropsWithChildrenGenericRequireMode<
+  'range',
+  [Date, Date?],
+  RepickContextRange
+>
 
 export type PropsWithChildren =
   | PropsWithChildrenSingle
@@ -332,7 +357,7 @@ export function useRepick(props: Props): RepickContext {
 export function Repick(props: PropsWithChildren) {
   const { children, ...hookProps } = props
 
-  const context = useRepick(hookProps as any)
+  const context = useRepick(hookProps)
 
   return children(context as any)
 }

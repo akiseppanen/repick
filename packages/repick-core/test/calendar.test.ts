@@ -2,7 +2,7 @@ import MockDate from 'mockdate'
 
 import {
   buildCalendarContext,
-  buildCalendarContextDayCommon,
+  buildCalendarContextDayGeneric,
   buildCalendarContextDaySingle,
   buildCalendarContextDayMulti,
   buildCalendarContextDayRange,
@@ -116,13 +116,13 @@ describe('buildCalendarContextDayRange', () => {
   })
 })
 
-describe('buildCalendarContextDayCommon', () => {
+describe('buildCalendarContextDayGeneric', () => {
   it('today', () => {
     const date = new Date('2018-02-01')
     MockDate.set(date)
 
     expect(
-      buildCalendarContextDayCommon(
+      buildCalendarContextDayGeneric(() => ({}))(
         {
           current: new Date('2018-01-01'),
           mode: 'single',
@@ -141,7 +141,7 @@ describe('buildCalendarContextDayCommon', () => {
     const date = new Date('2018-02-01')
 
     expect(
-      buildCalendarContextDayCommon(
+      buildCalendarContextDayGeneric(() => ({}))(
         {
           current: date,
           mode: 'single',
@@ -158,7 +158,7 @@ describe('buildCalendarContextDayCommon', () => {
     const date = new Date('2018-01-01')
 
     expect(
-      buildCalendarContextDayCommon(
+      buildCalendarContextDayGeneric(() => ({}))(
         {
           current: new Date('2018-02-01'),
           mode: 'single',
@@ -176,7 +176,7 @@ describe('buildCalendarContextDayCommon', () => {
     const date = new Date('2018-02-01')
 
     expect(
-      buildCalendarContextDayCommon(
+      buildCalendarContextDayGeneric(() => ({}))(
         {
           current: new Date('2018-01-01'),
           mode: 'single',
@@ -194,7 +194,7 @@ describe('buildCalendarContextDayCommon', () => {
     const disabledDate = new Date('2018-02-01')
 
     expect(
-      buildCalendarContextDayCommon(
+      buildCalendarContextDayGeneric(() => ({}))(
         {
           current: new Date('2018-01-01'),
           mode: 'single',

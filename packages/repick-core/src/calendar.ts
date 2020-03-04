@@ -9,22 +9,75 @@ import startOfMonth from 'date-fns/startOfMonth'
 import startOfWeek from 'date-fns/startOfWeek'
 import subMonths from 'date-fns/subMonths'
 
-import {
-  CalendarContext,
-  CalendarContextCommon,
-  CalendarContextDayCommon,
-  CalendarContextDayMulti,
-  CalendarContextDayRange,
-  CalendarContextDaySingle,
-  CalendarContextMulti,
-  CalendarContextRange,
-  CalendarContextSingle,
-  State,
-  StateMulti,
-  StateRange,
-  StateSingle,
-} from './types'
+import { State, StateMulti, StateRange, StateSingle } from './types'
 import { buildWeekdays, extractOptionsFromState, arrayIncludes } from './utils'
+
+export type CalendarContextDayGeneric<E extends {}> = {
+  date: Date
+  day: number
+  nextMonth: boolean
+  prevMonth: boolean
+  selected: boolean
+  current: boolean
+  today: boolean
+  disabled: boolean
+} & E
+
+export type CalendarContextDaySingle = CalendarContextDayGeneric<{}>
+export type CalendarContextDayMulti = CalendarContextDayGeneric<{}>
+export type CalendarContextDayRange = CalendarContextDayGeneric<{
+  rangeStart: boolean
+  rangeEnd: boolean
+}>
+
+export type CalendarContextDay =
+  | CalendarContextDaySingle
+  | CalendarContextDayMulti
+  | CalendarContextDayRange
+
+export type Weekday = {
+  long: string
+  short: string
+}
+
+export type CalendarContextGeneric<
+  M,
+  T,
+  D extends CalendarContextDayGeneric<{}>
+> = {
+  mode: M
+  selected: T
+  date: Date
+  month: number
+  monthLong: string
+  monthShort: string
+  year: number
+  weekdays: Weekday[]
+  days: D[]
+}
+
+export type CalendarContextSingle = CalendarContextGeneric<
+  'single',
+  Date,
+  CalendarContextDaySingle
+>
+
+export type CalendarContextMulti = CalendarContextGeneric<
+  'multi',
+  Date[],
+  CalendarContextDayMulti
+>
+
+export type CalendarContextRange = CalendarContextGeneric<
+  'range',
+  [Date, Date?],
+  CalendarContextDayRange
+>
+
+export type CalendarContext =
+  | CalendarContextSingle
+  | CalendarContextMulti
+  | CalendarContextRange
 
 export function isSelectedSingle(selected: Date, date: Date) {
   return isSameDay(selected, date)
@@ -54,73 +107,55 @@ export function isSelected(state: State, date: Date): boolean {
       return _
   }
 }
+export function buildCalendarContextDayGeneric<S extends State, E extends {}>(
+  extraFn: (state: S, date: Date) => E,
+) {
+  return function(state: S, date: Date): CalendarContextDayGeneric<E> {
+    const prevMonth = subMonths(state.current, 1)
+    const nextMonth = addMonths(state.current, 1)
 
-export function buildCalendarContextDayCommon(
-  state: State,
-  date: Date,
-): CalendarContextDayCommon {
-  const prevMonth = subMonths(state.current, 1)
-  const nextMonth = addMonths(state.current, 1)
-
-  return {
-    date,
-    day: getDate(date),
-    nextMonth: isSameMonth(nextMonth, date),
-    prevMonth: isSameMonth(prevMonth, date),
-    selected: isSelected(state, date),
-    current: isSameDay(state.current, date),
-    disabled:
-      !!state.disabledDates &&
-      arrayIncludes(isSameDay, state.disabledDates, date),
-    today: isSameDay(new Date(), date),
+    return {
+      date,
+      day: getDate(date),
+      nextMonth: isSameMonth(nextMonth, date),
+      prevMonth: isSameMonth(prevMonth, date),
+      selected: isSelected(state, date),
+      current: isSameDay(state.current, date),
+      disabled:
+        !!state.disabledDates &&
+        arrayIncludes(isSameDay, state.disabledDates, date),
+      today: isSameDay(new Date(), date),
+      ...extraFn(state, date),
+    }
   }
 }
 
-export function buildCalendarContextDaySingle(
+export const buildCalendarContextDaySingle: (
   state: StateSingle,
   date: Date,
-): CalendarContextDaySingle {
-  return buildCalendarContextDayCommon(state, date)
-}
+) => CalendarContextDaySingle = buildCalendarContextDayGeneric(() => ({}))
 
-export function buildCalendarContextDayMulti(
+export const buildCalendarContextDayMulti: (
   state: StateMulti,
   date: Date,
-): CalendarContextDayMulti {
-  return buildCalendarContextDayCommon(state, date)
-}
+) => CalendarContextDayMulti = buildCalendarContextDayGeneric(() => ({}))
 
-export function buildCalendarContextDayRange(
+export const buildCalendarContextDayRange: (
   state: StateRange,
   date: Date,
-): CalendarContextDayRange {
-  return {
-    ...buildCalendarContextDayCommon(state, date),
+) => CalendarContextDayRange = buildCalendarContextDayGeneric(
+  (state: StateRange, date) => ({
     rangeStart: !!state.selected && isSameDay(date, state.selected[0]),
     rangeEnd:
       !!state.selected &&
       !!state.selected[1] &&
       isSameDay(date, state.selected[1]),
-  }
-}
+  }),
+)
 
-export function buildCalendarContextCommon(
+export function buildCalendarContext(
   state: State,
-): CalendarContextCommon {
-  const { current } = state
-  const options = extractOptionsFromState(state)
-
-  return {
-    date: current || null,
-    month: current.getMonth() + 1,
-    monthLong: format(current, 'MMMM', { locale: options.locale }),
-    monthShort: format(current, 'MMM', { locale: options.locale }),
-    year: current.getFullYear(),
-    weekdays: buildWeekdays(options),
-  }
-}
-
-export function buildCalendarContext(state: State): CalendarContext {
+): CalendarContextGeneric<any, any, any> {
   const { current } = state
   const options = extractOptionsFromState(state)
   const firstDayOfMonth = startOfMonth(current)
@@ -130,7 +165,12 @@ export function buildCalendarContext(state: State): CalendarContext {
   switch (state.mode) {
     case 'single': {
       return {
-        ...buildCalendarContextCommon(state),
+        date: current || null,
+        month: current.getMonth() + 1,
+        monthLong: format(current, 'MMMM', { locale: options.locale }),
+        monthShort: format(current, 'MMM', { locale: options.locale }),
+        year: current.getFullYear(),
+        weekdays: buildWeekdays(options),
         selected: state.selected,
         days: Array.apply(null, Array(42)).map((_, i) => {
           return buildCalendarContextDaySingle(
@@ -142,7 +182,12 @@ export function buildCalendarContext(state: State): CalendarContext {
     }
     case 'multi': {
       return {
-        ...buildCalendarContextCommon(state),
+        date: current || null,
+        month: current.getMonth() + 1,
+        monthLong: format(current, 'MMMM', { locale: options.locale }),
+        monthShort: format(current, 'MMM', { locale: options.locale }),
+        year: current.getFullYear(),
+        weekdays: buildWeekdays(options),
         selected: state.selected,
         days: Array.apply(null, Array(42)).map((_, i) => {
           return buildCalendarContextDayMulti(
@@ -154,7 +199,12 @@ export function buildCalendarContext(state: State): CalendarContext {
     }
     case 'range': {
       return {
-        ...buildCalendarContextCommon(state),
+        date: current || null,
+        month: current.getMonth() + 1,
+        monthLong: format(current, 'MMMM', { locale: options.locale }),
+        monthShort: format(current, 'MMM', { locale: options.locale }),
+        year: current.getFullYear(),
+        weekdays: buildWeekdays(options),
         selected: state.selected,
         days: Array.apply(null, Array(42)).map((_, i) => {
           return buildCalendarContextDayRange(
