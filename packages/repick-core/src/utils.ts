@@ -15,7 +15,8 @@ import {
   actionSelectCurrent,
   actionStartOfWeek,
 } from './actions'
-import { Options, StateGeneric, Weekday } from './types'
+import { Options, StateGeneric } from './types'
+import { Weekday } from 'calendar'
 
 export const wrap = (min: number, max: number) => (x: number) => {
   const d = max - min
@@ -118,6 +119,7 @@ export const extractOptionsFromState = (
   state: StateGeneric<any, any>,
 ): Options => ({
   locale: state.locale,
+  disabledDates: state.disabledDates,
   weekStartsOn: state.weekStartsOn,
 })
 
@@ -141,3 +143,5 @@ export function selectDateRange(
     ? [date]
     : sort(compareAsc, [...selected, date] as Date[])) as [Date, Date?]
 }
+
+export const emptyFn = <T>(e: T) => (): T => e
