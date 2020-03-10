@@ -122,6 +122,7 @@ export const extractOptionsFromState = (
 ): Options => ({
   locale: state.locale,
   disabledDates: state.disabledDates,
+  enabledDates: state.enabledDates,
   weekStartsOn: state.weekStartsOn,
   minDate: state.minDate,
   maxDate: state.maxDate,
@@ -152,6 +153,8 @@ export const emptyFn = <T>(e: T) => (): T => e
 
 export const dateIsSelectable = (options: Options, date: Date) =>
   !(
+    (!!options.enabledDates &&
+      !arrayIncludes(isSameDay, options.enabledDates, date)) ||
     (!!options.disabledDates &&
       arrayIncludes(isSameDay, options.disabledDates, date)) ||
     (!!options.minDate && isAfter(options.minDate, date)) ||
