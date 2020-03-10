@@ -10,7 +10,11 @@ import startOfWeek from 'date-fns/startOfWeek'
 import subMonths from 'date-fns/subMonths'
 
 import { State, StateMulti, StateRange, StateSingle } from './types'
-import { buildWeekdays, extractOptionsFromState, arrayIncludes } from './utils'
+import {
+  buildWeekdays,
+  extractOptionsFromState,
+  dateIsSelectable,
+} from './utils'
 
 export type CalendarContextDayGeneric<E extends {}> = {
   date: Date
@@ -121,9 +125,7 @@ export function buildCalendarContextDayGeneric<S extends State, E extends {}>(
       prevMonth: isSameMonth(prevMonth, date),
       selected: isSelected(state, date),
       current: isSameDay(state.current, date),
-      disabled:
-        !!state.disabledDates &&
-        arrayIncludes(isSameDay, state.disabledDates, date),
+      disabled: !dateIsSelectable(extractOptionsFromState(state), date),
       today: isSameDay(new Date(), date),
       ...extraFn(state, date),
     }

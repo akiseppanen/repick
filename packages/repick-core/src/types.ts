@@ -1,10 +1,12 @@
 import { Locale } from 'date-fns'
 
-export type Options = {
-  locale?: Locale
-  disabledDates?: Date[]
-  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
-}
+export type Options = Partial<{
+  locale: Locale
+  disabledDates: Date[]
+  weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
+  minDate: Date
+  maxDate: Date
+}>
 
 export type Mode = 'single' | 'multi' | 'range'
 
