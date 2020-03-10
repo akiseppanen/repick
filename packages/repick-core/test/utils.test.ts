@@ -3,10 +3,11 @@ import {
   selectDateRange,
   selectDateSingle,
   arrayIncludes,
+  dateIsSelectable,
 } from '../src/utils'
 
 describe('arrayIncludes', () => {
-  it.only('returns correct value and comparison function called correct times', () => {
+  it('returns correct value and comparison function called correct times', () => {
     const mockFn = jest.fn((a, b) => a === b)
 
     const array = [1, 4, 8]
@@ -118,5 +119,60 @@ describe('selectDateRange', () => {
     const newDate = new Date('2018-01-01')
 
     expect(selectDateRange(selected, newDate)).toEqual([newDate])
+  })
+})
+
+describe('dateIsSelectable', () => {
+  const minDate = new Date('2018-01-05')
+  const maxDate = new Date('2018-01-20')
+  const disabledDates = [new Date('2018-01-08'), new Date('2018-01-10')]
+
+  it('disabled date', () => {
+    const options = { disabledDates }
+
+    expect(dateIsSelectable(options, disabledDates[0])).toBe(false)
+    expect(dateIsSelectable(options, disabledDates[1])).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+  })
+
+  it('min date', () => {
+    const options = { minDate }
+
+    expect(dateIsSelectable(options, minDate)).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-04'))).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-01'))).toBe(false)
+  })
+
+  it('max date', () => {
+    const options = { maxDate }
+
+    expect(dateIsSelectable(options, maxDate)).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-21'))).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-25'))).toBe(false)
+  })
+
+  it('min date & max date', () => {
+    const options = { minDate, maxDate }
+
+    expect(dateIsSelectable(options, minDate)).toBe(true)
+    expect(dateIsSelectable(options, maxDate)).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-04'))).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-01'))).toBe(false)
+  })
+
+  it('disabled dates & min date & max date', () => {
+    const options = { minDate, maxDate, disabledDates }
+
+    expect(dateIsSelectable(options, disabledDates[0])).toBe(false)
+    expect(dateIsSelectable(options, disabledDates[1])).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+    expect(dateIsSelectable(options, minDate)).toBe(true)
+    expect(dateIsSelectable(options, maxDate)).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-04'))).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-01'))).toBe(false)
   })
 })

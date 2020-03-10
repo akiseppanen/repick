@@ -1,5 +1,7 @@
 import compareAsc from 'date-fns/compareAsc'
 import format from 'date-fns/format'
+import isAfter from 'date-fns/isAfter'
+import isBefore from 'date-fns/isBefore'
 import isSameDay from 'date-fns/isSameDay'
 import setDay from 'date-fns/setDay'
 
@@ -121,6 +123,8 @@ export const extractOptionsFromState = (
   locale: state.locale,
   disabledDates: state.disabledDates,
   weekStartsOn: state.weekStartsOn,
+  minDate: state.minDate,
+  maxDate: state.maxDate,
 })
 
 export function selectDateSingle(selected: Date | null, date: Date) {
@@ -145,3 +149,11 @@ export function selectDateRange(
 }
 
 export const emptyFn = <T>(e: T) => (): T => e
+
+export const dateIsSelectable = (options: Options, date: Date) =>
+  !(
+    (!!options.disabledDates &&
+      arrayIncludes(isSameDay, options.disabledDates, date)) ||
+    (!!options.minDate && isAfter(options.minDate, date)) ||
+    (!!options.maxDate && isBefore(options.maxDate, date))
+  )
