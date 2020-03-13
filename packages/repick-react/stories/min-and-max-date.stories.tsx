@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import startOfDay from 'date-fns/startOfDay'
 import format from 'date-fns/format'
 import * as React from 'react'
 import { useRepick } from '../src'
@@ -9,9 +10,11 @@ export default {
   title: 'Repick React',
 }
 
-export const MinAndMaxDate = () => {
-  const minDate = new Date(new Date().setDate(5))
-  const maxDate = new Date(new Date().setDate(25))
+const Component = () => {
+  const date = new Date('2018-01-01')
+
+  const minDate = startOfDay(new Date('2018-01-05'))
+  const maxDate = startOfDay(new Date('2018-01-25'))
 
   const {
     selected,
@@ -23,7 +26,7 @@ export const MinAndMaxDate = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1, minDate, maxDate })
+  } = useRepick({ weekStartsOn: 1, minDate, maxDate, initialDate: date })
 
   return (
     <>
@@ -72,3 +75,5 @@ export const MinAndMaxDate = () => {
     </>
   )
 }
+
+export const MinAndMaxDate = () => <Component />

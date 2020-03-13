@@ -11,7 +11,8 @@ export default {
   title: 'Repick React',
 }
 
-export const Basic = () => {
+const Component: React.FunctionComponent = () => {
+  const date = new Date('2018-01-01')
   const {
     selected,
     days,
@@ -22,7 +23,7 @@ export const Basic = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1 })
+  } = useRepick({ weekStartsOn: 1, initialDate: date })
 
   return (
     <>
@@ -70,3 +71,5 @@ export const Basic = () => {
     </>
   )
 }
+
+export const Basic = () => <Component />

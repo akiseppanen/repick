@@ -9,7 +9,9 @@ export default {
   title: 'Repick React',
 }
 
-export const ModeRange = () => {
+const Component = () => {
+  const date = new Date('2018-01-01')
+
   const {
     selected,
     days,
@@ -20,7 +22,7 @@ export const ModeRange = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ mode: 'range', weekStartsOn: 1 })
+  } = useRepick({ mode: 'range', weekStartsOn: 1, initialDate: date })
 
   return (
     <>
@@ -77,3 +79,5 @@ export const ModeRange = () => {
     </>
   )
 }
+
+export const ModeRange = () => <Component />

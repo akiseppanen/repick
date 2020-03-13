@@ -9,9 +9,11 @@ export default {
   title: 'Repick React',
 }
 
-export const RenderProps = () => {
+const Component = () => {
+  const date = new Date('2018-01-01')
+
   return (
-    <Repick weekStartsOn={1}>
+    <Repick weekStartsOn={1} initialDate={date}>
       {({
         selected,
         days,
@@ -73,3 +75,5 @@ export const RenderProps = () => {
     </Repick>
   )
 }
+
+export const RenderProps = () => <Component />

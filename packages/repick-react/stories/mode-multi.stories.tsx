@@ -11,7 +11,9 @@ export default {
   title: 'Repick React',
 }
 
-export const ModeMulti = () => {
+const Component = () => {
+  const date = new Date('2018-01-01')
+
   const {
     selected,
     days,
@@ -22,7 +24,7 @@ export const ModeMulti = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ mode: 'multi', weekStartsOn: 1 })
+  } = useRepick({ mode: 'multi', weekStartsOn: 1, initialDate: date })
 
   return (
     <>
@@ -77,3 +79,5 @@ export const ModeMulti = () => {
     </>
   )
 }
+
+export const ModeMulti = () => <Component />

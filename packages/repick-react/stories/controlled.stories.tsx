@@ -9,8 +9,8 @@ export default {
   title: 'Repick React',
 }
 
-export const Controlled = () => {
-  const [date, setDate] = React.useState(new Date())
+const Component = () => {
+  const [date, setDate] = React.useState(new Date('2018-01-01'))
   const [selected, setSelected] = React.useState<Date | null>(null)
 
   const {
@@ -76,3 +76,4 @@ export const Controlled = () => {
     </>
   )
 }
+export const Controlled = () => <Component />

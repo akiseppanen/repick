@@ -1,0 +1,3657 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Repick React Basic 1`] = `
+Array [
+  <input
+    readOnly={true}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`Storyshots Repick React Controlled 1`] = `
+Array [
+  <input
+    readOnly={true}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`Storyshots Repick React Disabled Dates 1`] = `
+Array [
+  <input
+    readOnly={true}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`Storyshots Repick React Min And Max Date 1`] = `
+Array [
+  <input
+    readOnly={true}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth disabled"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`Storyshots Repick React Mode Multi 1`] = `
+Array [
+  <input
+    readOnly={true}
+    size={100}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`Storyshots Repick React Mode Range 1`] = `
+Array [
+  <input
+    readOnly={true}
+    size={100}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;
+
+exports[`Storyshots Repick React Render Props 1`] = `
+Array [
+  <input
+    readOnly={true}
+    type="text"
+    value=""
+  />,
+  <div
+    className="calendar"
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <div
+      className="calendarMonths"
+    >
+      <div
+        aria-label="Go back 1 month"
+        className="calendarMonthPrev"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </div>
+      <div
+        className="calendarCurrentMonth"
+      >
+        January
+         
+        2018
+      </div>
+      <div
+        aria-label="Go ahead 1 month"
+        className="calendarMonthNext"
+        onClick={[Function]}
+        role="button"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      className="calendarWeekdays"
+    >
+      <div
+        className="calendarWeekday"
+      >
+        Mon
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Tue
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Wed
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Thu
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Fri
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sat
+      </div>
+      <div
+        className="calendarWeekday"
+      >
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendarDayContainer"
+    >
+      <button
+        aria-label="Mon Jan 01 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        1
+      </button>
+      <button
+        aria-label="Tue Jan 02 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Wed Jan 03 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Thu Jan 04 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Fri Jan 05 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Sat Jan 06 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Sun Jan 07 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Mon Jan 08 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Tue Jan 09 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Wed Jan 10 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Thu Jan 11 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+      <button
+        aria-label="Fri Jan 12 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        12
+      </button>
+      <button
+        aria-label="Sat Jan 13 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        13
+      </button>
+      <button
+        aria-label="Sun Jan 14 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        14
+      </button>
+      <button
+        aria-label="Mon Jan 15 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        15
+      </button>
+      <button
+        aria-label="Tue Jan 16 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        16
+      </button>
+      <button
+        aria-label="Wed Jan 17 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        17
+      </button>
+      <button
+        aria-label="Thu Jan 18 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        18
+      </button>
+      <button
+        aria-label="Fri Jan 19 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        19
+      </button>
+      <button
+        aria-label="Sat Jan 20 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        20
+      </button>
+      <button
+        aria-label="Sun Jan 21 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        21
+      </button>
+      <button
+        aria-label="Mon Jan 22 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        22
+      </button>
+      <button
+        aria-label="Tue Jan 23 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        23
+      </button>
+      <button
+        aria-label="Wed Jan 24 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        24
+      </button>
+      <button
+        aria-label="Thu Jan 25 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        25
+      </button>
+      <button
+        aria-label="Fri Jan 26 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        26
+      </button>
+      <button
+        aria-label="Sat Jan 27 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        27
+      </button>
+      <button
+        aria-label="Sun Jan 28 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        28
+      </button>
+      <button
+        aria-label="Mon Jan 29 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        29
+      </button>
+      <button
+        aria-label="Tue Jan 30 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        30
+      </button>
+      <button
+        aria-label="Wed Jan 31 2018"
+        aria-pressed={false}
+        className="calendarDay"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        31
+      </button>
+      <button
+        aria-label="Thu Feb 01 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        1
+      </button>
+      <button
+        aria-label="Fri Feb 02 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        2
+      </button>
+      <button
+        aria-label="Sat Feb 03 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        3
+      </button>
+      <button
+        aria-label="Sun Feb 04 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        4
+      </button>
+      <button
+        aria-label="Mon Feb 05 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        5
+      </button>
+      <button
+        aria-label="Tue Feb 06 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        6
+      </button>
+      <button
+        aria-label="Wed Feb 07 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        7
+      </button>
+      <button
+        aria-label="Thu Feb 08 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        8
+      </button>
+      <button
+        aria-label="Fri Feb 09 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        9
+      </button>
+      <button
+        aria-label="Sat Feb 10 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        10
+      </button>
+      <button
+        aria-label="Sun Feb 11 2018"
+        aria-pressed={false}
+        className="calendarDay nextMonth"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        11
+      </button>
+    </div>
+  </div>,
+]
+`;

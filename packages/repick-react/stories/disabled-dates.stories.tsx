@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import setDate from 'date-fns/setDate'
 import format from 'date-fns/format'
 import * as React from 'react'
 import { useRepick } from '../src'
@@ -9,9 +10,11 @@ export default {
   title: 'Repick React',
 }
 
-export const DisabledDates = () => {
-  const disabledDates = Array.apply(null, Array(10)).map(
-    (_, i) => new Date(new Date().setDate(10 + i)),
+const Component = () => {
+  const date = new Date('2018-01-01')
+
+  const disabledDates = Array.apply(null, Array(10)).map((_, i) =>
+    setDate(date, 10 + i),
   )
 
   const {
@@ -24,7 +27,7 @@ export const DisabledDates = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1, disabledDates })
+  } = useRepick({ weekStartsOn: 1, disabledDates, initialDate: date })
 
   return (
     <>
@@ -73,3 +76,5 @@ export const DisabledDates = () => {
     </>
   )
 }
+
+export const DisabledDates = () => <Component />
