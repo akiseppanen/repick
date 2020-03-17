@@ -7,6 +7,7 @@ export type Options = Partial<{
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
   minDate: Date
   maxDate: Date
+  filterDates: (date: Date) => boolean
 }>
 
 export type Mode = 'single' | 'multi' | 'range'

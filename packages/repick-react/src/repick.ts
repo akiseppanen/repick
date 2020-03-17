@@ -92,6 +92,7 @@ export type PropsGeneric<M, T> = {
   initialDate?: Date
   selected?: T | null
   initialSelected?: T
+  filterDates?: (date: Date) => boolean
   disabledDates?: Date[]
   enabledDates?: Date[]
   minDate?: Date
@@ -207,6 +208,7 @@ function getControlledProps(
     mode: props.mode,
     selected: props.selected,
     weekStartsOn: props.weekStartsOn,
+    filterDates: props.filterDates,
     disabledDates: props.disabledDates,
     enabledDates: props.enabledDates,
     minDate: props.minDate,

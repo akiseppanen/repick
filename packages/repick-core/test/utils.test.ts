@@ -192,4 +192,19 @@ describe('dateIsSelectable', () => {
     expect(dateIsSelectable(options, new Date('2018-01-04'))).toBe(false)
     expect(dateIsSelectable(options, new Date('2018-01-01'))).toBe(false)
   })
+
+  it('filter dates', () => {
+    const date = new Date('2018-01-01')
+    const filterDates = jest.fn()
+
+    const options = { filterDates }
+
+    filterDates.mockReturnValueOnce(true)
+    expect(dateIsSelectable(options, date)).toBe(false)
+    expect(filterDates).toBeCalledWith(date)
+
+    filterDates.mockReturnValueOnce(false)
+    expect(dateIsSelectable(options, date)).toBe(true)
+    expect(filterDates).toBeCalledWith(date)
+  })
 })

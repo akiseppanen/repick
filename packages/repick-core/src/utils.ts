@@ -17,7 +17,7 @@ import {
   actionSelectCurrent,
   actionStartOfWeek,
 } from './actions'
-import { Options, StateGeneric } from './types'
+import { Options } from './types'
 import { Weekday } from './calendar'
 
 export const wrap = (min: number, max: number) => (x: number) => {
@@ -117,17 +117,6 @@ export function assertNever(x: never): never {
   throw new Error('Unexpected object: ' + x)
 }
 
-export const extractOptionsFromState = (
-  state: StateGeneric<any, any>,
-): Options => ({
-  locale: state.locale,
-  disabledDates: state.disabledDates,
-  enabledDates: state.enabledDates,
-  weekStartsOn: state.weekStartsOn,
-  minDate: state.minDate,
-  maxDate: state.maxDate,
-})
-
 export function selectDateSingle(selected: Date | null, date: Date) {
   return selected !== null && isSameDay(selected, date) ? null : date
 }
@@ -151,12 +140,14 @@ export function selectDateRange(
 
 export const emptyFn = <T>(e: T) => (): T => e
 
-export const dateIsSelectable = (options: Options, date: Date) =>
+export const dateIsSelectable = (
+  { enabledDates, disabledDates, minDate, filterDates, maxDate }: Options,
+  date: Date,
+) =>
   !(
-    (!!options.enabledDates &&
-      !arrayIncludes(isSameDay, options.enabledDates, date)) ||
-    (!!options.disabledDates &&
-      arrayIncludes(isSameDay, options.disabledDates, date)) ||
-    (!!options.minDate && isAfter(options.minDate, date)) ||
-    (!!options.maxDate && isBefore(options.maxDate, date))
+    (!!filterDates && typeof filterDates === 'function' && filterDates(date)) ||
+    (!!enabledDates && !arrayIncludes(isSameDay, enabledDates, date)) ||
+    (!!disabledDates && arrayIncludes(isSameDay, disabledDates, date)) ||
+    (!!minDate && isAfter(minDate, date)) ||
+    (!!maxDate && isBefore(maxDate, date))
   )
