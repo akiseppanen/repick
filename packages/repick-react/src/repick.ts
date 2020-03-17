@@ -93,6 +93,7 @@ export type PropsGeneric<M, T> = {
   selected?: T | null
   initialSelected?: T
   disabledDates?: Date[]
+  enabledDates?: Date[]
   minDate?: Date
   maxDate?: Date
 }
@@ -207,6 +208,7 @@ function getControlledProps(
     selected: props.selected,
     weekStartsOn: props.weekStartsOn,
     disabledDates: props.disabledDates,
+    enabledDates: props.enabledDates,
     minDate: props.minDate,
     maxDate: props.maxDate,
   } as Partial<State>

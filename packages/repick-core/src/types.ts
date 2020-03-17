@@ -3,6 +3,7 @@ import { Locale } from 'date-fns'
 export type Options = Partial<{
   locale: Locale
   disabledDates: Date[]
+  enabledDates: Date[]
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
   minDate: Date
   maxDate: Date

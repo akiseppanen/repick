@@ -125,7 +125,24 @@ describe('selectDateRange', () => {
 describe('dateIsSelectable', () => {
   const minDate = new Date('2018-01-05')
   const maxDate = new Date('2018-01-20')
+  const enabledDates = [new Date('2018-01-09'), new Date('2018-01-12')]
   const disabledDates = [new Date('2018-01-08'), new Date('2018-01-10')]
+
+  it('enabled date', () => {
+    const options = { enabledDates }
+
+    expect(dateIsSelectable(options, enabledDates[0])).toBe(true)
+    expect(dateIsSelectable(options, enabledDates[1])).toBe(true)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(false)
+  })
+
+  it('disabled date', () => {
+    const options = { disabledDates }
+
+    expect(dateIsSelectable(options, disabledDates[0])).toBe(false)
+    expect(dateIsSelectable(options, disabledDates[1])).toBe(false)
+    expect(dateIsSelectable(options, new Date('2018-01-15'))).toBe(true)
+  })
 
   it('disabled date', () => {
     const options = { disabledDates }
