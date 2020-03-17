@@ -18,7 +18,7 @@ import {
   actionStartOfWeek,
 } from './actions'
 import { Options, StateGeneric } from './types'
-import { Weekday } from 'calendar'
+import { Weekday } from './calendar'
 
 export const wrap = (min: number, max: number) => (x: number) => {
   const d = max - min

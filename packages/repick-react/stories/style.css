@@ -82,9 +82,14 @@
 }
 
 .calendarDay.selected {
-  border-radius: 0;
   background: #569ff7;
   border: none;
+}
+
+.calendarDay.inRange {
+  background: #569ff7;
+  border: none;
+  border-radius: 0;
 }
 
 .calendarDay.rangeStart {
@@ -96,7 +101,10 @@
   border-top-right-radius: 100%;
   border-bottom-right-radius: 100%;
 }
-
 .calendarDay:hover {
   background: #e6e6e6;
+}
+.calendarDay.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
