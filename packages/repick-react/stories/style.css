@@ -2,20 +2,49 @@
   --containerWidth: 280px;
 }
 
-.calendar {
+.calendar,
+.calendarMonth {
+  position: relative;
+  display: flex;
   user-select: none;
   outline: 0;
   width: var(--containerWidth);
+  flex-direction: column;
+}
+
+.calendar {
   border-radius: 5px;
   box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
     0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
-.calendarMonths {
+.calendar.multipleMonths {
+  width: fit-content;
+  flex-direction: row;
+}
+
+.calendarHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 40px;
+}
+
+.calendarMonth + .calendarMonth {
+  margin-left: 20px;
+}
+
+.calendar.multipleMonths .calendarMonthPrev,
+.calendar.multipleMonths .calendarMonthNext {
+  position: absolute;
+  z-index: 1;
+}
+
+.calendar.multipleMonths .calendarMonthPrev {
+  left: 0;
+}
+.calendar.multipleMonths .calendarMonthNext {
+  right: 0;
 }
 
 .calendarMonthPrev,
@@ -36,6 +65,7 @@
 .calendarCurrentMonth {
   font-size: 1.3em;
   text-align: center;
+  flex-grow: 1;
 }
 
 .calendarDayContainer {

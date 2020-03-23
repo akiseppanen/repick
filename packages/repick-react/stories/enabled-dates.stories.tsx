@@ -37,7 +37,7 @@ const Component = () => {
         readOnly
       />
       <div {...getCalendarProps()} className="calendar">
-        <div className="calendarMonths">
+        <div className="calendarHeader">
           <div {...getPrevMonthProps()} className="calendarMonthPrev">
             <ArrowLeft />
           </div>

@@ -22,6 +22,7 @@ import {
   Weekday,
   RepickDayContext,
   RepickMonthContext,
+  RepickWeekContext,
 } from './types'
 
 export const arrayGenerate = <A>(
@@ -161,9 +162,29 @@ export const dateIsSelectable = (
     (!!maxDate && isBefore(maxDate, date))
   )
 
+function isRepickMonthContext(
+  monthOrWeek: RepickMonthContext<any> | RepickWeekContext<any>,
+): monthOrWeek is RepickMonthContext<any> {
+  return monthOrWeek.hasOwnProperty('weeks')
+}
+
 export function mapDays<D extends RepickDayContext<{}>, R>(
-  { weeks }: RepickMonthContext<D>,
+  months: RepickMonthContext<D>[],
+  callbackfn: (day: D) => R,
+): R[]
+export function mapDays<D extends RepickDayContext<{}>, R>(
+  weeks: RepickWeekContext<D>[],
+  callbackfn: (day: D) => R,
+): R[]
+export function mapDays<D extends RepickDayContext<{}>, R>(
+  monthsOrWeeks: (RepickMonthContext<D> | RepickWeekContext<D>)[],
   callbackfn: (day: D) => R,
 ): R[] {
-  return weeks.reduce<R[]>((x, { days }) => [...x, ...days.map(callbackfn)], [])
+  return monthsOrWeeks.reduce<R[]>((x, monthOrWeek) => {
+    if (isRepickMonthContext(monthOrWeek)) {
+      return [...x, ...mapDays(monthOrWeek.weeks, callbackfn)]
+    }
+
+    return [...x, ...monthOrWeek.days.map(callbackfn)]
+  }, [])
 }

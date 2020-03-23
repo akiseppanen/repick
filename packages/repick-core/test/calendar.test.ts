@@ -19,14 +19,14 @@ describe('buildCalendarContextDaySingle', () => {
   }
 
   it('selected', () => {
-    expect(buildCalendarContextDaySingle(state, date)).toMatchObject({
+    expect(buildCalendarContextDaySingle(state, date, date)).toMatchObject({
       selected: true,
     })
   })
 
   it('not selected', () => {
     expect(
-      buildCalendarContextDaySingle(state, new Date('2018-02-01')),
+      buildCalendarContextDaySingle(state, date, new Date('2018-02-01')),
     ).toMatchObject({
       selected: false,
     })
@@ -47,23 +47,29 @@ describe('buildCalendarContextDayMulti', () => {
   }
 
   it('selected, 1st', () => {
-    expect(buildCalendarContextDayMulti(state, dates[0])).toMatchObject({
+    expect(
+      buildCalendarContextDayMulti(state, dates[0], dates[0]),
+    ).toMatchObject({
       selected: true,
     })
   })
   it('selected, 2nd', () => {
-    expect(buildCalendarContextDayMulti(state, dates[1])).toMatchObject({
+    expect(
+      buildCalendarContextDayMulti(state, dates[0], dates[1]),
+    ).toMatchObject({
       selected: true,
     })
   })
   it('selected, 3rd', () => {
-    expect(buildCalendarContextDayMulti(state, dates[2])).toMatchObject({
+    expect(
+      buildCalendarContextDayMulti(state, dates[0], dates[2]),
+    ).toMatchObject({
       selected: true,
     })
   })
   it('not selected', () => {
     expect(
-      buildCalendarContextDayMulti(state, new Date('2018-02-01')),
+      buildCalendarContextDayMulti(state, dates[0], new Date('2018-02-01')),
     ).toMatchObject({
       selected: false,
     })
@@ -80,7 +86,9 @@ describe('buildCalendarContextDayRange', () => {
   }
 
   it('selected 1st', () => {
-    expect(buildCalendarContextDayRange(state, range[0])).toMatchObject({
+    expect(
+      buildCalendarContextDayRange(state, range[0], range[0]),
+    ).toMatchObject({
       selected: true,
       rangeStart: true,
       rangeEnd: false,
@@ -88,7 +96,9 @@ describe('buildCalendarContextDayRange', () => {
   })
 
   it('selected 2nd', () => {
-    expect(buildCalendarContextDayRange(state, range[1])).toMatchObject({
+    expect(
+      buildCalendarContextDayRange(state, range[0], range[1]),
+    ).toMatchObject({
       selected: true,
       rangeStart: false,
       rangeEnd: true,
@@ -97,7 +107,7 @@ describe('buildCalendarContextDayRange', () => {
 
   it('selected in range', () => {
     expect(
-      buildCalendarContextDayRange(state, new Date('2018-01-15')),
+      buildCalendarContextDayRange(state, range[0], new Date('2018-01-15')),
     ).toMatchObject({
       selected: true,
       rangeStart: false,
@@ -107,7 +117,7 @@ describe('buildCalendarContextDayRange', () => {
 
   it('not selected', () => {
     expect(
-      buildCalendarContextDayRange(state, new Date('2018-02-01')),
+      buildCalendarContextDayRange(state, range[0], new Date('2018-02-01')),
     ).toMatchObject({
       selected: false,
       rangeStart: false,
@@ -129,6 +139,7 @@ describe('buildCalendarContextDayGeneric', () => {
           selected: null,
         },
         date,
+        date,
       ),
     ).toMatchObject({
       today: true,
@@ -139,14 +150,16 @@ describe('buildCalendarContextDayGeneric', () => {
 
   it('current', () => {
     const date = new Date('2018-02-01')
+    const current = date
 
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          current: date,
+          current,
           mode: 'single',
           selected: null,
         },
+        current,
         date,
       ),
     ).toMatchObject({
@@ -156,14 +169,16 @@ describe('buildCalendarContextDayGeneric', () => {
 
   it('previous month', () => {
     const date = new Date('2018-01-01')
+    const current = new Date('2018-02-01')
 
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          current: new Date('2018-02-01'),
+          current,
           mode: 'single',
           selected: null,
         },
+        current,
         date,
       ),
     ).toMatchObject({
@@ -174,14 +189,16 @@ describe('buildCalendarContextDayGeneric', () => {
 
   it('next month', () => {
     const date = new Date('2018-02-01')
+    const current = new Date('2018-01-01')
 
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          current: new Date('2018-01-01'),
+          current,
           mode: 'single',
           selected: null,
         },
+        current,
         date,
       ),
     ).toMatchObject({
@@ -201,6 +218,7 @@ describe('buildCalendarContextDayGeneric', () => {
           selected: null,
           disabledDates: [disabledDate],
         },
+        disabledDate,
         disabledDate,
       ),
     ).toMatchObject({

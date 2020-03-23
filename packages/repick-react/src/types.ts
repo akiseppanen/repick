@@ -8,6 +8,7 @@ import {
   RepickDayContextRange,
   RepickDayContextSingle,
   RepickWeekContext,
+  RepickOptions,
 } from 'repick-core'
 
 export type CalendarProps = {
@@ -89,21 +90,14 @@ export type RepickContext =
   | RepickContextMulti
   | RepickContextRange
 
-export type RepickPropsGeneric<M, T> = {
+export type RepickPropsGeneric<M, T> = RepickOptions & {
   mode?: M
   onChange?: (date: T | null) => void
   onCurrentChange?: (date: Date) => void
-  weekStartsOn?: number
-  locale?: object
   current?: Date
   initialDate?: Date
   selected?: T | null
   initialSelected?: T
-  filterDates?: (date: Date) => boolean
-  disabledDates?: Date[]
-  enabledDates?: Date[]
-  minDate?: Date
-  maxDate?: Date
 }
 
 export type PropsGenericRequireMode<M, T> = RepickPropsGeneric<M, T> & {

@@ -94,6 +94,7 @@ function getControlledProps(
     enabledDates: props.enabledDates,
     minDate: props.minDate,
     maxDate: props.maxDate,
+    monthCount: props.monthCount,
   } as Partial<RepickState>
 }
 

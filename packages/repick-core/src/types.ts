@@ -50,7 +50,7 @@ export type RepickCalendarContextGeneric<
   monthShort: string
   year: number
   weekdays: Weekday[]
-  calendar: RepickMonthContext<D>
+  calendar: RepickMonthContext<D>[]
 }
 
 export type RepickCalendarContextSingle = RepickCalendarContextGeneric<
@@ -77,6 +77,7 @@ export type RepickCalendarContext =
   | RepickCalendarContextRange
 
 export type RepickOptions = Partial<{
+  monthCount: number
   locale: Locale
   disabledDates: Date[]
   enabledDates: Date[]

@@ -108,17 +108,17 @@ describe('calendar', () => {
     const { calendar } = calendarFixture
 
     expect(mockedReducer).toHaveBeenNthCalledWith(1, state, {
-      date: calendar.weeks[1].days[3].date,
+      date: calendar[0].weeks[1].days[3].date,
       type: 'SelectDate',
     })
 
     expect(mockedReducer).toHaveBeenNthCalledWith(2, state, {
-      date: calendar.weeks[2].days[6].date,
+      date: calendar[0].weeks[2].days[6].date,
       type: 'SelectDate',
     })
 
     expect(mockedReducer).toHaveBeenNthCalledWith(3, state, {
-      date: calendar.weeks[4].days[2].date,
+      date: calendar[0].weeks[4].days[2].date,
       type: 'SelectDate',
     })
   })
