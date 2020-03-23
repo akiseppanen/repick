@@ -8135,6 +8135,11 @@ jest-config@^24.9.0:
     pretty-format "^24.9.0"
     realpath-native "^1.1.0"
 
+jest-date-serializer@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jest-date-serializer/-/jest-date-serializer-1.0.1.tgz#6798e0f5eff38f89d1225027be23d3f18f4a4e2b"
+  integrity sha512-DZnlvK6x9x21VGcO363EIFRbHvmu0c1Fly1JwdgkhLwRByVyNVEWvFsc9cK2G8xA8SjJVfqbPXw8dZnCOVq7qw==
+
 jest-diff@^24.3.0, jest-diff@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-24.9.0.tgz#931b7d0d5778a1baf7452cb816e325e3724055da"

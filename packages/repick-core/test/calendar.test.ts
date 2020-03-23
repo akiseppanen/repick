@@ -209,59 +209,47 @@ describe('buildCalendarContextDayGeneric', () => {
   })
 })
 
-it('buildCalendarContext', () => {
-  const expectedDate = new Date('2018-01-01 00:00:00')
-  const expectedSelected = new Date('2018-01-10 00:00:00')
-  const {
-    month,
-    monthLong,
-    monthShort,
-    selected,
-    date,
-    year,
-    weekdays,
-    calendar,
-  } = buildCalendarContext({
-    current: expectedDate,
-    mode: 'single',
-    selected: expectedSelected,
+describe('buildCalendarContext', () => {
+  it('mode: single', () => {
+    const expectedDate = new Date('2018-01-01 00:00:00')
+    const expectedSelected = new Date('2018-01-10 00:00:00')
+    const context = buildCalendarContext({
+      current: expectedDate,
+      mode: 'single',
+      selected: expectedSelected,
+    })
+
+    expect(context).toMatchSnapshot()
   })
 
-  expect(month).toEqual(1)
-  expect(monthLong).toEqual('January')
-  expect(monthShort).toEqual('Jan')
-  expect(selected).toEqual(expectedSelected)
-  expect(date).toEqual(expectedDate)
-  expect(year).toEqual(2018)
-  expect(weekdays).toBeInstanceOf(Array)
-  expect(weekdays).toHaveLength(7)
-  expect(calendar).toBeInstanceOf(Object)
+  it('mode: multi', () => {
+    const expectedDate = new Date('2018-01-01 00:00:00')
+    const expectedSelected = [
+      new Date('2018-01-10 00:00:00'),
+      new Date('2018-01-20 00:00:00'),
+    ]
+    const context = buildCalendarContext({
+      current: expectedDate,
+      mode: 'multi',
+      selected: expectedSelected,
+    })
 
-  expect(calendar.month).toEqual(1)
-  expect(calendar.monthLong).toEqual('January')
-  expect(calendar.monthShort).toEqual('Jan')
-  expect(calendar.year).toEqual(2018)
-
-  expect(calendar.weeks).toHaveLength(6)
-
-  expect(calendar.weeks[0].weekNumber).toBe(1)
-  expect(calendar.weeks[0].year).toEqual(2018)
-  expect(calendar.weeks[1].weekNumber).toBe(2)
-  expect(calendar.weeks[1].year).toEqual(2018)
-
-  expect(calendar.weeks[0].days[0]).toMatchObject({
-    date: new Date('2017-12-31 00:00:00'),
+    expect(context).toMatchSnapshot()
   })
 
-  expect(calendar.weeks[0].days[1]).toMatchObject({
-    date: new Date('2018-01-01 00:00:00'),
-  })
+  it('mode: range', () => {
+    const expectedDate = new Date('2018-01-01 00:00:00')
+    const expectedSelected = [
+      new Date('2018-01-10 00:00:00'),
+      new Date('2018-01-20 00:00:00'),
+    ] as [Date, Date]
 
-  expect(calendar.weeks[1].days[3]).toMatchObject({
-    date: new Date('2018-01-10 00:00:00'),
-  })
+    const context = buildCalendarContext({
+      current: expectedDate,
+      mode: 'range',
+      selected: expectedSelected,
+    })
 
-  expect(calendar.weeks[5].days[6]).toMatchObject({
-    date: new Date('2018-02-10 00:00:00'),
+    expect(context).toMatchSnapshot()
   })
 })

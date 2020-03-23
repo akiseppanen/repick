@@ -18,6 +18,7 @@
     "@types/classnames": "^2.2.10",
     "babel-loader": "^8.0.6",
     "classnames": "^2.2.6",
+    "jest-date-serializer": "^1.0.1",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.1",
     "prettier": "^2.0.2",
@@ -53,6 +54,9 @@
     "stories"
   ],
   "jest": {
+    "snapshotSerializers": [
+      "jest-date-serializer"
+    ],
     "moduleNameMapper": {
       "\\.css$": "<rootDir>/test/__filemock__.ts"
     }
