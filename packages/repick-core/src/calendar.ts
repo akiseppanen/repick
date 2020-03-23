@@ -9,75 +9,19 @@ import startOfMonth from 'date-fns/startOfMonth'
 import startOfWeek from 'date-fns/startOfWeek'
 import subMonths from 'date-fns/subMonths'
 
-import { State, StateMulti, StateRange, StateSingle } from './types'
-import { buildWeekdays, dateIsSelectable } from './utils'
-
-export type CalendarContextDayGeneric<E extends {}> = {
-  date: Date
-  day: number
-  nextMonth: boolean
-  prevMonth: boolean
-  selected: boolean
-  current: boolean
-  today: boolean
-  disabled: boolean
-} & E
-
-export type CalendarContextDaySingle = CalendarContextDayGeneric<{}>
-export type CalendarContextDayMulti = CalendarContextDayGeneric<{}>
-export type CalendarContextDayRange = CalendarContextDayGeneric<{
-  rangeStart: boolean
-  rangeEnd: boolean
-}>
-
-export type CalendarContextDay =
-  | CalendarContextDaySingle
-  | CalendarContextDayMulti
-  | CalendarContextDayRange
-
-export type Weekday = {
-  long: string
-  short: string
-}
-
-export type CalendarContextGeneric<
-  M,
-  T,
-  D extends CalendarContextDayGeneric<{}>
-> = {
-  mode: M
-  selected: T
-  date: Date
-  month: number
-  monthLong: string
-  monthShort: string
-  year: number
-  weekdays: Weekday[]
-  days: D[]
-}
-
-export type CalendarContextSingle = CalendarContextGeneric<
-  'single',
-  Date,
-  CalendarContextDaySingle
->
-
-export type CalendarContextMulti = CalendarContextGeneric<
-  'multi',
-  Date[],
-  CalendarContextDayMulti
->
-
-export type CalendarContextRange = CalendarContextGeneric<
-  'range',
-  [Date, Date?],
-  CalendarContextDayRange
->
-
-export type CalendarContext =
-  | CalendarContextSingle
-  | CalendarContextMulti
-  | CalendarContextRange
+import {
+  RepickCalendarContextGeneric,
+  RepickDayContext,
+  RepickDayContextMulti,
+  RepickDayContextRange,
+  RepickDayContextSingle,
+  RepickState,
+  RepickStateMulti,
+  RepickStateRange,
+  RepickStateSingle,
+} from './types'
+import { buildWeekdays, dateIsSelectable, arrayGenerate } from './utils'
+import { getWeek } from 'date-fns'
 
 export function isSelectedSingle(selected: Date, date: Date) {
   return isSameDay(selected, date)
@@ -93,7 +37,7 @@ export function isSelectedRange(selected: [Date, Date?], date: Date) {
     : isSameDay(date, selected[0])
 }
 
-export function isSelected(state: State, date: Date): boolean {
+export function isSelected(state: RepickState, date: Date): boolean {
   switch (state.mode) {
     case 'single':
       return !!state.selected && isSelectedSingle(state.selected, date)
@@ -107,10 +51,11 @@ export function isSelected(state: State, date: Date): boolean {
       return _
   }
 }
-export function buildCalendarContextDayGeneric<S extends State, E extends {}>(
-  extraFn: (state: S, date: Date) => E,
-) {
-  return function(state: S, date: Date): CalendarContextDayGeneric<E> {
+export function buildCalendarContextDayGeneric<
+  S extends RepickState,
+  E extends {}
+>(extraFn: (state: S, date: Date) => E) {
+  return function(state: S, date: Date): RepickDayContext<E> {
     const prevMonth = subMonths(state.current, 1)
     const nextMonth = addMonths(state.current, 1)
 
@@ -129,20 +74,20 @@ export function buildCalendarContextDayGeneric<S extends State, E extends {}>(
 }
 
 export const buildCalendarContextDaySingle: (
-  state: StateSingle,
+  state: RepickStateSingle,
   date: Date,
-) => CalendarContextDaySingle = buildCalendarContextDayGeneric(() => ({}))
+) => RepickDayContextSingle = buildCalendarContextDayGeneric(() => ({}))
 
 export const buildCalendarContextDayMulti: (
-  state: StateMulti,
+  state: RepickStateMulti,
   date: Date,
-) => CalendarContextDayMulti = buildCalendarContextDayGeneric(() => ({}))
+) => RepickDayContextMulti = buildCalendarContextDayGeneric(() => ({}))
 
 export const buildCalendarContextDayRange: (
-  state: StateRange,
+  state: RepickStateRange,
   date: Date,
-) => CalendarContextDayRange = buildCalendarContextDayGeneric(
-  (state: StateRange, date) => ({
+) => RepickDayContextRange = buildCalendarContextDayGeneric(
+  (state: RepickStateRange, date) => ({
     rangeStart: !!state.selected && isSameDay(date, state.selected[0]),
     rangeEnd:
       !!state.selected &&
@@ -152,8 +97,8 @@ export const buildCalendarContextDayRange: (
 )
 
 export function buildCalendarContext(
-  state: State,
-): CalendarContextGeneric<any, any, any> {
+  state: RepickState,
+): RepickCalendarContextGeneric<any, any, any> {
   const { current } = state
   const firstDayOfMonth = startOfMonth(current)
   const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
@@ -162,6 +107,7 @@ export function buildCalendarContext(
   switch (state.mode) {
     case 'single': {
       return {
+        mode: 'single',
         date: current || null,
         month: current.getMonth() + 1,
         monthLong: format(current, 'MMMM', { locale: state.locale }),
@@ -169,16 +115,29 @@ export function buildCalendarContext(
         year: current.getFullYear(),
         weekdays: buildWeekdays(state),
         selected: state.selected,
-        days: Array.apply(null, Array(42)).map((_, i) => {
-          return buildCalendarContextDaySingle(
-            state,
-            addDays(firstWeekOfMonth, i),
-          )
-        }),
-      } as CalendarContextSingle
+        calendar: {
+          month: current.getMonth() + 1,
+          monthLong: format(current, 'MMMM', { locale: state.locale }),
+          monthShort: format(current, 'MMM', { locale: state.locale }),
+          year: current.getFullYear(),
+          weeks: arrayGenerate(6, i => ({
+            weekNumber: getWeek(addDays(firstWeekOfMonth, i * 7), {
+              weekStartsOn: state.weekStartsOn,
+            }),
+            year: current.getFullYear(),
+            days: arrayGenerate(7, a =>
+              buildCalendarContextDaySingle(
+                state,
+                addDays(firstWeekOfMonth, i * 7 + a),
+              ),
+            ),
+          })),
+        },
+      }
     }
     case 'multi': {
       return {
+        mode: 'multi',
         date: current || null,
         month: current.getMonth() + 1,
         monthLong: format(current, 'MMMM', { locale: state.locale }),
@@ -186,16 +145,29 @@ export function buildCalendarContext(
         year: current.getFullYear(),
         weekdays: buildWeekdays(state),
         selected: state.selected,
-        days: Array.apply(null, Array(42)).map((_, i) => {
-          return buildCalendarContextDayMulti(
-            state,
-            addDays(firstWeekOfMonth, i),
-          )
-        }),
-      } as CalendarContextMulti
+        calendar: {
+          month: current.getMonth() + 1,
+          monthLong: format(current, 'MMMM', { locale: state.locale }),
+          monthShort: format(current, 'MMM', { locale: state.locale }),
+          year: current.getFullYear(),
+          weeks: arrayGenerate(6, i => ({
+            weekNumber: getWeek(addDays(firstWeekOfMonth, i * 7), {
+              weekStartsOn: state.weekStartsOn,
+            }),
+            year: current.getFullYear(),
+            days: arrayGenerate(7, a =>
+              buildCalendarContextDayMulti(
+                state,
+                addDays(firstWeekOfMonth, i * 7 + a),
+              ),
+            ),
+          })),
+        },
+      }
     }
     case 'range': {
       return {
+        mode: 'range',
         date: current || null,
         month: current.getMonth() + 1,
         monthLong: format(current, 'MMMM', { locale: state.locale }),
@@ -203,13 +175,25 @@ export function buildCalendarContext(
         year: current.getFullYear(),
         weekdays: buildWeekdays(state),
         selected: state.selected,
-        days: Array.apply(null, Array(42)).map((_, i) => {
-          return buildCalendarContextDayRange(
-            state,
-            addDays(firstWeekOfMonth, i),
-          )
-        }),
-      } as CalendarContextRange
+        calendar: {
+          month: current.getMonth() + 1,
+          monthLong: format(current, 'MMMM', { locale: state.locale }),
+          monthShort: format(current, 'MMM', { locale: state.locale }),
+          year: current.getFullYear(),
+          weeks: arrayGenerate(6, i => ({
+            weekNumber: getWeek(addDays(firstWeekOfMonth, i * 7), {
+              weekStartsOn: state.weekStartsOn,
+            }),
+            year: current.getFullYear(),
+            days: arrayGenerate(7, a =>
+              buildCalendarContextDayRange(
+                state,
+                addDays(firstWeekOfMonth, i * 7 + a),
+              ),
+            ),
+          })),
+        },
+      }
     }
 
     default: {

@@ -7,12 +7,12 @@ import {
   buildCalendarContextDayMulti,
   buildCalendarContextDayRange,
 } from '../src/calendar'
-import { State } from '../src/types'
+import { RepickState } from '../src/types'
 
 describe('buildCalendarContextDaySingle', () => {
   const date = new Date('2018-01-01')
 
-  const state: State = {
+  const state: RepickState = {
     current: date,
     mode: 'single',
     selected: date,
@@ -40,7 +40,7 @@ describe('buildCalendarContextDayMulti', () => {
     new Date('2018-01-03'),
   ]
 
-  const state: State = {
+  const state: RepickState = {
     current: new Date('2018-01-01'),
     mode: 'multi',
     selected: dates,
@@ -73,7 +73,7 @@ describe('buildCalendarContextDayMulti', () => {
 describe('buildCalendarContextDayRange', () => {
   const range = [new Date('2018-01-01'), new Date('2018-01-31')] as [Date, Date]
 
-  const state: State = {
+  const state: RepickState = {
     current: new Date('2018-01-01'),
     mode: 'range',
     selected: range,
@@ -220,7 +220,7 @@ it('buildCalendarContext', () => {
     date,
     year,
     weekdays,
-    days,
+    calendar,
   } = buildCalendarContext({
     current: expectedDate,
     mode: 'single',
@@ -235,22 +235,33 @@ it('buildCalendarContext', () => {
   expect(year).toEqual(2018)
   expect(weekdays).toBeInstanceOf(Array)
   expect(weekdays).toHaveLength(7)
-  expect(days).toBeInstanceOf(Array)
-  expect(days).toHaveLength(42)
+  expect(calendar).toBeInstanceOf(Object)
 
-  expect(days[0]).toMatchObject({
+  expect(calendar.month).toEqual(1)
+  expect(calendar.monthLong).toEqual('January')
+  expect(calendar.monthShort).toEqual('Jan')
+  expect(calendar.year).toEqual(2018)
+
+  expect(calendar.weeks).toHaveLength(6)
+
+  expect(calendar.weeks[0].weekNumber).toBe(1)
+  expect(calendar.weeks[0].year).toEqual(2018)
+  expect(calendar.weeks[1].weekNumber).toBe(2)
+  expect(calendar.weeks[1].year).toEqual(2018)
+
+  expect(calendar.weeks[0].days[0]).toMatchObject({
     date: new Date('2017-12-31 00:00:00'),
   })
 
-  expect(days[1]).toMatchObject({
+  expect(calendar.weeks[0].days[1]).toMatchObject({
     date: new Date('2018-01-01 00:00:00'),
   })
 
-  expect(days[10]).toMatchObject({
+  expect(calendar.weeks[1].days[3]).toMatchObject({
     date: new Date('2018-01-10 00:00:00'),
   })
 
-  expect(days[41]).toMatchObject({
+  expect(calendar.weeks[5].days[6]).toMatchObject({
     date: new Date('2018-02-10 00:00:00'),
   })
 })

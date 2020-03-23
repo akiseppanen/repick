@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import Repick, { RepickContextSingle } from '../src'
+import Repick, { mapDays, RepickContextSingle } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -13,10 +13,12 @@ const Component = () => {
   const date = new Date('2018-01-01')
 
   return (
-    <Repick weekStartsOn={1} initialDate={date}>
-      {({
+    <Repick
+      weekStartsOn={1}
+      initialDate={date}
+      render={({
+        calendar,
         selected,
-        days,
         monthLong,
         year,
         weekdays,
@@ -54,7 +56,7 @@ const Component = () => {
               ))}
             </div>
             <div className="calendarDayContainer">
-              {days.map(calendarDay => (
+              {mapDays(calendar, calendarDay => (
                 <button
                   {...getDateProps(calendarDay)}
                   key={calendarDay.date.toISOString()}
@@ -72,7 +74,7 @@ const Component = () => {
           </div>
         </>
       )}
-    </Repick>
+    />
   )
 }
 

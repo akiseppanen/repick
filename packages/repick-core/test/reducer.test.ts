@@ -1,5 +1,5 @@
 import { reducer } from '../src/reducer'
-import { State } from '../src/types'
+import { RepickState } from '../src/types'
 import {
   selectDateMulti,
   selectDateRange,
@@ -29,19 +29,19 @@ const dateRange = [
   new Date('2018-01-20 00:00:00'),
 ] as [Date, Date]
 
-const stateSingle: State = {
+const stateSingle: RepickState = {
   current: initialCurrent,
   mode: 'single',
   selected: date,
 }
 
-const stateMulti: State = {
+const stateMulti: RepickState = {
   current: initialCurrent,
   mode: 'multi',
   selected: dates,
 }
 
-const stateRange: State = {
+const stateRange: RepickState = {
   current: initialCurrent,
   mode: 'range',
   selected: dateRange,
@@ -120,7 +120,7 @@ describe('reducer', () => {
 
       const date = new Date('2018-01-05 00:00:00')
 
-      const state: State = {
+      const state: RepickState = {
         current: initialCurrent,
         mode: 'single',
         selected: null,
@@ -193,7 +193,7 @@ describe('reducer', () => {
 
       const date = new Date('2018-01-05 00:00:00')
 
-      const state: State = {
+      const state: RepickState = {
         current: date,
         mode: 'single',
         selected: null,

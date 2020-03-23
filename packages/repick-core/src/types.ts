@@ -1,6 +1,82 @@
 import { Locale } from 'date-fns'
 
-export type Options = Partial<{
+export type Weekday = {
+  long: string
+  short: string
+}
+
+export type RepickDayContext<E extends {}> = {
+  date: Date
+  day: number
+  nextMonth: boolean
+  prevMonth: boolean
+  selected: boolean
+  current: boolean
+  today: boolean
+  disabled: boolean
+} & E
+
+export type RepickDayContextSingle = RepickDayContext<{}>
+export type RepickDayContextMulti = RepickDayContext<{}>
+export type RepickDayContextRange = RepickDayContext<{
+  rangeStart: boolean
+  rangeEnd: boolean
+}>
+
+export type RepickWeekContext<D extends RepickDayContext<{}>> = {
+  weekNumber: number
+  year: number
+  days: D[]
+}
+
+export type RepickMonthContext<D extends RepickDayContext<{}>> = {
+  month: number
+  monthLong: string
+  monthShort: string
+  year: number
+  weeks: RepickWeekContext<D>[]
+}
+
+export type RepickCalendarContextGeneric<
+  M,
+  T,
+  D extends RepickDayContext<{}>
+> = {
+  mode: M
+  selected: T
+  date: Date
+  month: number
+  monthLong: string
+  monthShort: string
+  year: number
+  weekdays: Weekday[]
+  calendar: RepickMonthContext<D>
+}
+
+export type RepickCalendarContextSingle = RepickCalendarContextGeneric<
+  'single',
+  Date,
+  RepickDayContextSingle
+>
+
+export type RepickCalendarContextMulti = RepickCalendarContextGeneric<
+  'multi',
+  Date[],
+  RepickDayContextMulti
+>
+
+export type RepickCalendarContextRange = RepickCalendarContextGeneric<
+  'range',
+  [Date, Date?],
+  RepickDayContextRange
+>
+
+export type RepickCalendarContext =
+  | RepickCalendarContextSingle
+  | RepickCalendarContextMulti
+  | RepickCalendarContextRange
+
+export type RepickOptions = Partial<{
   locale: Locale
   disabledDates: Date[]
   enabledDates: Date[]
@@ -10,27 +86,32 @@ export type Options = Partial<{
   filterDates: (date: Date) => boolean
 }>
 
-export type Mode = 'single' | 'multi' | 'range'
+export type RepickMode = 'single' | 'multi' | 'range'
 
-export interface ModeType {
+export interface RepickModeType {
   single: Date
   multi: Date[]
   range: [Date, Date?]
 }
 
-export interface StateGeneric<M extends Mode, T extends ModeType[M]>
-  extends Options {
+export interface RepickStateGeneric<
+  M extends RepickMode,
+  T extends RepickModeType[M]
+> extends RepickOptions {
   mode: M
   current: Date
   selected: T | null
 }
 
-export type StateSingle = StateGeneric<'single', Date>
-export type StateMulti = StateGeneric<'multi', Date[]>
-export type StateRange = StateGeneric<'range', [Date, Date?]>
+export type RepickStateSingle = RepickStateGeneric<'single', Date>
+export type RepickStateMulti = RepickStateGeneric<'multi', Date[]>
+export type RepickStateRange = RepickStateGeneric<'range', [Date, Date?]>
 
-export type State = StateSingle | StateMulti | StateRange
+export type RepickState =
+  | RepickStateSingle
+  | RepickStateMulti
+  | RepickStateRange
 
-export type StateType<
-  S extends StateGeneric<any, any>
-> = S extends StateGeneric<any, infer T> ? T : never
+export type RepickStateType<
+  S extends RepickStateGeneric<any, any>
+> = S extends RepickStateGeneric<any, infer T> ? T : never

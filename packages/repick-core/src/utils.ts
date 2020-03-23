@@ -17,8 +17,17 @@ import {
   actionSelectCurrent,
   actionStartOfWeek,
 } from './actions'
-import { Options } from './types'
-import { Weekday } from './calendar'
+import {
+  RepickOptions,
+  Weekday,
+  RepickDayContext,
+  RepickMonthContext,
+} from './types'
+
+export const arrayGenerate = <A>(
+  arrayLength: number,
+  fn: (i: number) => A,
+): A[] => Array.apply(null, Array(arrayLength)).map((_, i) => fn(i))
 
 export const wrap = (min: number, max: number) => (x: number) => {
   const d = max - min
@@ -61,7 +70,7 @@ export function keyToAction(key: string): Action | null {
   return null
 }
 
-export function buildWeekdays(options: Options = {}): Weekday[] {
+export function buildWeekdays(options: RepickOptions = {}): Weekday[] {
   const date = new Date()
 
   return Array.apply(null, Array(7)).map((_, i) => {
@@ -141,7 +150,7 @@ export function selectDateRange(
 export const emptyFn = <T>(e: T) => (): T => e
 
 export const dateIsSelectable = (
-  { enabledDates, disabledDates, minDate, filterDates, maxDate }: Options,
+  { enabledDates, disabledDates, minDate, filterDates, maxDate }: RepickOptions,
   date: Date,
 ) =>
   !(
@@ -151,3 +160,10 @@ export const dateIsSelectable = (
     (!!minDate && isAfter(minDate, date)) ||
     (!!maxDate && isBefore(maxDate, date))
   )
+
+export function mapDays<D extends RepickDayContext<{}>, R>(
+  { weeks }: RepickMonthContext<D>,
+  callbackfn: (day: D) => R,
+): R[] {
+  return weeks.reduce<R[]>((x, { days }) => [...x, ...days.map(callbackfn)], [])
+}

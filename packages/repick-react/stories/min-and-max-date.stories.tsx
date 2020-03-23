@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import startOfDay from 'date-fns/startOfDay'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { useRepick } from '../src'
+import { mapDays, useRepick } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -17,8 +17,8 @@ const Component = () => {
   const maxDate = startOfDay(new Date('2018-01-25'))
 
   const {
+    calendar,
     selected,
-    days,
     monthLong,
     year,
     weekdays,
@@ -55,7 +55,7 @@ const Component = () => {
           ))}
         </div>
         <div className="calendarDayContainer">
-          {days.map(calendarDay => (
+          {mapDays(calendar, calendarDay => (
             <button
               {...getDateProps(calendarDay)}
               key={calendarDay.date.toISOString()}

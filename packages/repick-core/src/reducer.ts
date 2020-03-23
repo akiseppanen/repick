@@ -18,7 +18,7 @@ import {
   actionSelectDate,
   actionStartOfWeek,
 } from './actions'
-import { State } from './types'
+import { RepickState } from './types'
 import {
   selectDateMulti,
   selectDateRange,
@@ -26,7 +26,7 @@ import {
   dateIsSelectable,
 } from './utils'
 
-export function reducer(state: State, action: Action): State {
+export function reducer(state: RepickState, action: Action): RepickState {
   switch (action.type) {
     case actionSelectDate: {
       const date =

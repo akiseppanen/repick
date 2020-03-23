@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import getDate from 'date-fns/getDate'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { useRepick } from '../src'
+import { mapDays, useRepick } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -16,8 +16,8 @@ const Component = () => {
   const filterDates = (date: Date) => getDate(date) % 2 === 0
 
   const {
+    calendar,
     selected,
-    days,
     monthLong,
     year,
     weekdays,
@@ -54,7 +54,7 @@ const Component = () => {
           ))}
         </div>
         <div className="calendarDayContainer">
-          {days.map(calendarDay => (
+          {mapDays(calendar, calendarDay => (
             <button
               {...getDateProps(calendarDay)}
               key={calendarDay.date.toISOString()}
