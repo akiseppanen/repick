@@ -55,7 +55,7 @@ export function buildCalendarContextDayGeneric<
   S extends RepickState,
   E extends {}
 >(extraFn: (state: S, date: Date) => E) {
-  return function(
+  return function (
     state: S,
     currentMonth: Date,
     date: Date,
@@ -114,7 +114,7 @@ export function buildCalendarContextGeneric<
     date: Date,
   ) => RepickDayContext<E>,
 ) {
-  return function(
+  return function (
     state: S,
   ): RepickCalendarContextGeneric<any, any, RepickDayContext<E>> {
     const { current } = state
