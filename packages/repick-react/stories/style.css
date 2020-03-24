@@ -1,21 +1,55 @@
 :root {
-  --containerWidth: 280px;
+  --dayWidth: 40px;
+}
+
+.calendar,
+.calendarMonth {
+  position: relative;
+  display: flex;
+  user-select: none;
+  outline: 0;
+  width: calc(var(--dayWidth) * 7);
+  flex-direction: column;
+}
+
+.calendar.calendar.withWeekNumbers {
+  width: calc(var(--dayWidth) * 8);
 }
 
 .calendar {
-  user-select: none;
-  outline: 0;
-  width: var(--containerWidth);
   border-radius: 5px;
   box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
     0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
-.calendarMonths {
+.calendar.multipleMonths {
+  width: fit-content;
+  flex-direction: row;
+}
+
+.calendarHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 40px;
+}
+
+.calendarMonth + .calendarMonth {
+  margin-left: 20px;
+}
+
+.calendar.multipleMonths .calendarMonthPrev,
+.calendar.multipleMonths .calendarMonthNext {
+  position: absolute;
+  z-index: 1;
+}
+
+.calendar.multipleMonths .calendarMonthPrev {
+  left: 0;
+}
+
+.calendar.multipleMonths .calendarMonthNext {
+  right: 0;
 }
 
 .calendarMonthPrev,
@@ -36,6 +70,11 @@
 .calendarCurrentMonth {
   font-size: 1.3em;
   text-align: center;
+  flex-grow: 1;
+}
+
+.calendarWeek {
+  display: flex;
 }
 
 .calendarDayContainer {
@@ -46,24 +85,32 @@
 .calendarWeekdays {
   display: flex;
 }
-
+.calendarWeekdays .calendarWeekNumber,
 .calendarWeekday {
-  flex-basis: calc(100% / 7);
+  width: var(--dayWidth);
   text-align: center;
 }
 
+.calendarWeek .calendarWeekNumber,
 .calendarDay {
   border-color: transparent;
-  background-color: transparent;
-  width: calc(var(--containerWidth) / 7);
-  height: calc(var(--containerWidth) / 7);
-  line-height: calc(var(--containerWidth) / 7);
+  width: var(--dayWidth);
+  height: var(--dayWidth);
+  line-height: var(--dayWidth);
   text-align: center;
+  color: #393939;
+  box-sizing: border-box;
+}
+
+.calendarDay {
   border-radius: 100%;
   cursor: pointer;
-  color: #393939;
-  flex-basis: calc(100% / 7);
-  box-sizing: border-box;
+  background-color: transparent;
+}
+.calendarWeekdays .calendarWeekNumber,
+.calendarWeek .calendarWeekNumber {
+  background-color: #fafafa;
+  font-weight: bold;
 }
 
 .calendarDay.prevMonth,

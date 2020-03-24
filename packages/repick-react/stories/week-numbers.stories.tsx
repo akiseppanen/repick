@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { mapDays, useRepick } from '../src'
+import { mapWeeks, useRepick } from '../src'
 import { ArrowLeft, ArrowRight } from './arrows'
 
 import './style.css'
@@ -31,7 +31,7 @@ const Component: React.FunctionComponent = () => {
         value={selected ? format(selected, 'MM/dd/yyyy') : ''}
         readOnly
       />
-      <div {...getCalendarProps()} className="calendar">
+      <div {...getCalendarProps()} className="calendar withWeekNumbers">
         <div className="calendarHeader">
           <div {...getPrevMonthProps()} className="calendarMonthPrev">
             <ArrowLeft />
@@ -44,31 +44,35 @@ const Component: React.FunctionComponent = () => {
           </div>
         </div>
         <div className="calendarWeekdays">
+          <div className="calendarWeekNumber">#</div>
           {weekdays.map(weekday => (
             <div key={`weekday-${weekday.short}`} className="calendarWeekday">
               {weekday.short}
             </div>
           ))}
         </div>
-        <div className="calendarDayContainer">
-          {mapDays(calendar, calendarDay => (
-            <button
-              {...getDateProps(calendarDay)}
-              key={calendarDay.date.toISOString()}
-              className={classnames('calendarDay', {
-                nextMonth: calendarDay.nextMonth,
-                prevMonth: calendarDay.prevMonth,
-                selected: calendarDay.selected,
-                today: calendarDay.today,
-              })}
-            >
-              {calendarDay.day}
-            </button>
-          ))}
-        </div>
+        {mapWeeks(calendar, ({ weekNumber, year, days }) => (
+          <div className="calendarWeek" key={`${weekNumber} ${year}`}>
+            <button className="calendarWeekNumber">{weekNumber}</button>
+            {days.map(calendarDay => (
+              <button
+                {...getDateProps(calendarDay)}
+                key={calendarDay.date.toISOString()}
+                className={classnames('calendarDay', {
+                  nextMonth: calendarDay.nextMonth,
+                  prevMonth: calendarDay.prevMonth,
+                  selected: calendarDay.selected,
+                  today: calendarDay.today,
+                })}
+              >
+                {calendarDay.day}
+              </button>
+            ))}
+          </div>
+        ))}
       </div>
     </>
   )
 }
 
-export const Basic = () => <Component />
+export const WeekNumbers = () => <Component />

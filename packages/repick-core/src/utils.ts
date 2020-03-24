@@ -17,8 +17,18 @@ import {
   actionSelectCurrent,
   actionStartOfWeek,
 } from './actions'
-import { Options } from './types'
-import { Weekday } from './calendar'
+import {
+  RepickOptions,
+  Weekday,
+  RepickDayContext,
+  RepickMonthContext,
+  RepickWeekContext,
+} from './types'
+
+export const arrayGenerate = <A>(
+  arrayLength: number,
+  fn: (i: number) => A,
+): A[] => Array.apply(null, Array(arrayLength)).map((_, i) => fn(i))
 
 export const wrap = (min: number, max: number) => (x: number) => {
   const d = max - min
@@ -61,7 +71,7 @@ export function keyToAction(key: string): Action | null {
   return null
 }
 
-export function buildWeekdays(options: Options = {}): Weekday[] {
+export function buildWeekdays(options: RepickOptions = {}): Weekday[] {
   const date = new Date()
 
   return Array.apply(null, Array(7)).map((_, i) => {
@@ -141,7 +151,7 @@ export function selectDateRange(
 export const emptyFn = <T>(e: T) => (): T => e
 
 export const dateIsSelectable = (
-  { enabledDates, disabledDates, minDate, filterDates, maxDate }: Options,
+  { enabledDates, disabledDates, minDate, filterDates, maxDate }: RepickOptions,
   date: Date,
 ) =>
   !(
@@ -151,3 +161,40 @@ export const dateIsSelectable = (
     (!!minDate && isAfter(minDate, date)) ||
     (!!maxDate && isBefore(maxDate, date))
   )
+
+function isRepickMonthContext(
+  monthOrWeek: RepickMonthContext<any> | RepickWeekContext<any>,
+): monthOrWeek is RepickMonthContext<any> {
+  return monthOrWeek.hasOwnProperty('weeks')
+}
+
+export function mapDays<D extends RepickDayContext<{}>, R>(
+  months: RepickMonthContext<D>[],
+  callbackfn: (day: D) => R,
+): R[]
+export function mapDays<D extends RepickDayContext<{}>, R>(
+  weeks: RepickWeekContext<D>[],
+  callbackfn: (day: D) => R,
+): R[]
+export function mapDays<D extends RepickDayContext<{}>, R>(
+  monthsOrWeeks: (RepickMonthContext<D> | RepickWeekContext<D>)[],
+  callbackfn: (day: D) => R,
+): R[] {
+  return monthsOrWeeks.reduce<R[]>((x, monthOrWeek) => {
+    if (isRepickMonthContext(monthOrWeek)) {
+      return [...x, ...mapDays(monthOrWeek.weeks, callbackfn)]
+    }
+
+    return [...x, ...monthOrWeek.days.map(callbackfn)]
+  }, [])
+}
+
+export function mapWeeks<D extends RepickDayContext<{}>, R>(
+  months: RepickMonthContext<D>[],
+  callbackfn: (day: RepickWeekContext<D>) => R,
+): R[] {
+  return months.reduce<R[]>(
+    (x, month) => [...x, ...month.weeks.map(callbackfn)],
+    [],
+  )
+}

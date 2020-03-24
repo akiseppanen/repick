@@ -2,155 +2,36 @@ import startOfDay from 'date-fns/startOfDay'
 import React from 'react'
 import {
   buildCalendarContext,
-  CalendarContextDay,
-  CalendarContextDayGeneric,
-  CalendarContextDayMulti,
-  CalendarContextDayRange,
-  CalendarContextDaySingle,
-  CalendarContextGeneric,
   keyToAction,
   reducer,
-  State,
-  StateGeneric,
+  RepickDayContext,
+  RepickState,
+  RepickStateGeneric,
 } from 'repick-core'
 import { useControllableReducer } from './use-controllable-reducer'
-
-export type CalendarProps = {
-  onKeyDown: (e: React.KeyboardEvent) => void
-  tabIndex: number
-}
-
-export type MonthProps = {
-  onClick: (e: React.MouseEvent) => void
-  'aria-label': string
-  role: string
-}
-
-export type DateProps = {
-  onClick: (e: React.MouseEvent) => void
-  'aria-label': string
-  'aria-pressed': boolean
-  role: string
-  tabIndex: number
-  ref: (el: HTMLElement | null) => void
-}
-
-export type RepickContextGeneric<
-  M,
-  T,
-  D extends CalendarContextDayGeneric<{}>
-> = CalendarContextGeneric<M, T, D> & {
-  selectDate: (date: string | number | Date) => void
-  selectCurrent: () => void
-  prevDay: () => void
-  nextDay: () => void
-  prevWeek: () => void
-  nextWeek: () => void
-  prevMonth: () => void
-  nextMonth: () => void
-  startOfWeek: () => void
-  endOfWeek: () => void
-  getCalendarProps: () => CalendarProps
-  getDateProps: (calendarDay: D) => DateProps
-  getNextMonthProps: () => MonthProps
-  getPrevMonthProps: () => MonthProps
-  handleKeyDown: (e: React.KeyboardEvent) => void
-  setFocusToCalendar: () => void
-  setFocusToDate: (date: Date) => void
-}
-
-export type RepickContextSingle = RepickContextGeneric<
-  'single',
-  Date,
-  CalendarContextDaySingle
->
-
-export type RepickContextMulti = RepickContextGeneric<
-  'multi',
-  Date[],
-  CalendarContextDayMulti
->
-
-export type RepickContextRange = RepickContextGeneric<
-  'range',
-  [Date, Date?],
-  CalendarContextDayRange
->
-
-export type RepickContext =
-  | RepickContextSingle
-  | RepickContextMulti
-  | RepickContextRange
-
-export type PropsGeneric<M, T> = {
-  mode?: M
-  onChange?: (date: T | null) => void
-  onCurrentChange?: (date: Date) => void
-  weekStartsOn?: number
-  locale?: object
-  current?: Date
-  initialDate?: Date
-  selected?: T | null
-  initialSelected?: T
-  filterDates?: (date: Date) => boolean
-  disabledDates?: Date[]
-  enabledDates?: Date[]
-  minDate?: Date
-  maxDate?: Date
-}
-
-export type PropsGenericRequireMode<M, T> = PropsGeneric<M, T> & { mode: M }
-
-export type PropsSingle = PropsGeneric<'single', Date>
-export type PropsMulti = PropsGenericRequireMode<'multi', Date[]>
-export type PropsRange = PropsGenericRequireMode<'range', [Date, Date?]>
-
-export type Props = PropsSingle | PropsMulti | PropsRange
-
-export type PropsWithChildrenGeneric<
-  M,
-  T,
-  C extends RepickContextGeneric<M, T, any>
-> = PropsGeneric<M, T> & {
-  children: (context: C) => React.ReactElement | null
-}
-
-export type PropsWithChildrenGenericRequireMode<
-  M,
-  T,
-  C extends RepickContextGeneric<M, T, any>
-> = PropsGenericRequireMode<M, T> & {
-  children: (context: C) => React.ReactElement | null
-}
-
-export type PropsWithChildrenSingle = PropsWithChildrenGeneric<
-  'single',
-  Date,
-  RepickContextSingle
->
-export type PropsWithChildrenMulti = PropsWithChildrenGenericRequireMode<
-  'multi',
-  Date[],
-  RepickContextMulti
->
-export type PropsWithChildrenRange = PropsWithChildrenGenericRequireMode<
-  'range',
-  [Date, Date?],
-  RepickContextRange
->
-
-export type PropsWithChildren =
-  | PropsWithChildrenSingle
-  | PropsWithChildrenMulti
-  | PropsWithChildrenRange
+import {
+  RepickPropsSingle,
+  RepickPropsMulti,
+  RepickPropsRange,
+  RepickProps,
+  RepickContextSingle,
+  RepickContextMulti,
+  RepickContextRange,
+  RepickContext,
+  RepickPropsGeneric,
+  CalendarProps,
+  MonthProps,
+  DateProps,
+  RepickPropsWithChildren,
+} from './types'
 
 type PropsPattern<T> = {
-  single: (x: PropsSingle) => T
-  multi: (x: PropsMulti) => T
-  range: (x: PropsRange) => T
+  single: (x: RepickPropsSingle) => T
+  multi: (x: RepickPropsMulti) => T
+  range: (x: RepickPropsRange) => T
 }
 
-function matchProps<T>(p: PropsPattern<T>): (props: Props) => T {
+function matchProps<T>(p: PropsPattern<T>): (props: RepickProps) => T {
   return props => {
     if (props.mode === undefined || props.mode === 'single') {
       return p.single(props)
@@ -166,7 +47,7 @@ function matchProps<T>(p: PropsPattern<T>): (props: Props) => T {
   }
 }
 
-const initializeState = matchProps<State>({
+const initializeState = matchProps<RepickState>({
   single: props => ({
     current:
       props.current ||
@@ -200,8 +81,8 @@ const initializeState = matchProps<State>({
 })
 
 function getControlledProps(
-  props: PropsGeneric<any, any>,
-): Partial<StateGeneric<any, any>> {
+  props: RepickPropsGeneric<any, any>,
+): Partial<RepickStateGeneric<any, any>> {
   return {
     current: props.current,
     locale: props.locale,
@@ -213,13 +94,14 @@ function getControlledProps(
     enabledDates: props.enabledDates,
     minDate: props.minDate,
     maxDate: props.maxDate,
-  } as Partial<State>
+    monthCount: props.monthCount,
+  } as Partial<RepickState>
 }
 
 function handleChange<T>(
-  props: PropsGeneric<any, T>,
-  oldState: StateGeneric<any, T>,
-  newState: StateGeneric<any, T>,
+  props: RepickPropsGeneric<any, T>,
+  oldState: RepickStateGeneric<any, T>,
+  newState: RepickStateGeneric<any, T>,
 ) {
   if (props.onChange && oldState.selected !== newState.selected) {
     props.onChange(newState.selected)
@@ -229,11 +111,11 @@ function handleChange<T>(
   }
 }
 
-export function useRepick(props: PropsSingle): RepickContextSingle
-export function useRepick(props: PropsMulti): RepickContextMulti
-export function useRepick(props: PropsRange): RepickContextRange
-export function useRepick(props: Props): RepickContext
-export function useRepick(props: Props): RepickContext {
+export function useRepick(props: RepickPropsSingle): RepickContextSingle
+export function useRepick(props: RepickPropsMulti): RepickContextMulti
+export function useRepick(props: RepickPropsRange): RepickContextRange
+export function useRepick(props: RepickProps): RepickContext
+export function useRepick(props: RepickProps): RepickContext {
   const dateRefs: Record<string, HTMLElement> = {}
 
   const [state, dispatch] = useControllableReducer(
@@ -321,7 +203,7 @@ export function useRepick(props: Props): RepickContext {
     }
   }
 
-  const getDateProps = (calendarDay: CalendarContextDay): DateProps => {
+  const getDateProps = (calendarDay: RepickDayContext<any>): DateProps => {
     return {
       onClick: e => {
         e.preventDefault()
@@ -339,8 +221,9 @@ export function useRepick(props: Props): RepickContext {
     }
   }
 
+  const context = buildCalendarContext(state)
   return {
-    ...buildCalendarContext(state),
+    ...context,
     selectDate: (date: string | number | Date) =>
       dispatch({ type: 'SelectDate', date }),
     selectCurrent: () => dispatch({ type: 'SelectCurrent' }),
@@ -362,12 +245,12 @@ export function useRepick(props: Props): RepickContext {
   }
 }
 
-export function Repick(props: PropsWithChildren) {
-  const { children, ...hookProps } = props
+export function Repick(props: RepickPropsWithChildren) {
+  const { render, ...hookProps } = props
 
   const context = useRepick(hookProps)
 
-  return children(context as any)
+  return render(context as any)
 }
 
 export default Repick
