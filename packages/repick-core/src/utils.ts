@@ -188,3 +188,13 @@ export function mapDays<D extends RepickDayContext<{}>, R>(
     return [...x, ...monthOrWeek.days.map(callbackfn)]
   }, [])
 }
+
+export function mapWeeks<D extends RepickDayContext<{}>, R>(
+  months: RepickMonthContext<D>[],
+  callbackfn: (day: RepickWeekContext<D>) => R,
+): R[] {
+  return months.reduce<R[]>(
+    (x, month) => [...x, ...month.weeks.map(callbackfn)],
+    [],
+  )
+}

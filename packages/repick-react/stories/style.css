@@ -1,5 +1,5 @@
 :root {
-  --containerWidth: 280px;
+  --dayWidth: 40px;
 }
 
 .calendar,
@@ -8,8 +8,12 @@
   display: flex;
   user-select: none;
   outline: 0;
-  width: var(--containerWidth);
+  width: calc(var(--dayWidth) * 7);
   flex-direction: column;
+}
+
+.calendar.calendar.withWeekNumbers {
+  width: calc(var(--dayWidth) * 8);
 }
 
 .calendar {
@@ -43,6 +47,7 @@
 .calendar.multipleMonths .calendarMonthPrev {
   left: 0;
 }
+
 .calendar.multipleMonths .calendarMonthNext {
   right: 0;
 }
@@ -68,6 +73,10 @@
   flex-grow: 1;
 }
 
+.calendarWeek {
+  display: flex;
+}
+
 .calendarDayContainer {
   display: flex;
   flex-wrap: wrap;
@@ -76,24 +85,32 @@
 .calendarWeekdays {
   display: flex;
 }
-
+.calendarWeekdays .calendarWeekNumber,
 .calendarWeekday {
-  flex-basis: calc(100% / 7);
+  width: var(--dayWidth);
   text-align: center;
 }
 
+.calendarWeek .calendarWeekNumber,
 .calendarDay {
   border-color: transparent;
-  background-color: transparent;
-  width: calc(var(--containerWidth) / 7);
-  height: calc(var(--containerWidth) / 7);
-  line-height: calc(var(--containerWidth) / 7);
+  width: var(--dayWidth);
+  height: var(--dayWidth);
+  line-height: var(--dayWidth);
   text-align: center;
+  color: #393939;
+  box-sizing: border-box;
+}
+
+.calendarDay {
   border-radius: 100%;
   cursor: pointer;
-  color: #393939;
-  flex-basis: calc(100% / 7);
-  box-sizing: border-box;
+  background-color: transparent;
+}
+.calendarWeekdays .calendarWeekNumber,
+.calendarWeek .calendarWeekNumber {
+  background-color: #fafafa;
+  font-weight: bold;
 }
 
 .calendarDay.prevMonth,
