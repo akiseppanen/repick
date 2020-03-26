@@ -25,59 +25,18 @@ import {
   RepickPropsWithChildren,
 } from './types'
 
-type PropsPattern<T> = {
-  single: (x: RepickPropsSingle) => T
-  multi: (x: RepickPropsMulti) => T
-  range: (x: RepickPropsRange) => T
-}
+const first = <T>(valueOrArray: T | T[]): T =>
+  valueOrArray instanceof Array ? valueOrArray[0] : valueOrArray
 
-function matchProps<T>(p: PropsPattern<T>): (props: RepickProps) => T {
-  return props => {
-    if (props.mode === undefined || props.mode === 'single') {
-      return p.single(props)
-    }
-    if (props.mode === 'multi') {
-      return p.multi(props)
-    }
-    if (props.mode === 'range') {
-      return p.range(props)
-    }
-
-    throw new Error(`[repick] unexpected props mode '${props.mode}'`)
-  }
-}
-
-const initializeState = matchProps<RepickState>({
-  single: props => ({
-    date:
-      props.date ||
-      props.selected ||
-      props.initialDate ||
-      props.initialSelected ||
-      startOfDay(new Date()),
-    mode: 'single',
-    selected: props.selected || props.initialSelected || null,
-  }),
-  multi: props => ({
-    date:
-      props.date ||
-      (props.selected && props.selected[0]) ||
-      props.initialDate ||
-      (props.initialSelected && props.initialSelected[0]) ||
-      startOfDay(new Date()),
-    mode: 'multi',
-    selected: props.selected || props.initialSelected || null,
-  }),
-  range: props => ({
-    date:
-      props.date ||
-      (props.selected && props.selected[0]) ||
-      props.initialDate ||
-      (props.initialSelected && props.initialSelected[0]) ||
-      startOfDay(new Date()),
-    mode: 'range',
-    selected: props.selected || props.initialSelected || null,
-  }),
+const initializeState = (props: RepickPropsGeneric<any, any>) => ({
+  date:
+    props.date ||
+    first(props.selected) ||
+    props.initialDate ||
+    first(props.initialSelected) ||
+    startOfDay(new Date()),
+  mode: props.mode || 'single',
+  selected: props.selected || props.initialSelected || null,
 })
 
 function getControlledProps(
@@ -98,10 +57,10 @@ function getControlledProps(
   } as Partial<RepickState>
 }
 
-function handleChange<T>(
-  props: RepickPropsGeneric<any, T>,
-  oldState: RepickStateGeneric<any, T>,
-  newState: RepickStateGeneric<any, T>,
+function handleChange(
+  props: RepickPropsGeneric<any, any>,
+  oldState: RepickStateGeneric<any, any>,
+  newState: RepickStateGeneric<any, any>,
 ) {
   if (props.onChange && oldState.selected !== newState.selected) {
     props.onChange(newState.selected)
@@ -114,7 +73,6 @@ function handleChange<T>(
 export function useRepick(props: RepickPropsSingle): RepickContextSingle
 export function useRepick(props: RepickPropsMulti): RepickContextMulti
 export function useRepick(props: RepickPropsRange): RepickContextRange
-export function useRepick(props: RepickProps): RepickContext
 export function useRepick(props: RepickProps): RepickContext {
   const dateRefs: Record<string, HTMLElement> = {}
 
@@ -124,27 +82,7 @@ export function useRepick(props: RepickProps): RepickContext {
     initializeState,
     getControlledProps,
     (oldState, newState) => {
-      if (
-        (props.mode === undefined || props.mode === 'single') &&
-        oldState.mode === 'single' &&
-        newState.mode === 'single'
-      ) {
-        handleChange(props, oldState, newState)
-      }
-      if (
-        props.mode === 'multi' &&
-        oldState.mode === 'multi' &&
-        newState.mode === 'multi'
-      ) {
-        handleChange(props, oldState, newState)
-      }
-      if (
-        props.mode === 'range' &&
-        oldState.mode === 'range' &&
-        newState.mode === 'range'
-      ) {
-        handleChange(props, oldState, newState)
-      }
+      handleChange(props, oldState, newState)
     },
   )
 
@@ -222,6 +160,7 @@ export function useRepick(props: RepickProps): RepickContext {
   }
 
   const context = buildCalendarContext(state)
+
   return {
     ...context,
     selectDate: (date: string | number | Date) =>
@@ -248,7 +187,7 @@ export function useRepick(props: RepickProps): RepickContext {
 export function Repick(props: RepickPropsWithChildren) {
   const { render, ...hookProps } = props
 
-  const context = useRepick(hookProps)
+  const context = useRepick(hookProps as any)
 
   return render(context as any)
 }
