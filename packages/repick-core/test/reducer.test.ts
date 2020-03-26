@@ -14,7 +14,7 @@ const mockedSelectDateMulti = selectDateMulti as jest.Mock
 const mockedSelectDateRange = selectDateRange as jest.Mock
 const mockedDateIsSelectable = dateIsSelectable as jest.Mock
 
-const initialCurrent = new Date('2018-01-01 00:00:00')
+const initialDate = new Date('2018-01-01 00:00:00')
 
 const date = new Date('2018-01-05 00:00:00')
 
@@ -30,19 +30,19 @@ const dateRange = [
 ] as [Date, Date]
 
 const stateSingle: RepickState = {
-  current: initialCurrent,
+  date: initialDate,
   mode: 'single',
   selected: date,
 }
 
 const stateMulti: RepickState = {
-  current: initialCurrent,
+  date: initialDate,
   mode: 'multi',
   selected: dates,
 }
 
 const stateRange: RepickState = {
-  current: initialCurrent,
+  date: initialDate,
   mode: 'range',
   selected: dateRange,
 }
@@ -65,7 +65,7 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateSingle,
-        current: expectedDate,
+        date: expectedDate,
         selected: expectedDate,
       })
 
@@ -85,7 +85,7 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateMulti,
-        current: expectedDate,
+        date: expectedDate,
         selected: expectedDates,
       })
 
@@ -105,7 +105,7 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateRange,
-        current: expectedDate,
+        date: expectedDate,
         selected: expectedDates,
       })
 
@@ -121,7 +121,7 @@ describe('reducer', () => {
       const date = new Date('2018-01-05 00:00:00')
 
       const state: RepickState = {
-        current: initialCurrent,
+        date: initialDate,
         mode: 'single',
         selected: null,
       }
@@ -137,7 +137,7 @@ describe('reducer', () => {
   })
   describe('SelectCurrent', () => {
     it('mode: single', () => {
-      mockedSelectDateSingle.mockReturnValue(initialCurrent)
+      mockedSelectDateSingle.mockReturnValue(initialDate)
 
       const newState = reducer(stateSingle, {
         type: 'SelectCurrent',
@@ -145,14 +145,14 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateSingle,
-        selected: initialCurrent,
+        selected: initialDate,
       })
 
-      expect(mockedSelectDateSingle).toHaveBeenCalledWith(date, initialCurrent)
+      expect(mockedSelectDateSingle).toHaveBeenCalledWith(date, initialDate)
     })
 
     it('mode: multi', () => {
-      const expectedDates = [...dates, initialCurrent]
+      const expectedDates = [...dates, initialDate]
 
       mockedSelectDateMulti.mockReturnValue(expectedDates)
 
@@ -165,11 +165,11 @@ describe('reducer', () => {
         selected: expectedDates,
       })
 
-      expect(mockedSelectDateMulti).toHaveBeenCalledWith(dates, initialCurrent)
+      expect(mockedSelectDateMulti).toHaveBeenCalledWith(dates, initialDate)
     })
 
     it('mode: range', () => {
-      const expectedDates = [initialCurrent]
+      const expectedDates = [initialDate]
 
       mockedSelectDateRange.mockReturnValue(expectedDates)
 
@@ -182,10 +182,7 @@ describe('reducer', () => {
         selected: expectedDates,
       })
 
-      expect(mockedSelectDateRange).toHaveBeenCalledWith(
-        dateRange,
-        initialCurrent,
-      )
+      expect(mockedSelectDateRange).toHaveBeenCalledWith(dateRange, initialDate)
     })
 
     it('unselectable date', () => {
@@ -194,7 +191,7 @@ describe('reducer', () => {
       const date = new Date('2018-01-05 00:00:00')
 
       const state: RepickState = {
-        current: date,
+        date,
         mode: 'single',
         selected: null,
       }
@@ -215,7 +212,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2017-12-31 00:00:00'),
+      date: new Date('2017-12-31 00:00:00'),
     })
   })
 
@@ -226,7 +223,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2018-01-02 00:00:00'),
+      date: new Date('2018-01-02 00:00:00'),
     })
   })
 
@@ -237,7 +234,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2017-12-25 00:00:00'),
+      date: new Date('2017-12-25 00:00:00'),
     })
   })
 
@@ -248,7 +245,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2018-01-08 00:00:00'),
+      date: new Date('2018-01-08 00:00:00'),
     })
   })
 
@@ -259,7 +256,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2017-12-01 00:00:00'),
+      date: new Date('2017-12-01 00:00:00'),
     })
   })
 
@@ -270,7 +267,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2018-02-01 00:00:00'),
+      date: new Date('2018-02-01 00:00:00'),
     })
   })
 
@@ -281,7 +278,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2017-12-31 00:00:00'),
+      date: new Date('2017-12-31 00:00:00'),
     })
   })
 
@@ -292,7 +289,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      current: new Date('2018-01-06 00:00:00'),
+      date: new Date('2018-01-06 00:00:00'),
     })
   })
 })

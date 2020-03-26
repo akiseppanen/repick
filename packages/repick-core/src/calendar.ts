@@ -69,7 +69,7 @@ export function buildCalendarContextDayGeneric<
       nextMonth: isSameMonth(nextMonth, date),
       prevMonth: isSameMonth(prevMonth, date),
       selected: isSelected(state, date),
-      current: isSameDay(state.current, date),
+      current: isSameDay(state.date, date),
       disabled: !dateIsSelectable(state, date),
       today: isSameDay(new Date(), date),
       ...extraFn(state, date),
@@ -117,7 +117,7 @@ export function buildCalendarContextGeneric<
   return function (
     state: S,
   ): RepickCalendarContextGeneric<any, any, RepickDayContext<E>> {
-    const { current } = state
+    const { date: current } = state
 
     return {
       mode: state.mode,

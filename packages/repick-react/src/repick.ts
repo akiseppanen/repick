@@ -49,8 +49,8 @@ function matchProps<T>(p: PropsPattern<T>): (props: RepickProps) => T {
 
 const initializeState = matchProps<RepickState>({
   single: props => ({
-    current:
-      props.current ||
+    date:
+      props.date ||
       props.selected ||
       props.initialDate ||
       props.initialSelected ||
@@ -59,8 +59,8 @@ const initializeState = matchProps<RepickState>({
     selected: props.selected || props.initialSelected || null,
   }),
   multi: props => ({
-    current:
-      props.current ||
+    date:
+      props.date ||
       (props.selected && props.selected[0]) ||
       props.initialDate ||
       (props.initialSelected && props.initialSelected[0]) ||
@@ -69,8 +69,8 @@ const initializeState = matchProps<RepickState>({
     selected: props.selected || props.initialSelected || null,
   }),
   range: props => ({
-    current:
-      props.current ||
+    date:
+      props.date ||
       (props.selected && props.selected[0]) ||
       props.initialDate ||
       (props.initialSelected && props.initialSelected[0]) ||
@@ -84,7 +84,7 @@ function getControlledProps(
   props: RepickPropsGeneric<any, any>,
 ): Partial<RepickStateGeneric<any, any>> {
   return {
-    current: props.current,
+    date: props.date,
     locale: props.locale,
     mode: props.mode,
     selected: props.selected,
@@ -106,8 +106,8 @@ function handleChange<T>(
   if (props.onChange && oldState.selected !== newState.selected) {
     props.onChange(newState.selected)
   }
-  if (props.onCurrentChange && oldState.current !== newState.current) {
-    props.onCurrentChange(newState.current)
+  if (props.onUpdate && oldState.date !== newState.date) {
+    props.onUpdate(newState.date)
   }
 }
 
@@ -160,13 +160,13 @@ export function useRepick(props: RepickProps): RepickContext {
   )
 
   React.useEffect(() => {
-    setFocusToDate(state.current)
+    setFocusToDate(state.date)
   }, [setFocusToDate, state])
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
-      if (dateRefs[state.current.toISOString()]) {
-        dateRefs[state.current.toISOString()].focus()
+      if (dateRefs[state.date.toISOString()]) {
+        dateRefs[state.date.toISOString()].focus()
       }
     })
   }

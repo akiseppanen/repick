@@ -93,8 +93,8 @@ export type RepickContext =
 export type RepickPropsGeneric<M, T> = RepickOptions & {
   mode?: M
   onChange?: (date: T | null) => void
-  onCurrentChange?: (date: Date) => void
-  current?: Date
+  onUpdate?: (date: Date) => void
+  date?: Date
   initialDate?: Date
   selected?: T | null
   initialSelected?: T

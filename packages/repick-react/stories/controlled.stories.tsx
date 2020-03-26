@@ -24,10 +24,10 @@ const Component = () => {
     getCalendarProps,
   } = useRepick({
     weekStartsOn: 1,
-    onChange: d => setSelected(d),
-    onCurrentChange: setDate,
+    onChange: setSelected,
+    onUpdate: setDate,
     selected,
-    current: date,
+    date,
   })
 
   return (

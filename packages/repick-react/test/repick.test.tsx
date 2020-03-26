@@ -44,8 +44,8 @@ const mockedReducer = reducer as jest.Mock
 const mockedKeyToAction = keyToAction as jest.Mock
 
 describe('calendar', () => {
-  const state = {
-    current: calendarFixture.date,
+  const state: RepickState = {
+    date: calendarFixture.date,
     mode: 'single',
     selected: calendarFixture.selected,
   }
@@ -126,7 +126,7 @@ describe('calendar', () => {
   it('keyPress is handled correctly', () => {
     const [, view] = setup(
       {
-        current: calendarFixture.date || undefined,
+        date: calendarFixture.date || undefined,
         selected: calendarFixture.selected || undefined,
       },
       ({ getCalendarProps }) => <div {...getCalendarProps()} />,
@@ -193,32 +193,32 @@ describe('calendar', () => {
 })
 
 it('dispatch', () => {
-  const current = new Date('2018-01-01 00:00:00')
+  const date = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
   const state: RepickState = {
-    current,
+    date,
     mode: 'single',
     selected: null,
     ...options,
   }
 
   mockedBuildCalendar.mockImplementation(s => ({
-    date: s.current,
+    date: s.date,
     selected: s.selected,
   }))
 
   mockedReducer.mockReturnValue({
-    current: expected,
+    date: expected,
     mode: 'single',
     selected: expected,
   })
 
   const onChange = jest.fn()
 
-  const [props] = setup({ onChange, initialDate: current, ...options })
+  const [props] = setup({ onChange, initialDate: date, ...options })
 
-  expect(props.date).toEqual(current)
+  expect(props.date).toEqual(date)
   expect(props.selected).toBeNull()
 
   act(() => props.selectDate(expected))
@@ -241,7 +241,7 @@ describe('actions', () => {
   let props: RepickContextSingle
 
   beforeEach(() => {
-    props = setup({ current: date })[0]
+    props = setup({ date })[0]
     mockedReducer.mockReturnValue({ date: expected, selected: expected })
   })
 
@@ -251,7 +251,7 @@ describe('actions', () => {
 
   const assertAction = (action: Action) => {
     expect(mockedReducer).toHaveBeenCalledWith(
-      { current: date, selected: null, mode: 'single' },
+      { date, selected: null, mode: 'single' },
       action,
     )
   }

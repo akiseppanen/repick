@@ -100,7 +100,7 @@ export interface RepickStateGeneric<
   T extends RepickModeType[M]
 > extends RepickOptions {
   mode: M
-  current: Date
+  date: Date
   selected: T | null
 }
 
