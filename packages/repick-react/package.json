@@ -1,6 +1,6 @@
 {
   "name": "repick-react",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/repick-react.esm.js",
   "typings": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "date-fns": "^2.9.0",
-    "repick-core": "^0.0.3"
+    "repick-core": "^0.1.0"
   },
   "peerDependencies": {
     "react": ">=16"
