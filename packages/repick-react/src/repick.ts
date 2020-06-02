@@ -1,5 +1,5 @@
 import startOfDay from 'date-fns/startOfDay'
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   buildCalendarContext,
   keyToAction,
@@ -74,6 +74,8 @@ export function useRepick(props: RepickPropsSingle): RepickContextSingle
 export function useRepick(props: RepickPropsMulti): RepickContextMulti
 export function useRepick(props: RepickPropsRange): RepickContextRange
 export function useRepick(props: RepickProps): RepickContext {
+  const hasFocusRef = useRef<boolean>(false)
+  const calendarRef = useRef<HTMLElement>()
   const dateRefs: Record<string, HTMLElement> = {}
 
   const [state, dispatch] = useControllableReducer(
@@ -90,6 +92,7 @@ export function useRepick(props: RepickProps): RepickContext {
     (date: Date) => {
       window.requestAnimationFrame(() => {
         if (dateRefs[date.toISOString()]) {
+          hasFocusRef.current = true
           dateRefs[date.toISOString()].focus()
         }
       })
@@ -98,12 +101,44 @@ export function useRepick(props: RepickProps): RepickContext {
   )
 
   React.useEffect(() => {
-    setFocusToDate(state.date)
-  }, [setFocusToDate, state])
+    if (hasFocusRef.current === true) {
+      setFocusToDate(state.date)
+    }
+  }, [setFocusToDate, state.date])
+
+  const handleFocusIn = () => {
+    hasFocusRef.current = true
+  }
+
+  const handleFocusOut = (e: FocusEvent) => {
+    if (
+      !(
+        calendarRef.current &&
+        calendarRef.current.contains(e.relatedTarget as HTMLElement)
+      )
+    ) {
+      hasFocusRef.current = false
+    }
+  }
+
+  React.useEffect(() => {
+    if (calendarRef.current) {
+      calendarRef.current.addEventListener('focusin', handleFocusIn)
+      calendarRef.current.addEventListener('focusout', handleFocusOut)
+    }
+
+    return () => {
+      if (calendarRef.current) {
+        calendarRef.current.removeEventListener('focusin', handleFocusIn)
+        calendarRef.current.removeEventListener('focusout', handleFocusOut)
+      }
+    }
+  }, [calendarRef.current])
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
       if (dateRefs[state.date.toISOString()]) {
+        hasFocusRef.current = true
         dateRefs[state.date.toISOString()].focus()
       }
     })
@@ -122,6 +157,9 @@ export function useRepick(props: RepickProps): RepickContext {
     return {
       onKeyDown: handleKeyDown,
       tabIndex: 0,
+      ref: (el: HTMLElement | undefined) => {
+        calendarRef.current = el
+      },
     }
   }
 
@@ -151,7 +189,7 @@ export function useRepick(props: RepickProps): RepickContext {
       'aria-pressed': calendarDay.selected,
       role: 'button',
       tabIndex: calendarDay.current ? 0 : -1,
-      ref: (el: HTMLElement | null) => {
+      ref: (el: HTMLElement | undefined) => {
         if (el) {
           dateRefs[calendarDay.date.toISOString()] = el
         }
