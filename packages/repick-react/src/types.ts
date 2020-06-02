@@ -92,6 +92,7 @@ export type RepickContext =
   | RepickContextRange
 
 export type RepickPropsGeneric<M, T> = RepickOptions & {
+  autoFocus?: boolean
   mode?: M
   onChange?: (date: T | null) => void
   onUpdate?: (date: Date) => void

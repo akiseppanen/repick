@@ -105,6 +105,12 @@ export function useRepick(props: RepickProps): RepickContext {
   )
 
   React.useEffect(() => {
+    if (props.autoFocus === true) {
+      setFocusToCalendar()
+    }
+  }, [])
+
+  React.useEffect(() => {
     if (hasFocusRef.current === true) {
       setFocusToDate(state.date)
     }
