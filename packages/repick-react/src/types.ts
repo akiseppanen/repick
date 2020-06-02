@@ -14,7 +14,7 @@ import {
 export type CalendarProps = {
   onKeyDown: (e: React.KeyboardEvent) => void
   tabIndex: number
-  ref: (el: HTMLElement | undefined) => void
+  ref: (el: HTMLElement | null) => void
 }
 
 export type MonthProps = {
@@ -29,7 +29,7 @@ export type DateProps = {
   'aria-pressed': boolean
   role: string
   tabIndex: number
-  ref: (el: HTMLElement | undefined) => void
+  ref: (el: HTMLElement | null) => void
 }
 
 export type RepickDayHelpers = {

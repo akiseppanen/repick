@@ -162,8 +162,8 @@ export function useRepick(props: RepickProps): RepickContext {
     return {
       onKeyDown: handleKeyDown,
       tabIndex: 0,
-      ref: (el: HTMLElement | undefined) => {
-        calendarRef.current = el
+      ref: (el: HTMLElement | null) => {
+        calendarRef.current = el || undefined
       },
     }
   }
@@ -194,7 +194,7 @@ export function useRepick(props: RepickProps): RepickContext {
       'aria-pressed': calendarDay.selected,
       role: 'button',
       tabIndex: calendarDay.current ? 0 : -1,
-      ref: (el: HTMLElement | undefined) => {
+      ref: (el: HTMLElement | null) => {
         if (el) {
           dateRefs[formatDateRefId(calendarDay.date)] = el
         }
