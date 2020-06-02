@@ -1,3 +1,4 @@
+import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
 import React, { useRef } from 'react'
 import {
@@ -88,12 +89,15 @@ export function useRepick(props: RepickProps): RepickContext {
     },
   )
 
+  const formatDateRefId = (date: Date) => format(date, 'yyyy-MM-dd')
+
   const setFocusToDate = React.useCallback(
     (date: Date) => {
       window.requestAnimationFrame(() => {
-        if (dateRefs[date.toISOString()]) {
+        const id = formatDateRefId(date)
+        if (dateRefs[id]) {
           hasFocusRef.current = true
-          dateRefs[date.toISOString()].focus()
+          dateRefs[id].focus()
         }
       })
     },
@@ -137,9 +141,10 @@ export function useRepick(props: RepickProps): RepickContext {
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
-      if (dateRefs[state.date.toISOString()]) {
+      const id = formatDateRefId(state.date)
+      if (dateRefs[id]) {
         hasFocusRef.current = true
-        dateRefs[state.date.toISOString()].focus()
+        dateRefs[id].focus()
       }
     })
   }
@@ -191,7 +196,7 @@ export function useRepick(props: RepickProps): RepickContext {
       tabIndex: calendarDay.current ? 0 : -1,
       ref: (el: HTMLElement | undefined) => {
         if (el) {
-          dateRefs[calendarDay.date.toISOString()] = el
+          dateRefs[formatDateRefId(calendarDay.date)] = el
         }
       },
     }
