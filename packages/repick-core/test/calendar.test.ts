@@ -10,23 +10,25 @@ import {
 import { RepickState } from '../src/types'
 
 describe('buildCalendarContextDaySingle', () => {
-  const date = new Date('2018-01-01')
+  const highlighted = new Date('2018-01-01')
 
   const state: RepickState = {
-    date,
+    highlighted,
     mode: 'single',
-    selected: date,
+    selected: highlighted,
   }
 
   it('selected', () => {
-    expect(buildCalendarContextDaySingle(state, date, date)).toMatchObject({
+    expect(
+      buildCalendarContextDaySingle(state, highlighted, highlighted),
+    ).toMatchObject({
       selected: true,
     })
   })
 
   it('not selected', () => {
     expect(
-      buildCalendarContextDaySingle(state, date, new Date('2018-02-01')),
+      buildCalendarContextDaySingle(state, highlighted, new Date('2018-02-01')),
     ).toMatchObject({
       selected: false,
     })
@@ -41,7 +43,7 @@ describe('buildCalendarContextDayMulti', () => {
   ]
 
   const state: RepickState = {
-    date: new Date('2018-01-01'),
+    highlighted: new Date('2018-01-01'),
     mode: 'multi',
     selected: dates,
   }
@@ -80,7 +82,7 @@ describe('buildCalendarContextDayRange', () => {
   const range = [new Date('2018-01-01'), new Date('2018-01-31')] as [Date, Date]
 
   const state: RepickState = {
-    date: new Date('2018-01-01'),
+    highlighted: new Date('2018-01-01'),
     mode: 'range',
     selected: range,
   }
@@ -134,7 +136,7 @@ describe('buildCalendarContextDayGeneric', () => {
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          date: new Date('2018-01-01'),
+          highlighted: new Date('2018-01-01'),
           mode: 'single',
           selected: null,
         },
@@ -155,7 +157,7 @@ describe('buildCalendarContextDayGeneric', () => {
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          date: stateDate,
+          highlighted: stateDate,
           mode: 'single',
           selected: null,
         },
@@ -163,7 +165,7 @@ describe('buildCalendarContextDayGeneric', () => {
         date,
       ),
     ).toMatchObject({
-      current: true,
+      highlighted: true,
     })
   })
 
@@ -174,7 +176,7 @@ describe('buildCalendarContextDayGeneric', () => {
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          date: stateDate,
+          highlighted: stateDate,
           mode: 'single',
           selected: null,
         },
@@ -194,7 +196,7 @@ describe('buildCalendarContextDayGeneric', () => {
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          date: stateDate,
+          highlighted: stateDate,
           mode: 'single',
           selected: null,
         },
@@ -213,7 +215,7 @@ describe('buildCalendarContextDayGeneric', () => {
     expect(
       buildCalendarContextDayGeneric(() => ({}))(
         {
-          date: new Date('2018-01-01'),
+          highlighted: new Date('2018-01-01'),
           mode: 'single',
           selected: null,
           disabledDates: [disabledDate],
@@ -232,7 +234,7 @@ describe('buildCalendarContext', () => {
     const expectedDate = new Date('2018-01-01 00:00:00')
     const expectedSelected = new Date('2018-01-10 00:00:00')
     const context = buildCalendarContext({
-      date: expectedDate,
+      highlighted: expectedDate,
       mode: 'single',
       selected: expectedSelected,
     })
@@ -247,7 +249,7 @@ describe('buildCalendarContext', () => {
       new Date('2018-01-20 00:00:00'),
     ]
     const context = buildCalendarContext({
-      date: expectedDate,
+      highlighted: expectedDate,
       mode: 'multi',
       selected: expectedSelected,
     })
@@ -263,7 +265,7 @@ describe('buildCalendarContext', () => {
     ] as [Date, Date]
 
     const context = buildCalendarContext({
-      date: expectedDate,
+      highlighted: expectedDate,
       mode: 'range',
       selected: expectedSelected,
     })

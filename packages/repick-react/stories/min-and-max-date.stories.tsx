@@ -26,7 +26,7 @@ const Component = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1, minDate, maxDate, initialDate: date })
+  } = useRepick({ weekStartsOn: 1, minDate, maxDate, initialHighlighted: date })
 
   return (
     <>

@@ -22,7 +22,7 @@ const Component: React.FunctionComponent = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1, initialDate: date })
+  } = useRepick({ weekStartsOn: 1, initialHighlighted: date })
 
   return (
     <>

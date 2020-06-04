@@ -14,7 +14,7 @@ import {
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
-  actionSelectCurrent,
+  actionSelectHighlighted,
   actionStartOfWeek,
 } from './actions'
 import {
@@ -64,7 +64,7 @@ export function keyToAction(key: string): Action | null {
       return { type: actionEndOfWeek }
     }
     case 'Enter': {
-      return { type: actionSelectCurrent }
+      return { type: actionSelectHighlighted }
     }
   }
 

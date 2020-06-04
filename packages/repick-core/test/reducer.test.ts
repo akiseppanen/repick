@@ -14,7 +14,7 @@ const mockedSelectDateMulti = selectDateMulti as jest.Mock
 const mockedSelectDateRange = selectDateRange as jest.Mock
 const mockedDateIsSelectable = dateIsSelectable as jest.Mock
 
-const initialDate = new Date('2018-01-01 00:00:00')
+const initialHighlighted = new Date('2018-01-01 00:00:00')
 
 const date = new Date('2018-01-05 00:00:00')
 
@@ -30,19 +30,19 @@ const dateRange = [
 ] as [Date, Date]
 
 const stateSingle: RepickState = {
-  date: initialDate,
+  highlighted: initialHighlighted,
   mode: 'single',
   selected: date,
 }
 
 const stateMulti: RepickState = {
-  date: initialDate,
+  highlighted: initialHighlighted,
   mode: 'multi',
   selected: dates,
 }
 
 const stateRange: RepickState = {
-  date: initialDate,
+  highlighted: initialHighlighted,
   mode: 'range',
   selected: dateRange,
 }
@@ -65,7 +65,7 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateSingle,
-        date: expectedDate,
+        highlighted: expectedDate,
         selected: expectedDate,
       })
 
@@ -85,7 +85,7 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateMulti,
-        date: expectedDate,
+        highlighted: expectedDate,
         selected: expectedDates,
       })
 
@@ -105,7 +105,7 @@ describe('reducer', () => {
 
       expect(newState).toEqual({
         ...stateRange,
-        date: expectedDate,
+        highlighted: expectedDate,
         selected: expectedDates,
       })
 
@@ -121,7 +121,7 @@ describe('reducer', () => {
       const date = new Date('2018-01-05 00:00:00')
 
       const state: RepickState = {
-        date: initialDate,
+        highlighted: initialHighlighted,
         mode: 'single',
         selected: null,
       }
@@ -135,29 +135,32 @@ describe('reducer', () => {
       expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, date)
     })
   })
-  describe('SelectCurrent', () => {
+  describe('SelectHighlighted', () => {
     it('mode: single', () => {
-      mockedSelectDateSingle.mockReturnValue(initialDate)
+      mockedSelectDateSingle.mockReturnValue(initialHighlighted)
 
       const newState = reducer(stateSingle, {
-        type: 'SelectCurrent',
+        type: 'SelectHighlighted',
       })
 
       expect(newState).toEqual({
         ...stateSingle,
-        selected: initialDate,
+        selected: initialHighlighted,
       })
 
-      expect(mockedSelectDateSingle).toHaveBeenCalledWith(date, initialDate)
+      expect(mockedSelectDateSingle).toHaveBeenCalledWith(
+        date,
+        initialHighlighted,
+      )
     })
 
     it('mode: multi', () => {
-      const expectedDates = [...dates, initialDate]
+      const expectedDates = [...dates, initialHighlighted]
 
       mockedSelectDateMulti.mockReturnValue(expectedDates)
 
       const newState = reducer(stateMulti, {
-        type: 'SelectCurrent',
+        type: 'SelectHighlighted',
       })
 
       expect(newState).toEqual({
@@ -165,16 +168,19 @@ describe('reducer', () => {
         selected: expectedDates,
       })
 
-      expect(mockedSelectDateMulti).toHaveBeenCalledWith(dates, initialDate)
+      expect(mockedSelectDateMulti).toHaveBeenCalledWith(
+        dates,
+        initialHighlighted,
+      )
     })
 
     it('mode: range', () => {
-      const expectedDates = [initialDate]
+      const expectedDates = [initialHighlighted]
 
       mockedSelectDateRange.mockReturnValue(expectedDates)
 
       const newState = reducer(stateRange, {
-        type: 'SelectCurrent',
+        type: 'SelectHighlighted',
       })
 
       expect(newState).toEqual({
@@ -182,22 +188,25 @@ describe('reducer', () => {
         selected: expectedDates,
       })
 
-      expect(mockedSelectDateRange).toHaveBeenCalledWith(dateRange, initialDate)
+      expect(mockedSelectDateRange).toHaveBeenCalledWith(
+        dateRange,
+        initialHighlighted,
+      )
     })
 
     it('unselectable date', () => {
       mockedDateIsSelectable.mockReturnValue(false)
 
-      const date = new Date('2018-01-05 00:00:00')
+      const highlighted = new Date('2018-01-05 00:00:00')
 
       const state: RepickState = {
-        date,
+        highlighted,
         mode: 'single',
         selected: null,
       }
 
       const newState = reducer(state, {
-        type: 'SelectCurrent',
+        type: 'SelectHighlighted',
       })
 
       expect(newState).toEqual(state)
@@ -212,7 +221,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2017-12-31 00:00:00'),
+      highlighted: new Date('2017-12-31 00:00:00'),
     })
   })
 
@@ -223,7 +232,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2018-01-02 00:00:00'),
+      highlighted: new Date('2018-01-02 00:00:00'),
     })
   })
 
@@ -234,7 +243,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2017-12-25 00:00:00'),
+      highlighted: new Date('2017-12-25 00:00:00'),
     })
   })
 
@@ -245,7 +254,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2018-01-08 00:00:00'),
+      highlighted: new Date('2018-01-08 00:00:00'),
     })
   })
 
@@ -256,7 +265,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2017-12-01 00:00:00'),
+      highlighted: new Date('2017-12-01 00:00:00'),
     })
   })
 
@@ -267,7 +276,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2018-02-01 00:00:00'),
+      highlighted: new Date('2018-02-01 00:00:00'),
     })
   })
 
@@ -278,7 +287,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2017-12-31 00:00:00'),
+      highlighted: new Date('2017-12-31 00:00:00'),
     })
   })
 
@@ -289,7 +298,7 @@ describe('reducer', () => {
 
     expect(newState).toEqual({
       ...stateSingle,
-      date: new Date('2018-01-06 00:00:00'),
+      highlighted: new Date('2018-01-06 00:00:00'),
     })
   })
 })

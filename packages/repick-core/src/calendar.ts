@@ -69,7 +69,7 @@ export function buildCalendarContextDayGeneric<
       nextMonth: isSameMonth(nextMonth, date),
       prevMonth: isSameMonth(prevMonth, date),
       selected: isSelected(state, date),
-      current: isSameDay(state.date, date),
+      highlighted: isSameDay(state.highlighted, date),
       disabled: !dateIsSelectable(state, date),
       today: isSameDay(new Date(), date),
       ...extraFn(state, date),
@@ -117,19 +117,19 @@ export function buildCalendarContextGeneric<
   return function (
     state: S,
   ): RepickCalendarContextGeneric<any, any, RepickDayContext<E>> {
-    const { date: current } = state
+    const { highlighted } = state
 
     return {
       mode: state.mode,
-      date: current || null,
-      month: current.getMonth() + 1,
-      monthLong: format(current, 'MMMM', { locale: state.locale }),
-      monthShort: format(current, 'MMM', { locale: state.locale }),
-      year: current.getFullYear(),
+      highlighted: highlighted || null,
+      month: highlighted.getMonth() + 1,
+      monthLong: format(highlighted, 'MMMM', { locale: state.locale }),
+      monthShort: format(highlighted, 'MMM', { locale: state.locale }),
+      year: highlighted.getFullYear(),
       weekdays: buildWeekdays(state),
       selected: state.selected,
       calendar: arrayGenerate(state.monthCount || 1, monthIndex => {
-        const firstDayOfMonth = startOfMonth(addMonths(current, monthIndex))
+        const firstDayOfMonth = startOfMonth(addMonths(highlighted, monthIndex))
         const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
           weekStartsOn: state.weekStartsOn,
         })
@@ -143,7 +143,7 @@ export function buildCalendarContextGeneric<
             weekNumber: getWeek(addDays(firstWeekOfMonth, weekIndex * 7), {
               weekStartsOn: state.weekStartsOn,
             }),
-            year: current.getFullYear(),
+            year: highlighted.getFullYear(),
             days: arrayGenerate(7, dayIndex =>
               buildCalendarContextDay(
                 state,

@@ -45,7 +45,7 @@ const mockedKeyToAction = keyToAction as jest.Mock
 
 describe('calendar', () => {
   const state: RepickState = {
-    date: calendarFixture.date,
+    highlighted: calendarFixture.highlighted,
     mode: 'single',
     selected: calendarFixture.selected,
   }
@@ -62,7 +62,7 @@ describe('calendar', () => {
 
   it('object is passed', () => {
     const [props] = setup({
-      initialDate: calendarFixture.date || undefined,
+      initialHighlighted: calendarFixture.highlighted || undefined,
       initialSelected: calendarFixture.selected || undefined,
 
       ...options,
@@ -71,7 +71,7 @@ describe('calendar', () => {
     expect(mockedBuildCalendar).toHaveBeenCalledTimes(1)
     expect(mockedBuildCalendar).toHaveBeenCalledWith({ ...state, ...options })
 
-    expect(props.date).toEqual(calendarFixture.date)
+    expect(props.highlighted).toEqual(calendarFixture.highlighted)
     expect(props.calendar).toEqual(calendarFixture.calendar)
     expect(props.month).toEqual(calendarFixture.month)
     expect(props.monthLong).toEqual(calendarFixture.monthLong)
@@ -84,7 +84,7 @@ describe('calendar', () => {
   it('date click dispatches correct action', () => {
     const [, view] = setup(
       {
-        initialDate: calendarFixture.date || undefined,
+        initialHighlighted: calendarFixture.highlighted || undefined,
         initialSelected: calendarFixture.selected || undefined,
       },
       ({ calendar, getDateProps }) => (
@@ -126,7 +126,7 @@ describe('calendar', () => {
   it('keyPress is handled correctly', () => {
     const [, view] = setup(
       {
-        date: calendarFixture.date || undefined,
+        highlighted: calendarFixture.highlighted || undefined,
         selected: calendarFixture.selected || undefined,
       },
       ({ getCalendarProps }) => <div {...getCalendarProps()} />,
@@ -168,7 +168,7 @@ describe('calendar', () => {
   it('prevMonth and nextMonth click dispatches correct action', () => {
     const [, view] = setup(
       {
-        initialDate: calendarFixture.date || undefined,
+        initialHighlighted: calendarFixture.highlighted || undefined,
         initialSelected: calendarFixture.selected || undefined,
       },
       ({ getPrevMonthProps, getNextMonthProps }) => (
@@ -197,28 +197,28 @@ it('dispatch', () => {
   const expected = new Date('2018-01-10 00:00:00')
 
   const state: RepickState = {
-    date,
+    highlighted: date,
     mode: 'single',
     selected: null,
     ...options,
   }
 
   mockedBuildCalendar.mockImplementation(s => ({
-    date: s.date,
+    highlighted: s.highlighted,
     selected: s.selected,
   }))
 
   mockedReducer.mockReturnValue({
-    date: expected,
+    highlighted: expected,
     mode: 'single',
     selected: expected,
   })
 
   const onChange = jest.fn()
 
-  const [props] = setup({ onChange, initialDate: date, ...options })
+  const [props] = setup({ onChange, initialHighlighted: date, ...options })
 
-  expect(props.date).toEqual(date)
+  expect(props.highlighted).toEqual(date)
   expect(props.selected).toBeNull()
 
   act(() => props.selectDate(expected))
@@ -228,20 +228,20 @@ it('dispatch', () => {
     type: 'SelectDate',
   })
 
-  expect(props.date).toEqual(expected)
+  expect(props.highlighted).toEqual(expected)
   expect(props.selected).toEqual(expected)
 
   expect(onChange).toHaveBeenCalledWith(expected)
 })
 
 describe('actions', () => {
-  const date = new Date('2018-01-01 00:00:00')
+  const highlighted = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
   let props: RepickContextSingle
 
   beforeEach(() => {
-    props = setup({ date })[0]
+    props = setup({ highlighted })[0]
     mockedReducer.mockReturnValue({ date: expected, selected: expected })
   })
 
@@ -251,7 +251,7 @@ describe('actions', () => {
 
   const assertAction = (action: Action) => {
     expect(mockedReducer).toHaveBeenCalledWith(
-      { date, selected: null, mode: 'single' },
+      { highlighted, selected: null, mode: 'single' },
       action,
     )
   }
@@ -267,7 +267,7 @@ describe('actions', () => {
     act(() => props.selectCurrent())
 
     assertAction({
-      type: 'SelectCurrent',
+      type: 'SelectHighlighted',
     })
   })
 

@@ -6,7 +6,6 @@ import {
   keyToAction,
   reducer,
   RepickDayContext,
-  RepickState,
   RepickStateGeneric,
 } from 'repick-core'
 import { useControllableReducer } from './use-controllable-reducer'
@@ -30,10 +29,10 @@ const first = <T>(valueOrArray: T | T[]): T =>
   valueOrArray instanceof Array ? valueOrArray[0] : valueOrArray
 
 const initializeState = (props: RepickPropsGeneric<any, any>) => ({
-  date:
-    props.date ||
+  highlighted:
+    props.highlighted ||
     first(props.selected) ||
-    props.initialDate ||
+    props.initialHighlighted ||
     first(props.initialSelected) ||
     startOfDay(new Date()),
   mode: props.mode || 'single',
@@ -44,7 +43,7 @@ function getControlledProps(
   props: RepickPropsGeneric<any, any>,
 ): Partial<RepickStateGeneric<any, any>> {
   return {
-    date: props.date,
+    highlighted: props.highlighted,
     locale: props.locale,
     mode: props.mode,
     selected: props.selected,
@@ -55,7 +54,7 @@ function getControlledProps(
     minDate: props.minDate,
     maxDate: props.maxDate,
     monthCount: props.monthCount,
-  } as Partial<RepickState>
+  }
 }
 
 function handleChange(
@@ -66,8 +65,8 @@ function handleChange(
   if (props.onChange && oldState.selected !== newState.selected) {
     props.onChange(newState.selected)
   }
-  if (props.onUpdate && oldState.date !== newState.date) {
-    props.onUpdate(newState.date)
+  if (props.onUpdate && oldState.highlighted !== newState.highlighted) {
+    props.onUpdate(newState.highlighted)
   }
 }
 
@@ -112,9 +111,9 @@ export function useRepick(props: RepickProps): RepickContext {
 
   React.useEffect(() => {
     if (hasFocusRef.current === true) {
-      setFocusToDate(state.date)
+      setFocusToDate(state.highlighted)
     }
-  }, [setFocusToDate, state.date])
+  }, [setFocusToDate, state.highlighted])
 
   const handleFocusIn = () => {
     hasFocusRef.current = true
@@ -147,7 +146,7 @@ export function useRepick(props: RepickProps): RepickContext {
 
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
-      const id = formatDateRefId(state.date)
+      const id = formatDateRefId(state.highlighted)
       if (dateRefs[id]) {
         hasFocusRef.current = true
         dateRefs[id].focus()
@@ -199,7 +198,7 @@ export function useRepick(props: RepickProps): RepickContext {
       'aria-label': calendarDay.date.toDateString(),
       'aria-pressed': calendarDay.selected,
       role: 'button',
-      tabIndex: calendarDay.current ? 0 : -1,
+      tabIndex: calendarDay.highlighted ? 0 : -1,
       ref: (el: HTMLElement | null) => {
         if (el) {
           dateRefs[formatDateRefId(calendarDay.date)] = el
@@ -214,7 +213,7 @@ export function useRepick(props: RepickProps): RepickContext {
     ...context,
     selectDate: (date: string | number | Date) =>
       dispatch({ type: 'SelectDate', date }),
-    selectCurrent: () => dispatch({ type: 'SelectCurrent' }),
+    selectCurrent: () => dispatch({ type: 'SelectHighlighted' }),
     prevDay: () => dispatch({ type: 'PrevDay' }),
     nextDay: () => dispatch({ type: 'NextDay' }),
     prevWeek: () => dispatch({ type: 'PrevWeek' }),

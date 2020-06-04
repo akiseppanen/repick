@@ -24,7 +24,7 @@ const Component = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ mode: 'multi', weekStartsOn: 1, initialDate: date })
+  } = useRepick({ mode: 'multi', weekStartsOn: 1, initialHighlighted: date })
 
   return (
     <>

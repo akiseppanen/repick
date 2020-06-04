@@ -15,7 +15,7 @@ const Component = () => {
   return (
     <Repick
       weekStartsOn={1}
-      initialDate={date}
+      initialHighlighted={date}
       render={({
         calendar,
         selected,

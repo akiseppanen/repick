@@ -12,6 +12,7 @@ export default {
 
 const Component: React.FunctionComponent = () => {
   const date = new Date('2018-01-01')
+
   const {
     calendar,
     selected,
@@ -22,7 +23,7 @@ const Component: React.FunctionComponent = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1, initialDate: date })
+  } = useRepick({ weekStartsOn: 1, initialHighlighted: date })
 
   return (
     <>

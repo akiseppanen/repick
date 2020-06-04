@@ -14,7 +14,7 @@ import {
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
-  actionSelectCurrent,
+  actionSelectHighlighted,
   actionSelectDate,
   actionStartOfWeek,
 } from './actions'
@@ -40,21 +40,21 @@ export function reducer(state: RepickState, action: Action): RepickState {
         case 'single':
           return {
             ...state,
-            date: date,
+            highlighted: date,
             selected: selectDateSingle(state.selected, date),
           }
 
         case 'multi':
           return {
             ...state,
-            date: date,
+            highlighted: date,
             selected: selectDateMulti(state.selected, date),
           }
 
         case 'range':
           return {
             ...state,
-            date: date,
+            highlighted: date,
             selected: selectDateRange(state.selected, date),
           }
 
@@ -64,8 +64,8 @@ export function reducer(state: RepickState, action: Action): RepickState {
       }
     }
 
-    case actionSelectCurrent: {
-      const date = state.date
+    case actionSelectHighlighted: {
+      const date = state.highlighted
 
       if (!dateIsSelectable(state, date)) {
         return state
@@ -75,21 +75,21 @@ export function reducer(state: RepickState, action: Action): RepickState {
         case 'single':
           return {
             ...state,
-            date: date,
+            highlighted: date,
             selected: selectDateSingle(state.selected, date),
           }
 
         case 'multi':
           return {
             ...state,
-            date: date,
+            highlighted: date,
             selected: selectDateMulti(state.selected, date),
           }
 
         case 'range':
           return {
             ...state,
-            date: date,
+            highlighted: date,
             selected: selectDateRange(state.selected, date),
           }
 
@@ -99,27 +99,27 @@ export function reducer(state: RepickState, action: Action): RepickState {
       }
     }
     case actionPrevDay: {
-      return { ...state, date: subDays(state.date, 1) }
+      return { ...state, highlighted: subDays(state.highlighted, 1) }
     }
     case actionNextDay: {
-      return { ...state, date: addDays(state.date, 1) }
+      return { ...state, highlighted: addDays(state.highlighted, 1) }
     }
     case actionPrevWeek: {
-      return { ...state, date: subDays(state.date, 7) }
+      return { ...state, highlighted: subDays(state.highlighted, 7) }
     }
     case actionNextWeek: {
-      return { ...state, date: addDays(state.date, 7) }
+      return { ...state, highlighted: addDays(state.highlighted, 7) }
     }
     case actionPrevMonth: {
-      return { ...state, date: subMonths(state.date, 1) }
+      return { ...state, highlighted: subMonths(state.highlighted, 1) }
     }
     case actionNextMonth: {
-      return { ...state, date: addMonths(state.date, 1) }
+      return { ...state, highlighted: addMonths(state.highlighted, 1) }
     }
     case actionStartOfWeek: {
       return {
         ...state,
-        date: startOfWeek(state.date, {
+        highlighted: startOfWeek(state.highlighted, {
           weekStartsOn: state.weekStartsOn,
         }),
       }
@@ -127,8 +127,8 @@ export function reducer(state: RepickState, action: Action): RepickState {
     case actionEndOfWeek: {
       return {
         ...state,
-        date: addDays(
-          startOfWeek(state.date, {
+        highlighted: addDays(
+          startOfWeek(state.highlighted, {
             weekStartsOn: state.weekStartsOn,
           }),
           6,

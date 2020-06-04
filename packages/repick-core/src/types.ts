@@ -11,7 +11,7 @@ export type RepickDayContext<E extends {}> = {
   nextMonth: boolean
   prevMonth: boolean
   selected: boolean
-  current: boolean
+  highlighted: boolean
   today: boolean
   disabled: boolean
 } & E
@@ -44,7 +44,7 @@ export type RepickCalendarContextGeneric<
 > = {
   mode: M
   selected: T
-  date: Date
+  highlighted: Date
   month: number
   monthLong: string
   monthShort: string
@@ -100,7 +100,7 @@ export interface RepickStateGeneric<
   T extends RepickModeType[M]
 > extends RepickOptions {
   mode: M
-  date: Date
+  highlighted: Date
   selected: T | null
 }
 
