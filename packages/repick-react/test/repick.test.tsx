@@ -1,52 +1,62 @@
-import '@testing-library/jest-dom/extend-expect'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import React from 'react'
-import Repick, {
-  Action,
-  buildCalendarContext,
+import { RepickProps, RepickReturnValue } from '../src/core/types'
+import { useDatePickerCore } from '../src/core'
+import {
   keyToAction,
-  RepickOptions,
-  RepickPropsSingle,
-  reducer,
-  RepickContextSingle,
   RepickState,
+  Action,
+  RepickOptions,
+  RepickDay,
+  RepickMonth,
 } from '../src'
 import { calendarFixture } from './fixtures/calendar'
-import { mapDays } from 'repick-core/src/utils'
+
 jest.mock('repick-core')
 
+const { mapDays } = jest.requireActual<{
+  mapDays<D extends RepickDay<{}>, R>(
+    months: RepickMonth<D>[],
+    callbackfn: (day: D) => R,
+  ): R[]
+}>('repick-core')
+
 const options: RepickOptions = {
-  weekStartsOn: 6,
+  weekStartsOn: 1,
 }
 
-function setup(
-  repickProps: RepickPropsSingle = {},
-  renderProp: (
-    context: RepickContextSingle,
-  ) => React.ReactElement | null = () => null,
-): [RepickContextSingle, RenderResult] {
-  const childProps: any = {}
-  const renderResult = render(
-    <Repick
-      {...repickProps}
-      render={(context: RepickContextSingle) => {
-        Object.assign(childProps, context)
-        return renderProp(context)
-      }}
-    />,
-  )
-
-  return [childProps!, renderResult]
-}
-
-const mockedBuildCalendar = buildCalendarContext as jest.Mock
-const mockedReducer = reducer as jest.Mock
+const mockedBuildCalendar = jest.fn()
+const mockedReducer = jest.fn()
 const mockedKeyToAction = keyToAction as jest.Mock
 
+function setup(
+  props: RepickProps<Date> = {},
+  renderContent: (
+    context: RepickReturnValue<Date, RepickDay<{}>>,
+  ) => React.ReactElement | null = () => null,
+): [RepickReturnValue<Date, RepickDay<{}>>, RenderResult] {
+  const result: any = {}
+
+  const Component = () => {
+    const hookResult = useDatePickerCore<Date, RepickDay<{}>>({
+      reducer: mockedReducer,
+      buildContext: mockedBuildCalendar,
+      ...props,
+    })
+
+    Object.assign(result, hookResult)
+
+    return renderContent(hookResult)
+  }
+
+  const renderResult = render(<Component />)
+
+  return [result!, renderResult]
+}
+
 describe('calendar', () => {
-  const state: RepickState = {
-    date: calendarFixture.date,
-    mode: 'single',
+  const state: RepickState<Date> = {
+    highlighted: calendarFixture.highlighted,
     selected: calendarFixture.selected,
   }
 
@@ -61,31 +71,30 @@ describe('calendar', () => {
   })
 
   it('object is passed', () => {
-    const [props] = setup({
-      initialDate: calendarFixture.date || undefined,
-      initialSelected: calendarFixture.selected || undefined,
-
+    const [result] = setup({
+      initialHighlighted: calendarFixture.highlighted,
+      initialSelected: calendarFixture.selected,
       ...options,
     })
 
     expect(mockedBuildCalendar).toHaveBeenCalledTimes(1)
     expect(mockedBuildCalendar).toHaveBeenCalledWith({ ...state, ...options })
 
-    expect(props.date).toEqual(calendarFixture.date)
-    expect(props.calendar).toEqual(calendarFixture.calendar)
-    expect(props.month).toEqual(calendarFixture.month)
-    expect(props.monthLong).toEqual(calendarFixture.monthLong)
-    expect(props.monthShort).toEqual(calendarFixture.monthShort)
-    expect(props.selected).toEqual(calendarFixture.selected)
-    expect(props.weekdays).toEqual(calendarFixture.weekdays)
-    expect(props.year).toEqual(calendarFixture.year)
+    expect(result.highlighted).toEqual(calendarFixture.highlighted)
+    expect(result.calendar).toEqual(calendarFixture.calendar)
+    expect(result.month).toEqual(calendarFixture.month)
+    expect(result.monthLong).toEqual(calendarFixture.monthLong)
+    expect(result.monthShort).toEqual(calendarFixture.monthShort)
+    expect(result.selected).toEqual(calendarFixture.selected)
+    expect(result.weekdays).toEqual(calendarFixture.weekdays)
+    expect(result.year).toEqual(calendarFixture.year)
   })
 
   it('date click dispatches correct action', () => {
     const [, view] = setup(
       {
-        initialDate: calendarFixture.date || undefined,
-        initialSelected: calendarFixture.selected || undefined,
+        initialHighlighted: calendarFixture.highlighted,
+        initialSelected: calendarFixture.selected,
       },
       ({ calendar, getDateProps }) => (
         <>
@@ -126,8 +135,8 @@ describe('calendar', () => {
   it('keyPress is handled correctly', () => {
     const [, view] = setup(
       {
-        date: calendarFixture.date || undefined,
-        selected: calendarFixture.selected || undefined,
+        highlighted: calendarFixture.highlighted,
+        selected: calendarFixture.selected,
       },
       ({ getCalendarProps }) => <div {...getCalendarProps()} />,
     )
@@ -168,8 +177,8 @@ describe('calendar', () => {
   it('prevMonth and nextMonth click dispatches correct action', () => {
     const [, view] = setup(
       {
-        initialDate: calendarFixture.date || undefined,
-        initialSelected: calendarFixture.selected || undefined,
+        initialHighlighted: calendarFixture.highlighted,
+        initialSelected: calendarFixture.selected,
       },
       ({ getPrevMonthProps, getNextMonthProps }) => (
         <>
@@ -196,53 +205,55 @@ it('dispatch', () => {
   const date = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
-  const state: RepickState = {
-    date,
-    mode: 'single',
+  const state: RepickState<Date> = {
+    highlighted: date,
     selected: null,
     ...options,
   }
 
   mockedBuildCalendar.mockImplementation(s => ({
-    date: s.date,
+    highlighted: s.highlighted,
     selected: s.selected,
   }))
 
   mockedReducer.mockReturnValue({
-    date: expected,
-    mode: 'single',
+    highlighted: expected,
     selected: expected,
   })
 
   const onChange = jest.fn()
 
-  const [props] = setup({ onChange, initialDate: date, ...options })
+  const [results] = setup({ onChange, initialHighlighted: date, ...options })
 
-  expect(props.date).toEqual(date)
-  expect(props.selected).toBeNull()
+  // console.log(results)
 
-  act(() => props.selectDate(expected))
+  expect(results.highlighted).toEqual(date)
+  expect(results.selected).toBeNull()
+
+  act(() => results.selectDate(expected))
 
   expect(mockedReducer).toHaveBeenCalledWith(state, {
     date: expected,
     type: 'SelectDate',
   })
 
-  expect(props.date).toEqual(expected)
-  expect(props.selected).toEqual(expected)
+  // console.log(results)
+
+  expect(results.highlighted).toEqual(expected)
+  expect(results.selected).toEqual(expected)
 
   expect(onChange).toHaveBeenCalledWith(expected)
 })
 
 describe('actions', () => {
-  const date = new Date('2018-01-01 00:00:00')
+  const highlighted = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
-  let props: RepickContextSingle
+  let results: RepickReturnValue<Date, RepickDay<{}>>
 
   beforeEach(() => {
-    props = setup({ date })[0]
-    mockedReducer.mockReturnValue({ date: expected, selected: expected })
+    results = setup({ highlighted })[0]
+    mockedReducer.mockReturnValue({ highlighted: expected, selected: expected })
   })
 
   afterEach(() => {
@@ -251,12 +262,12 @@ describe('actions', () => {
 
   const assertAction = (action: Action) => {
     expect(mockedReducer).toHaveBeenCalledWith(
-      { date, selected: null, mode: 'single' },
+      { highlighted, selected: null },
       action,
     )
   }
   it('selectDate', () => {
-    act(() => props.selectDate(expected))
+    act(() => results.selectDate(expected))
 
     assertAction({
       date: expected,
@@ -264,15 +275,15 @@ describe('actions', () => {
     })
   })
   it('selectCurrent', () => {
-    act(() => props.selectCurrent())
+    act(() => results.selectCurrent())
 
     assertAction({
-      type: 'SelectCurrent',
+      type: 'SelectHighlighted',
     })
   })
 
   it('prevDay', () => {
-    act(() => props.prevDay())
+    act(() => results.prevDay())
 
     assertAction({
       type: 'PrevDay',
@@ -280,7 +291,7 @@ describe('actions', () => {
   })
 
   it('nextDay', () => {
-    act(() => props.nextDay())
+    act(() => results.nextDay())
 
     assertAction({
       type: 'NextDay',
@@ -288,7 +299,7 @@ describe('actions', () => {
   })
 
   it('prevWeek', () => {
-    act(() => props.prevWeek())
+    act(() => results.prevWeek())
 
     assertAction({
       type: 'PrevWeek',
@@ -296,7 +307,7 @@ describe('actions', () => {
   })
 
   it('nextWeek', () => {
-    act(() => props.nextWeek())
+    act(() => results.nextWeek())
 
     assertAction({
       type: 'NextWeek',
@@ -304,7 +315,7 @@ describe('actions', () => {
   })
 
   it('prevMonth', () => {
-    act(() => props.prevMonth())
+    act(() => results.prevMonth())
 
     assertAction({
       type: 'PrevMonth',
@@ -312,7 +323,7 @@ describe('actions', () => {
   })
 
   it('nextMonth', () => {
-    act(() => props.nextMonth())
+    act(() => results.nextMonth())
 
     assertAction({
       type: 'NextMonth',
@@ -320,7 +331,7 @@ describe('actions', () => {
   })
 
   it('startOfWeek', () => {
-    act(() => props.startOfWeek())
+    act(() => results.startOfWeek())
 
     assertAction({
       type: 'StartOfWeek',
@@ -328,7 +339,7 @@ describe('actions', () => {
   })
 
   it('endOfWeek', () => {
-    act(() => props.endOfWeek())
+    act(() => results.endOfWeek())
 
     assertAction({
       type: 'EndOfWeek',

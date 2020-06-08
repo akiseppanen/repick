@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { mapDays, useRepick } from '../src'
+import { mapDays, useDatePicker } from '../src'
 import { ArrowLeft, ArrowRight } from './arrows'
 
 import './style.css'
@@ -12,6 +12,7 @@ export default {
 
 const Component: React.FunctionComponent = () => {
   const date = new Date('2018-01-01')
+
   const {
     calendar,
     selected,
@@ -22,7 +23,7 @@ const Component: React.FunctionComponent = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ weekStartsOn: 1, initialDate: date })
+  } = useDatePicker({ weekStartsOn: 1, initialHighlighted: date })
 
   return (
     <>

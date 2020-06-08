@@ -1,5 +1,5 @@
 export const actionSelectDate = 'SelectDate'
-export const actionSelectCurrent = 'SelectCurrent'
+export const actionSelectHighlighted = 'SelectHighlighted'
 export const actionPrevDay = 'PrevDay'
 export const actionNextDay = 'NextDay'
 export const actionPrevWeek = 'PrevWeek'
@@ -13,8 +13,8 @@ export interface ActionSelectDate {
   type: typeof actionSelectDate
   date: string | number | Date
 }
-export interface ActionSelectCurrent {
-  type: typeof actionSelectCurrent
+export interface ActionSelectHighlighted {
+  type: typeof actionSelectHighlighted
 }
 export interface ActionPrevDay {
   type: typeof actionPrevDay
@@ -43,7 +43,7 @@ export interface ActionEndOfWeek {
 
 export type Action =
   | ActionSelectDate
-  | ActionSelectCurrent
+  | ActionSelectHighlighted
   | ActionPrevDay
   | ActionNextDay
   | ActionPrevWeek

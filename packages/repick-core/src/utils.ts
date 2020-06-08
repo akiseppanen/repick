@@ -1,10 +1,16 @@
-import compareAsc from 'date-fns/compareAsc'
 import format from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
 import isSameDay from 'date-fns/isSameDay'
 import setDay from 'date-fns/setDay'
 
+import {
+  RepickDay,
+  RepickMonth,
+  RepickOptions,
+  RepickWeek,
+  Weekday,
+} from './core/types'
 import {
   Action,
   actionEndOfWeek,
@@ -14,16 +20,9 @@ import {
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
-  actionSelectCurrent,
+  actionSelectHighlighted,
   actionStartOfWeek,
 } from './actions'
-import {
-  RepickOptions,
-  Weekday,
-  RepickDayContext,
-  RepickMonthContext,
-  RepickWeekContext,
-} from './types'
 
 export const arrayGenerate = <A>(
   arrayLength: number,
@@ -64,7 +63,7 @@ export function keyToAction(key: string): Action | null {
       return { type: actionEndOfWeek }
     }
     case 'Enter': {
-      return { type: actionSelectCurrent }
+      return { type: actionSelectHighlighted }
     }
   }
 
@@ -127,27 +126,6 @@ export function assertNever(x: never): never {
   throw new Error('Unexpected object: ' + x)
 }
 
-export function selectDateSingle(selected: Date | null, date: Date) {
-  return selected !== null && isSameDay(selected, date) ? null : date
-}
-
-export function selectDateMulti(selected: Date[] | null, date: Date) {
-  return selected !== null
-    ? sort(compareAsc, toggleValue(isSameDay, selected, date))
-    : [date]
-}
-
-export function selectDateRange(
-  selected: [Date, Date?] | null,
-  date: Date,
-): [Date, Date?] {
-  return (selected === null ||
-  isSameDay(selected[0], date) ||
-  selected.length === 2
-    ? [date]
-    : sort(compareAsc, [...selected, date] as Date[])) as [Date, Date?]
-}
-
 export const emptyFn = <T>(e: T) => (): T => e
 
 export const dateIsSelectable = (
@@ -162,26 +140,26 @@ export const dateIsSelectable = (
     (!!maxDate && isBefore(maxDate, date))
   )
 
-function isRepickMonthContext(
-  monthOrWeek: RepickMonthContext<any> | RepickWeekContext<any>,
-): monthOrWeek is RepickMonthContext<any> {
+function isRepickMonthCore(
+  monthOrWeek: RepickMonth<any> | RepickWeek<any>,
+): monthOrWeek is RepickMonth<any> {
   return monthOrWeek.hasOwnProperty('weeks')
 }
 
-export function mapDays<D extends RepickDayContext<{}>, R>(
-  months: RepickMonthContext<D>[],
+export function mapDays<D extends RepickDay<{}>, R>(
+  months: RepickMonth<D>[],
   callbackfn: (day: D) => R,
 ): R[]
-export function mapDays<D extends RepickDayContext<{}>, R>(
-  weeks: RepickWeekContext<D>[],
+export function mapDays<D extends RepickDay<{}>, R>(
+  weeks: RepickWeek<D>[],
   callbackfn: (day: D) => R,
 ): R[]
-export function mapDays<D extends RepickDayContext<{}>, R>(
-  monthsOrWeeks: (RepickMonthContext<D> | RepickWeekContext<D>)[],
+export function mapDays<D extends RepickDay<{}>, R>(
+  monthsOrWeeks: (RepickMonth<D> | RepickWeek<D>)[],
   callbackfn: (day: D) => R,
 ): R[] {
   return monthsOrWeeks.reduce<R[]>((x, monthOrWeek) => {
-    if (isRepickMonthContext(monthOrWeek)) {
+    if (isRepickMonthCore(monthOrWeek)) {
       return [...x, ...mapDays(monthOrWeek.weeks, callbackfn)]
     }
 
@@ -189,9 +167,9 @@ export function mapDays<D extends RepickDayContext<{}>, R>(
   }, [])
 }
 
-export function mapWeeks<D extends RepickDayContext<{}>, R>(
-  months: RepickMonthContext<D>[],
-  callbackfn: (day: RepickWeekContext<D>) => R,
+export function mapWeeks<D extends RepickDay<{}>, R>(
+  months: RepickMonth<D>[],
+  callbackfn: (day: RepickWeek<D>) => R,
 ): R[] {
   return months.reduce<R[]>(
     (x, month) => [...x, ...month.weeks.map(callbackfn)],

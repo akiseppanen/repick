@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import Repick, { mapDays, RepickContextSingle } from '../src'
+import { DatePicker, mapDays } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -13,9 +13,9 @@ const Component = () => {
   const date = new Date('2018-01-01')
 
   return (
-    <Repick
+    <DatePicker
       weekStartsOn={1}
-      initialDate={date}
+      initialHighlighted={date}
       render={({
         calendar,
         selected,
@@ -26,7 +26,7 @@ const Component = () => {
         getPrevMonthProps,
         getNextMonthProps,
         getCalendarProps,
-      }: RepickContextSingle) => (
+      }) => (
         <>
           <input
             type="text"
