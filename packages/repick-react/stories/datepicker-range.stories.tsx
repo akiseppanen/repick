@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { mapDays, useRepick } from '../src'
+import { mapDays, useRangeDatePicker } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -22,7 +22,10 @@ const Component = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ mode: 'range', weekStartsOn: 1, initialHighlighted: date })
+  } = useRangeDatePicker({
+    weekStartsOn: 1,
+    initialHighlighted: date,
+  })
 
   return (
     <>
@@ -80,4 +83,4 @@ const Component = () => {
   )
 }
 
-export const ModeRange = () => <Component />
+export const DatePickerRange = () => <Component />

@@ -1,7 +1,6 @@
-import { RepickCalendarContextSingle } from 'repick-core'
+import { RepickContextSingle } from 'repick-core'
 
-export const calendarFixture: RepickCalendarContextSingle = {
-  mode: 'single',
+export const calendarFixture: RepickContextSingle = {
   highlighted: new Date('2017-12-31T22:00:00.000Z'),
   selected: new Date('2018-01-09T22:00:00.000Z'),
   month: 1,

@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { mapDays, useRepick } from '../src'
+import { mapDays, useMultiDatePicker } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -24,7 +24,10 @@ const Component = () => {
     getPrevMonthProps,
     getNextMonthProps,
     getCalendarProps,
-  } = useRepick({ mode: 'multi', weekStartsOn: 1, initialHighlighted: date })
+  } = useMultiDatePicker({
+    weekStartsOn: 1,
+    initialHighlighted: date,
+  })
 
   return (
     <>
@@ -80,4 +83,4 @@ const Component = () => {
   )
 }
 
-export const ModeMulti = () => <Component />
+export const DatePickerMulti = () => <Component />

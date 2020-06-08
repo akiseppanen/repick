@@ -2,78 +2,72 @@ import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
 import React, { useRef } from 'react'
 import {
-  buildCalendarContext,
+  Action,
   keyToAction,
-  reducer,
-  RepickDayContext,
-  RepickStateGeneric,
+  RepickContext,
+  RepickDay,
+  RepickState,
 } from 'repick-core'
+
 import { useControllableReducer } from './use-controllable-reducer'
 import {
-  RepickPropsSingle,
-  RepickPropsMulti,
-  RepickPropsRange,
   RepickProps,
-  RepickContextSingle,
-  RepickContextMulti,
-  RepickContextRange,
-  RepickContext,
-  RepickPropsGeneric,
+  RepickReturnValue,
   CalendarProps,
   MonthProps,
   DateProps,
-  RepickPropsWithChildren,
 } from './types'
 
-const first = <T>(valueOrArray: T | T[]): T =>
-  valueOrArray instanceof Array ? valueOrArray[0] : valueOrArray
-
-const initializeState = (props: RepickPropsGeneric<any, any>) => ({
-  highlighted:
-    props.highlighted ||
-    first(props.selected) ||
-    props.initialHighlighted ||
-    first(props.initialSelected) ||
-    startOfDay(new Date()),
-  mode: props.mode || 'single',
-  selected: props.selected || props.initialSelected || null,
-})
-
-function getControlledProps(
-  props: RepickPropsGeneric<any, any>,
-): Partial<RepickStateGeneric<any, any>> {
-  return {
-    highlighted: props.highlighted,
-    locale: props.locale,
-    mode: props.mode,
-    selected: props.selected,
-    weekStartsOn: props.weekStartsOn,
-    filterDates: props.filterDates,
-    disabledDates: props.disabledDates,
-    enabledDates: props.enabledDates,
-    minDate: props.minDate,
-    maxDate: props.maxDate,
-    monthCount: props.monthCount,
-  }
+export type RepickCoreDeps<Selected, DayContext extends RepickDay<any>> = {
+  reducer: (
+    state: RepickState<Selected>,
+    action: Action,
+  ) => RepickState<Selected>
+  buildContext: (
+    state: RepickState<Selected>,
+  ) => RepickContext<Selected, DayContext>
 }
 
-function handleChange(
-  props: RepickPropsGeneric<any, any>,
-  oldState: RepickStateGeneric<any, any>,
-  newState: RepickStateGeneric<any, any>,
-) {
-  if (props.onChange && oldState.selected !== newState.selected) {
-    props.onChange(newState.selected)
-  }
-  if (props.onUpdate && oldState.highlighted !== newState.highlighted) {
-    props.onUpdate(newState.highlighted)
-  }
-}
+export type RepickPropsWithCoreDeps<
+  Selected,
+  DayContext extends RepickDay<any>
+> = RepickProps<Selected> & RepickCoreDeps<Selected, DayContext>
 
-export function useRepick(props: RepickPropsSingle): RepickContextSingle
-export function useRepick(props: RepickPropsMulti): RepickContextMulti
-export function useRepick(props: RepickPropsRange): RepickContextRange
-export function useRepick(props: RepickProps): RepickContext {
+export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
+  buildContext,
+  reducer,
+  ...props
+}: RepickPropsWithCoreDeps<Selected, DayContext>): RepickReturnValue<
+  Selected,
+  DayContext
+> {
+  function initializeState(
+    props: RepickProps<Selected>,
+  ): RepickState<Selected> {
+    return {
+      highlighted:
+        props.highlighted || props.initialHighlighted || startOfDay(new Date()),
+      selected: props.selected || props.initialSelected || null,
+    }
+  }
+
+  function getControlledProps(
+    props: RepickProps<Selected>,
+  ): Partial<RepickState<Selected>> {
+    return {
+      highlighted: props.highlighted,
+      locale: props.locale,
+      selected: props.selected,
+      weekStartsOn: props.weekStartsOn,
+      filterDates: props.filterDates,
+      disabledDates: props.disabledDates,
+      enabledDates: props.enabledDates,
+      minDate: props.minDate,
+      maxDate: props.maxDate,
+      monthCount: props.monthCount,
+    }
+  }
+
   const hasFocusRef = useRef<boolean>(false)
   const calendarRef = useRef<HTMLElement>()
   const dateRefs: Record<string, HTMLElement> = {}
@@ -84,7 +78,12 @@ export function useRepick(props: RepickProps): RepickContext {
     initializeState,
     getControlledProps,
     (oldState, newState) => {
-      handleChange(props, oldState, newState)
+      if (props.onChange && oldState.selected !== newState.selected) {
+        props.onChange(newState.selected)
+      }
+      if (props.onUpdate && oldState.highlighted !== newState.highlighted) {
+        props.onUpdate(newState.highlighted)
+      }
     },
   )
 
@@ -189,7 +188,7 @@ export function useRepick(props: RepickProps): RepickContext {
     }
   }
 
-  const getDateProps = (calendarDay: RepickDayContext<any>): DateProps => {
+  const getDateProps = (calendarDay: RepickDay<any>): DateProps => {
     return {
       onClick: e => {
         e.preventDefault()
@@ -207,7 +206,7 @@ export function useRepick(props: RepickProps): RepickContext {
     }
   }
 
-  const context = buildCalendarContext(state)
+  const context = buildContext(state)
 
   return {
     ...context,
@@ -231,13 +230,3 @@ export function useRepick(props: RepickProps): RepickContext {
     setFocusToDate,
   }
 }
-
-export function Repick(props: RepickPropsWithChildren) {
-  const { render, ...hookProps } = props
-
-  const context = useRepick(hookProps as any)
-
-  return render(context as any)
-}
-
-export default Repick
