@@ -4,9 +4,12 @@ import { reducerSingle, buildContextSingle, RepickDaySingle } from 'repick-core'
 import { RepickProps, RepickReturnValue } from './core/types'
 import { useDatePickerCore } from './core'
 
-type RepickPropsSingle = RepickProps<Date>
+export type RepickPropsSingle = RepickProps<Date>
+export type RepickReturnValueSingle = RepickReturnValue<Date, RepickDaySingle>
 
-export const useDatePicker = (props: RepickPropsSingle) => {
+export const useDatePicker = (
+  props: RepickPropsSingle,
+): RepickReturnValueSingle => {
   return useDatePickerCore({
     ...props,
     buildContext: buildContextSingle,
@@ -16,9 +19,7 @@ export const useDatePicker = (props: RepickPropsSingle) => {
 
 export function DatePicker(
   props: RepickPropsSingle & {
-    render: (
-      props: RepickReturnValue<Date, RepickDaySingle>,
-    ) => ReactElement | null
+    render: (props: RepickReturnValueSingle) => ReactElement | null
   },
 ) {
   const { render, ...hookProps } = props

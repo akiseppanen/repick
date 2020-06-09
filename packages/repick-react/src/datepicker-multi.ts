@@ -4,9 +4,12 @@ import { reducerMulti, buildContextMulti, RepickDayMulti } from 'repick-core'
 import { RepickProps, RepickReturnValue } from './core/types'
 import { useDatePickerCore } from './core'
 
-type RepickPropsMulti = RepickProps<Date[]>
+export type RepickPropsMulti = RepickProps<Date[]>
+export type RepickReturnValueMulti = RepickReturnValue<Date[], RepickDayMulti>
 
-export const useMultiDatePicker = (props: RepickPropsMulti) => {
+export const useMultiDatePicker = (
+  props: RepickProps<Date[]>,
+): RepickReturnValueMulti => {
   return useDatePickerCore({
     ...props,
     buildContext: buildContextMulti,
@@ -16,9 +19,7 @@ export const useMultiDatePicker = (props: RepickPropsMulti) => {
 
 export function MultiDatePicker(
   props: RepickPropsMulti & {
-    render: (
-      props: RepickReturnValue<Date[], RepickDayMulti>,
-    ) => ReactElement | null
+    render: (props: RepickReturnValueMulti) => ReactElement | null
   },
 ) {
   const { render, ...hookProps } = props
