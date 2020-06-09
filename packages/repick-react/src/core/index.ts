@@ -233,6 +233,8 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
     nextWeek: () => dispatch({ type: actionNextWeek }),
     prevMonth: () => dispatch({ type: actionPrevMonth }),
     nextMonth: () => dispatch({ type: actionNextMonth }),
+    prevYear: () => dispatch({ type: 'PrevYear' }),
+    nextYear: () => dispatch({ type: 'NextYear' }),
     startOfWeek: () => dispatch({ type: actionStartOfWeek }),
     endOfWeek: () => dispatch({ type: actionEndOfWeek }),
     getCalendarProps,

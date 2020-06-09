@@ -333,6 +333,22 @@ describe('actions', () => {
     })
   })
 
+  it('prevYear', () => {
+    act(() => results.prevYear())
+
+    assertAction({
+      type: 'PrevYear',
+    })
+  })
+
+  it('nextYear', () => {
+    act(() => results.nextYear())
+
+    assertAction({
+      type: 'NextYear',
+    })
+  })
+
   it('startOfWeek', () => {
     act(() => results.startOfWeek())
 

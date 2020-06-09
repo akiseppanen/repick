@@ -7,6 +7,8 @@ export const actionPrevWeek = 'PrevWeek'
 export const actionNextWeek = 'NextWeek'
 export const actionPrevMonth = 'PrevMonth'
 export const actionNextMonth = 'NextMonth'
+export const actionPrevYear = 'PrevYear'
+export const actionNextYear = 'NextYear'
 export const actionStartOfWeek = 'StartOfWeek'
 export const actionEndOfWeek = 'EndOfWeek'
 
@@ -19,6 +21,8 @@ export const actionKeyPageUp = 'KeyPageUp'
 export const actionKeyHome = 'KeyHome'
 export const actionKeyEnd = 'KeyEnd'
 export const actionKeyEnter = 'KeyEnter'
+export const actionKeyShiftPageDown = 'KeyShiftPageDown'
+export const actionKeyShiftPageUp = 'KeyShiftPageUp'
 
 export interface ActionKeyArrowLeft {
   type: typeof actionKeyArrowLeft
@@ -56,6 +60,14 @@ export interface ActionKeyEnter {
   type: typeof actionKeyEnter
 }
 
+export interface ActionKeyShiftPageDown {
+  type: typeof actionKeyShiftPageDown
+}
+
+export interface ActionKeyShiftPageUp {
+  type: typeof actionKeyShiftPageUp
+}
+
 export interface ActionDateClick {
   type: typeof actionDateClick
   date: Date
@@ -86,6 +98,12 @@ export interface ActionPrevMonth {
 export interface ActionNextMonth {
   type: typeof actionNextMonth
 }
+export interface ActionPrevYear {
+  type: typeof actionPrevYear
+}
+export interface ActionNextYear {
+  type: typeof actionNextYear
+}
 export interface ActionStartOfWeek {
   type: typeof actionStartOfWeek
 }
@@ -103,6 +121,8 @@ export type RepickAction =
   | ActionKeyHome
   | ActionKeyEnd
   | ActionKeyEnter
+  | ActionKeyShiftPageDown
+  | ActionKeyShiftPageUp
   | ActionDateClick
   | ActionSelectDate
   | ActionSelectHighlighted
@@ -112,5 +132,7 @@ export type RepickAction =
   | ActionNextWeek
   | ActionPrevMonth
   | ActionNextMonth
+  | ActionPrevYear
+  | ActionNextYear
   | ActionStartOfWeek
   | ActionEndOfWeek

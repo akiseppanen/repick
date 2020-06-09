@@ -1,22 +1,25 @@
 import addDays from 'date-fns/addDays'
 import addMonths from 'date-fns/addMonths'
+import addYears from 'date-fns/addYears'
 import setDay from 'date-fns/setDay'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
+import subYears from 'date-fns/subYears'
 
 import {
-  RepickAction,
+  actionDateClick,
   actionEndOfWeek,
   actionNextDay,
   actionNextMonth,
   actionNextWeek,
+  actionNextYear,
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
-  actionSelectHighlighted,
+  actionPrevYear,
   actionSelectDate,
+  actionSelectHighlighted,
   actionStartOfWeek,
-  actionDateClick,
   actionKeyArrowLeft,
   actionKeyArrowRight,
   actionKeyArrowUp,
@@ -26,6 +29,9 @@ import {
   actionKeyHome,
   actionKeyEnd,
   actionKeyEnter,
+  actionKeyShiftPageUp,
+  actionKeyShiftPageDown,
+  RepickAction,
 } from '../actions'
 import { RepickState } from './types'
 import { dateIsSelectable, wrapWeekDay } from '../utils'
@@ -131,6 +137,16 @@ export function reducer<State extends RepickState<any>>(
             },
           ),
         } as Partial<State>
+      }
+
+      case actionKeyShiftPageDown:
+      case actionPrevYear: {
+        return { highlighted: subYears(state.highlighted, 1) } as Partial<State>
+      }
+
+      case actionKeyShiftPageUp:
+      case actionNextYear: {
+        return { highlighted: addYears(state.highlighted, 1) } as Partial<State>
       }
 
       default: {

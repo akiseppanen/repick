@@ -54,6 +54,10 @@ describe('reducerGeneric', () => {
     })
   }
 
+  afterEach(() => {
+    mockedStateReducer.mockClear()
+  })
+
   it('StateReducer', () => {
     const inputDate = new Date('2018-01-10 12:00:00')
     const expectedDate = new Date('2018-01-10 00:00:00')
@@ -265,6 +269,28 @@ describe('reducerGeneric', () => {
       },
       {
         highlighted: new Date('2018-01-06 00:00:00'),
+      },
+    )
+  })
+
+  it('Shift + PageDown', () => {
+    assertAction(
+      {
+        type: 'KeyShiftPageDown',
+      },
+      {
+        highlighted: new Date('2017-01-01 00:00:00'),
+      },
+    )
+  })
+
+  it('Shift + PageUp', () => {
+    assertAction(
+      {
+        type: 'KeyShiftPageUp',
+      },
+      {
+        highlighted: new Date('2019-01-01 00:00:00'),
       },
     )
   })
