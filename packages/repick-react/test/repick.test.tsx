@@ -5,10 +5,10 @@ import { useDatePickerCore } from '../src/core'
 import {
   keyToAction,
   RepickState,
-  Action,
   RepickOptions,
   RepickDay,
   RepickMonth,
+  RepickAction,
 } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
@@ -24,10 +24,10 @@ const { mapDays } = jest.requireActual<{
 const options: RepickOptions = {
   weekStartsOn: 1,
 }
-
+const mockedKeyToAction = keyToAction as jest.Mock
 const mockedBuildCalendar = jest.fn()
 const mockedReducer = jest.fn()
-const mockedKeyToAction = keyToAction as jest.Mock
+const mockedReducerInitializer = jest.fn(() => mockedReducer)
 
 function setup(
   props: RepickProps<Date> = {},
@@ -39,7 +39,7 @@ function setup(
 
   const Component = () => {
     const hookResult = useDatePickerCore<Date, RepickDay<{}>>({
-      reducer: mockedReducer,
+      reducer: mockedReducerInitializer,
       buildContext: mockedBuildCalendar,
       ...props,
     })
@@ -90,6 +90,17 @@ describe('calendar', () => {
     expect(result.year).toEqual(calendarFixture.year)
   })
 
+  it('stateReducer is passed correctly', () => {
+    const stateReducer = jest.fn()
+
+    setup({
+      stateReducer,
+      ...options,
+    })
+
+    expect(mockedReducerInitializer).toHaveBeenCalledWith(stateReducer)
+  })
+
   it('date click dispatches correct action', () => {
     const [, view] = setup(
       {
@@ -118,17 +129,17 @@ describe('calendar', () => {
 
     expect(mockedReducer).toHaveBeenNthCalledWith(1, state, {
       date: calendar[0].weeks[1].days[3].date,
-      type: 'SelectDate',
+      type: 'DateClick',
     })
 
     expect(mockedReducer).toHaveBeenNthCalledWith(2, state, {
       date: calendar[0].weeks[2].days[6].date,
-      type: 'SelectDate',
+      type: 'DateClick',
     })
 
     expect(mockedReducer).toHaveBeenNthCalledWith(3, state, {
       date: calendar[0].weeks[4].days[2].date,
-      type: 'SelectDate',
+      type: 'DateClick',
     })
   })
 
@@ -223,9 +234,11 @@ it('dispatch', () => {
 
   const onChange = jest.fn()
 
-  const [results] = setup({ onChange, initialHighlighted: date, ...options })
-
-  // console.log(results)
+  const [results] = setup({
+    onChange,
+    initialHighlighted: date,
+    ...options,
+  })
 
   expect(results.highlighted).toEqual(date)
   expect(results.selected).toBeNull()
@@ -236,8 +249,6 @@ it('dispatch', () => {
     date: expected,
     type: 'SelectDate',
   })
-
-  // console.log(results)
 
   expect(results.highlighted).toEqual(expected)
   expect(results.selected).toEqual(expected)
@@ -260,7 +271,7 @@ describe('actions', () => {
     mockedReducer.mockReset()
   })
 
-  const assertAction = (action: Action) => {
+  const assertAction = (action: RepickAction) => {
     expect(mockedReducer).toHaveBeenCalledWith(
       { highlighted, selected: null },
       action,

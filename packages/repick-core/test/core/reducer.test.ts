@@ -1,6 +1,10 @@
-import { reducer as reducerCore } from '../../src/core/reducer'
+import {
+  reducer as reducerCore,
+  RepickStateChangeOptions,
+} from '../../src/core/reducer'
 import { RepickOptions, RepickState } from '../../src/core/types'
-import { dateIsSelectable } from '../../src/utils'
+import { dateIsSelectable, wrapWeekDay } from '../../src/utils'
+import { RepickAction, ActionSelectDate } from '../../src/actions'
 
 jest.mock('../../src/utils')
 
@@ -8,6 +12,10 @@ const mockedDateIsSelectable = dateIsSelectable as jest.Mock<
   boolean,
   [RepickOptions, Date]
 >
+const mockedWrapWeekDay = wrapWeekDay as jest.Mock<number, [number]>
+mockedWrapWeekDay.mockImplementation(
+  jest.requireActual('../../src/utils').wrapWeekDay,
+)
 
 describe('reducerGeneric', () => {
   const selected = new Date('2018-01-05 00:00:00')
@@ -19,10 +27,62 @@ describe('reducerGeneric', () => {
   }
 
   const mockedSelectDate = jest.fn<Date, [Date | null, Date]>()
-  const reducer = reducerCore<RepickState<Date>>(mockedSelectDate)
+  const mockedStateReducer = jest.fn<
+    RepickState<Date>,
+    [RepickState<Date>, RepickStateChangeOptions<Date>]
+  >((state, { changes }) => ({
+    ...state,
+    ...changes,
+  }))
+  const reducer = reducerCore<RepickState<Date>>(mockedSelectDate)(
+    mockedStateReducer,
+  )
 
-  beforeEach(() => {
-    mockedDateIsSelectable.mockReturnValue(true)
+  mockedDateIsSelectable.mockReturnValue(true)
+
+  const assertAction = (
+    action: RepickAction,
+    expectedChanges: Partial<RepickState<Date>>,
+  ) => {
+    const newState = reducer(state, action)
+
+    expect(newState).toEqual({ ...state, ...expectedChanges })
+
+    expect(mockedStateReducer).toHaveBeenCalledWith(state, {
+      action,
+      changes: expectedChanges,
+    })
+  }
+
+  it('StateReducer', () => {
+    const inputDate = new Date('2018-01-10 12:00:00')
+    const expectedDate = new Date('2018-01-10 00:00:00')
+    const expected = {
+      highlighted: expectedDate,
+      selected: expectedDate,
+    }
+    const action: ActionSelectDate = {
+      date: inputDate,
+      type: 'SelectDate',
+    }
+
+    mockedSelectDate.mockReturnValue(inputDate)
+    mockedStateReducer.mockReturnValueOnce(expected)
+
+    const newState = reducer(state, action)
+
+    expect(newState).toEqual({
+      ...state,
+      ...expected,
+    })
+
+    expect(mockedStateReducer).toHaveBeenCalledWith(state, {
+      action,
+      changes: {
+        highlighted: inputDate,
+        selected: inputDate,
+      },
+    })
   })
 
   it('SelectDate', () => {
@@ -30,145 +90,282 @@ describe('reducerGeneric', () => {
 
     mockedSelectDate.mockReturnValue(expectedDate)
 
-    const newState = reducer(state, {
-      date: expectedDate,
-      type: 'SelectDate',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: expectedDate,
-      selected: expectedDate,
-    })
+    assertAction(
+      {
+        date: expectedDate,
+        type: 'SelectDate',
+      },
+      {
+        highlighted: expectedDate,
+        selected: expectedDate,
+      },
+    )
 
     expect(mockedSelectDate).toHaveBeenCalledWith(selected, expectedDate)
   })
 
   it('SelectDate: unselectable', () => {
-    mockedDateIsSelectable.mockReturnValue(false)
+    mockedDateIsSelectable.mockReturnValueOnce(false)
 
     const date = new Date('2018-01-05 00:00:00')
 
-    const newState = reducer(state, {
-      date: date,
-      type: 'SelectDate',
-    })
+    assertAction(
+      {
+        date: date,
+        type: 'SelectDate',
+      },
+      {},
+    )
+    expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, date)
+  })
 
-    expect(newState).toEqual(state)
+  it('DateClick', () => {
+    const expectedDate = new Date('2018-01-10 00:00:00')
+
+    mockedSelectDate.mockReturnValue(expectedDate)
+
+    assertAction(
+      {
+        date: expectedDate,
+        type: 'DateClick',
+      },
+      {
+        highlighted: expectedDate,
+        selected: expectedDate,
+      },
+    )
+
+    expect(mockedSelectDate).toHaveBeenCalledWith(selected, expectedDate)
+  })
+
+  it('DateClick: unselectable', () => {
+    mockedDateIsSelectable.mockReturnValueOnce(false)
+
+    const date = new Date('2018-01-05 00:00:00')
+
+    assertAction(
+      {
+        date: date,
+        type: 'DateClick',
+      },
+      {},
+    )
     expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, date)
   })
 
   it('SelectHighlighted', () => {
     mockedSelectDate.mockReturnValue(highlighted)
 
-    const newState = reducer(state, {
-      type: 'SelectHighlighted',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      selected: highlighted,
-    })
+    assertAction(
+      {
+        type: 'SelectHighlighted',
+      },
+      {
+        highlighted,
+        selected: highlighted,
+      },
+    )
 
     expect(mockedSelectDate).toHaveBeenCalledWith(selected, highlighted)
   })
 
   it('SelectHighlighted: unselectable', () => {
-    mockedDateIsSelectable.mockReturnValue(false)
+    mockedDateIsSelectable.mockReturnValueOnce(false)
 
-    const newState = reducer(state, {
-      type: 'SelectHighlighted',
-    })
-
-    expect(newState).toEqual(state)
+    assertAction(
+      {
+        type: 'SelectHighlighted',
+      },
+      {},
+    )
     expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, highlighted)
   })
 
-  it('PrevDay', () => {
-    const newState = reducer(state, {
-      type: 'PrevDay',
-    })
+  it('ArrowLeft', () => {
+    assertAction(
+      {
+        type: 'KeyArrowLeft',
+      },
+      {
+        highlighted: new Date('2017-12-31 00:00:00'),
+      },
+    )
+  })
 
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2017-12-31 00:00:00'),
-    })
+  it('ArrowRight', () => {
+    assertAction(
+      {
+        type: 'KeyArrowRight',
+      },
+      {
+        highlighted: new Date('2018-01-02 00:00:00'),
+      },
+    )
+  })
+
+  it('ArrowUp', () => {
+    assertAction(
+      {
+        type: 'KeyArrowUp',
+      },
+      {
+        highlighted: new Date('2017-12-25 00:00:00'),
+      },
+    )
+  })
+
+  it('ArrowDown', () => {
+    assertAction(
+      {
+        type: 'KeyArrowDown',
+      },
+      {
+        highlighted: new Date('2018-01-08 00:00:00'),
+      },
+    )
+  })
+
+  it('PageDown', () => {
+    assertAction(
+      {
+        type: 'KeyPageDown',
+      },
+      {
+        highlighted: new Date('2017-12-01 00:00:00'),
+      },
+    )
+  })
+
+  it('PageUp', () => {
+    assertAction(
+      {
+        type: 'KeyPageUp',
+      },
+      {
+        highlighted: new Date('2018-02-01 00:00:00'),
+      },
+    )
+  })
+
+  it('Home', () => {
+    assertAction(
+      {
+        type: 'KeyHome',
+      },
+      {
+        highlighted: new Date('2017-12-31 00:00:00'),
+      },
+    )
+  })
+
+  it('End', () => {
+    assertAction(
+      {
+        type: 'KeyEnd',
+      },
+      {
+        highlighted: new Date('2018-01-06 00:00:00'),
+      },
+    )
+  })
+
+  it('PrevDay', () => {
+    assertAction(
+      {
+        type: 'PrevDay',
+      },
+      {
+        highlighted: new Date('2017-12-31 00:00:00'),
+      },
+    )
+  })
+
+  it('KeyEnter', () => {
+    assertAction(
+      {
+        type: 'KeyEnter',
+      },
+      {
+        selected: highlighted,
+        highlighted,
+      },
+    )
   })
 
   it('NextDay', () => {
-    const newState = reducer(state, {
-      type: 'NextDay',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2018-01-02 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'NextDay',
+      },
+      {
+        highlighted: new Date('2018-01-02 00:00:00'),
+      },
+    )
   })
 
   it('PrevWeek', () => {
-    const newState = reducer(state, {
-      type: 'PrevWeek',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2017-12-25 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'PrevWeek',
+      },
+      {
+        highlighted: new Date('2017-12-25 00:00:00'),
+      },
+    )
   })
 
   it('NextWeek', () => {
-    const newState = reducer(state, {
-      type: 'NextWeek',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2018-01-08 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'NextWeek',
+      },
+      {
+        highlighted: new Date('2018-01-08 00:00:00'),
+      },
+    )
   })
 
   it('PrevMonth', () => {
-    const newState = reducer(state, {
-      type: 'PrevMonth',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2017-12-01 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'PrevMonth',
+      },
+      {
+        highlighted: new Date('2017-12-01 00:00:00'),
+      },
+    )
   })
 
   it('NextMonth', () => {
-    const newState = reducer(state, {
-      type: 'NextMonth',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2018-02-01 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'NextMonth',
+      },
+      {
+        highlighted: new Date('2018-02-01 00:00:00'),
+      },
+    )
   })
 
   it('StartOfWeek', () => {
-    const newState = reducer(state, {
-      type: 'StartOfWeek',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2017-12-31 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'StartOfWeek',
+      },
+      {
+        highlighted: new Date('2017-12-31 00:00:00'),
+      },
+    )
   })
 
   it('EndOfWeek', () => {
-    const newState = reducer(state, {
-      type: 'EndOfWeek',
-    })
-
-    expect(newState).toEqual({
-      ...state,
-      highlighted: new Date('2018-01-06 00:00:00'),
-    })
+    assertAction(
+      {
+        type: 'EndOfWeek',
+      },
+      {
+        highlighted: new Date('2018-01-06 00:00:00'),
+      },
+    )
   })
 })

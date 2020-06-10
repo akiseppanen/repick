@@ -1,5 +1,4 @@
-// export { reducer } from './reducer'
-// export { buildCalendarContext } from './calendar'
+export { RepickStateReducer } from './core/reducer'
 export * from './core/types'
 export * from './actions'
 export * from './datepicker-multi'

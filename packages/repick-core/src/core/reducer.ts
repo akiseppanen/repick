@@ -1,11 +1,11 @@
 import addDays from 'date-fns/addDays'
 import addMonths from 'date-fns/addMonths'
-import startOfWeek from 'date-fns/startOfWeek'
+import setDay from 'date-fns/setDay'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 
 import {
-  Action,
+  RepickAction,
   actionEndOfWeek,
   actionNextDay,
   actionNextMonth,
@@ -16,13 +16,33 @@ import {
   actionSelectHighlighted,
   actionSelectDate,
   actionStartOfWeek,
+  actionDateClick,
+  actionKeyArrowLeft,
+  actionKeyArrowRight,
+  actionKeyArrowUp,
+  actionKeyArrowDown,
+  actionKeyPageDown,
+  actionKeyPageUp,
+  actionKeyHome,
+  actionKeyEnd,
+  actionKeyEnter,
 } from '../actions'
 import { RepickState } from './types'
-import { dateIsSelectable } from '../utils'
+import { dateIsSelectable, wrapWeekDay } from '../utils'
 
 type RepickStateSelected<
   State extends RepickState<any>
 > = State extends RepickState<infer Selected> ? Selected : never
+
+export type RepickStateChangeOptions<Selected> = {
+  action: RepickAction
+  changes: Partial<RepickState<Selected>>
+}
+
+export type RepickStateReducer<State extends RepickState<any>> = (
+  state: State,
+  actionAndChanges: RepickStateChangeOptions<RepickStateSelected<State>>,
+) => State
 
 export function reducer<State extends RepickState<any>>(
   selectDate: (
@@ -30,72 +50,87 @@ export function reducer<State extends RepickState<any>>(
     date: Date,
   ) => RepickStateSelected<State> | null,
 ) {
-  return function (state: State, action: Action): State {
+  function reducer(state: State, action: RepickAction): Partial<State> {
     switch (action.type) {
+      case actionDateClick:
       case actionSelectDate: {
         const date =
           action.date instanceof Date ? action.date : new Date(action.date)
 
         if (!dateIsSelectable(state, date)) {
-          return state
+          return {}
         }
 
         return {
-          ...state,
           highlighted: date,
           selected: selectDate(state.selected, date),
-        }
+        } as Partial<State>
       }
 
+      case actionKeyEnter:
       case actionSelectHighlighted: {
-        const date = state.highlighted
-
-        if (!dateIsSelectable(state, date)) {
-          return state
+        if (!dateIsSelectable(state, state.highlighted)) {
+          return {}
         }
 
         return {
-          ...state,
-          highlighted: date,
-          selected: selectDate(state.selected, date),
-        }
+          highlighted: state.highlighted,
+          selected: selectDate(state.selected, state.highlighted),
+        } as Partial<State>
       }
+
+      case actionKeyArrowLeft:
       case actionPrevDay: {
-        return { ...state, highlighted: subDays(state.highlighted, 1) }
+        return {
+          highlighted: subDays(state.highlighted, 1),
+        } as Partial<State>
       }
+      case actionKeyArrowRight:
       case actionNextDay: {
-        return { ...state, highlighted: addDays(state.highlighted, 1) }
+        return { highlighted: addDays(state.highlighted, 1) } as Partial<State>
       }
+      case actionKeyArrowUp:
       case actionPrevWeek: {
-        return { ...state, highlighted: subDays(state.highlighted, 7) }
+        return { highlighted: subDays(state.highlighted, 7) } as Partial<State>
       }
+      case actionKeyArrowDown:
       case actionNextWeek: {
-        return { ...state, highlighted: addDays(state.highlighted, 7) }
+        return { highlighted: addDays(state.highlighted, 7) } as Partial<State>
       }
+      case actionKeyPageDown:
       case actionPrevMonth: {
-        return { ...state, highlighted: subMonths(state.highlighted, 1) }
+        return { highlighted: subMonths(state.highlighted, 1) } as Partial<
+          State
+        >
       }
+      case actionKeyPageUp:
       case actionNextMonth: {
-        return { ...state, highlighted: addMonths(state.highlighted, 1) }
+        return { highlighted: addMonths(state.highlighted, 1) } as Partial<
+          State
+        >
       }
+      case actionKeyHome:
       case actionStartOfWeek: {
         return {
-          ...state,
-          highlighted: startOfWeek(state.highlighted, {
+          highlighted: setDay(state.highlighted, state.weekStartsOn || 0, {
+            locale: state.locale,
             weekStartsOn: state.weekStartsOn,
           }),
-        }
+        } as Partial<State>
       }
+
+      case actionKeyEnd:
       case actionEndOfWeek: {
         return {
-          ...state,
-          highlighted: addDays(
-            startOfWeek(state.highlighted, {
+          highlighted: setDay(
+            state.highlighted,
+            wrapWeekDay((state.weekStartsOn || 0) + 6),
+            {
+              locale: state.locale,
               weekStartsOn: state.weekStartsOn,
-            }),
-            6,
+            },
           ),
-        }
+        } as Partial<State>
       }
 
       default: {
@@ -104,8 +139,15 @@ export function reducer<State extends RepickState<any>>(
       }
     }
   }
-}
 
-// export const reducerSingle = reducerGeneric<RepickStateSingle>(selectDateSingle)
-// export const reducerMulti = reducerGeneric<RepickStateMulti>(selectDateMulti)
-// export const reducerRange = reducerGeneric<RepickStateRange>(selectDateRange)
+  return (
+    stateReducer: RepickStateReducer<State> | undefined = (
+      state,
+      { changes },
+    ) => ({ ...state, ...changes }),
+  ) => (state: State, action: RepickAction) => {
+    const changes = reducer(state, action)
+
+    return stateReducer(state, { action, changes })
+  }
+}

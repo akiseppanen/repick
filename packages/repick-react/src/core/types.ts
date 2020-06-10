@@ -1,4 +1,10 @@
-import { RepickOptions, RepickContext, RepickDay } from 'repick-core'
+import {
+  RepickContext,
+  RepickDay,
+  RepickOptions,
+  RepickState,
+  RepickStateReducer,
+} from 'repick-core'
 
 export type RepickProps<Selected> = {
   autoFocus?: boolean
@@ -8,6 +14,7 @@ export type RepickProps<Selected> = {
   initialHighlighted?: Date
   selected?: Selected | null
   initialSelected?: Selected
+  stateReducer?: RepickStateReducer<RepickState<Selected>>
 } & RepickOptions
 
 export type CalendarProps = {

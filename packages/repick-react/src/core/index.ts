@@ -2,11 +2,23 @@ import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
 import React, { useRef } from 'react'
 import {
-  Action,
+  actionDateClick,
+  actionEndOfWeek,
+  actionNextDay,
+  actionNextMonth,
+  actionNextWeek,
+  actionPrevDay,
+  actionPrevMonth,
+  actionPrevWeek,
+  actionSelectDate,
+  actionSelectHighlighted,
+  actionStartOfWeek,
   keyToAction,
+  RepickAction,
   RepickContext,
   RepickDay,
   RepickState,
+  RepickStateReducer,
 } from 'repick-core'
 
 import { useControllableReducer } from './use-controllable-reducer'
@@ -20,8 +32,10 @@ import {
 
 export type RepickCoreDeps<Selected, DayContext extends RepickDay<any>> = {
   reducer: (
+    stateReducer?: RepickStateReducer<RepickState<Selected>>,
+  ) => (
     state: RepickState<Selected>,
-    action: Action,
+    action: RepickAction,
   ) => RepickState<Selected>
   buildContext: (
     state: RepickState<Selected>,
@@ -73,7 +87,7 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
   const dateRefs: Record<string, HTMLElement> = {}
 
   const [state, dispatch] = useControllableReducer(
-    reducer,
+    reducer(props.stateReducer),
     props,
     initializeState,
     getControlledProps,
@@ -174,7 +188,7 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
 
   const getPrevMonthProps = (): MonthProps => {
     return {
-      onClick: () => dispatch({ type: 'PrevMonth' }),
+      onClick: () => dispatch({ type: actionPrevMonth }),
       'aria-label': `Go back 1 month`,
       role: 'button',
     }
@@ -182,7 +196,7 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
 
   const getNextMonthProps = (): MonthProps => {
     return {
-      onClick: () => dispatch({ type: 'NextMonth' }),
+      onClick: () => dispatch({ type: actionNextMonth }),
       'aria-label': `Go ahead 1 month`,
       role: 'button',
     }
@@ -192,7 +206,7 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
     return {
       onClick: e => {
         e.preventDefault()
-        dispatch({ type: 'SelectDate', date: calendarDay.date })
+        dispatch({ type: actionDateClick, date: calendarDay.date })
       },
       'aria-label': calendarDay.date.toDateString(),
       'aria-pressed': calendarDay.selected,
@@ -211,16 +225,16 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
   return {
     ...context,
     selectDate: (date: string | number | Date) =>
-      dispatch({ type: 'SelectDate', date }),
-    selectCurrent: () => dispatch({ type: 'SelectHighlighted' }),
-    prevDay: () => dispatch({ type: 'PrevDay' }),
-    nextDay: () => dispatch({ type: 'NextDay' }),
-    prevWeek: () => dispatch({ type: 'PrevWeek' }),
-    nextWeek: () => dispatch({ type: 'NextWeek' }),
-    prevMonth: () => dispatch({ type: 'PrevMonth' }),
-    nextMonth: () => dispatch({ type: 'NextMonth' }),
-    startOfWeek: () => dispatch({ type: 'StartOfWeek' }),
-    endOfWeek: () => dispatch({ type: 'EndOfWeek' }),
+      dispatch({ type: actionSelectDate, date }),
+    selectCurrent: () => dispatch({ type: actionSelectHighlighted }),
+    prevDay: () => dispatch({ type: actionPrevDay }),
+    nextDay: () => dispatch({ type: actionNextDay }),
+    prevWeek: () => dispatch({ type: actionPrevWeek }),
+    nextWeek: () => dispatch({ type: actionNextWeek }),
+    prevMonth: () => dispatch({ type: actionPrevMonth }),
+    nextMonth: () => dispatch({ type: actionNextMonth }),
+    startOfWeek: () => dispatch({ type: actionStartOfWeek }),
+    endOfWeek: () => dispatch({ type: actionEndOfWeek }),
     getCalendarProps,
     getDateProps,
     getNextMonthProps,

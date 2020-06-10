@@ -12,16 +12,16 @@ import {
   Weekday,
 } from './core/types'
 import {
-  Action,
-  actionEndOfWeek,
-  actionNextDay,
-  actionNextMonth,
-  actionNextWeek,
-  actionPrevDay,
-  actionPrevMonth,
-  actionPrevWeek,
-  actionSelectHighlighted,
-  actionStartOfWeek,
+  RepickAction,
+  actionKeyArrowLeft,
+  actionKeyArrowRight,
+  actionKeyArrowUp,
+  actionKeyArrowDown,
+  actionKeyPageDown,
+  actionKeyPageUp,
+  actionKeyHome,
+  actionKeyEnd,
+  actionKeyEnter,
 } from './actions'
 
 export const arrayGenerate = <A>(
@@ -36,34 +36,34 @@ export const wrap = (min: number, max: number) => (x: number) => {
 
 export const wrapWeekDay = wrap(0, 7)
 
-export function keyToAction(key: string): Action | null {
+export function keyToAction(key: string): RepickAction | null {
   switch (key) {
     case 'ArrowLeft': {
-      return { type: actionPrevDay }
+      return { type: actionKeyArrowLeft }
     }
     case 'ArrowRight': {
-      return { type: actionNextDay }
+      return { type: actionKeyArrowRight }
     }
     case 'ArrowUp': {
-      return { type: actionPrevWeek }
+      return { type: actionKeyArrowUp }
     }
     case 'ArrowDown': {
-      return { type: actionNextWeek }
+      return { type: actionKeyArrowDown }
     }
     case 'PageDown': {
-      return { type: actionPrevMonth }
+      return { type: actionKeyPageDown }
     }
     case 'PageUp': {
-      return { type: actionNextMonth }
+      return { type: actionKeyPageUp }
     }
     case 'Home': {
-      return { type: actionStartOfWeek }
+      return { type: actionKeyHome }
     }
     case 'End': {
-      return { type: actionEndOfWeek }
+      return { type: actionKeyEnd }
     }
     case 'Enter': {
-      return { type: actionSelectHighlighted }
+      return { type: actionKeyEnter }
     }
   }
 
