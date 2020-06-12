@@ -1,4 +1,5 @@
 import compareAsc from 'date-fns/compareAsc'
+import formatDate from 'date-fns/format'
 import isSameDay from 'date-fns/isSameDay'
 import isWithinInterval from 'date-fns/isWithinInterval'
 
@@ -16,12 +17,23 @@ export type RepickDayRange = RepickDay<{
 
 export type RepickContextRange = RepickContext<[Date, Date?], RepickDayRange>
 
-export const selectDateRange = (selected: [Date, Date?] | null, date: Date) =>
-  (selected === null || isSameDay(selected[0], date) || selected.length === 2
-    ? [date]
-    : sort(compareAsc, [...selected, date] as Date[])) as [Date, Date?]
+export const selectDateRange = (
+  selected: [Date, Date?] | null,
+  date: Date,
+): [[Date, Date?], boolean] =>
+  selected === null || isSameDay(selected[0], date) || selected.length === 2
+    ? [[date], false]
+    : [sort(compareAsc, [...selected, date] as Date[]) as [Date, Date?], true]
 
-export const reducerRange = reducer<RepickStateRange>(selectDateRange)
+export const formatRange = (selected: [Date, Date?], format: string) =>
+  selected[1] !== undefined
+    ? formatDate(selected[0], format) + ' - ' + formatDate(selected[1], format)
+    : formatDate(selected[0], format)
+
+export const reducerRange = reducer<RepickStateRange>(
+  selectDateRange,
+  formatRange,
+)
 
 export const isSelectedRange = (selected: [Date, Date?] | null, date: Date) =>
   !!selected &&

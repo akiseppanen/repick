@@ -7,12 +7,29 @@ import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
 
 import {
+  actionBlur,
+  actionCloseCalendar,
   actionDateClick,
   actionEndOfWeek,
+  actionInputFocus,
+  actionInputKeyArrowDown,
+  actionKeyArrowDown,
+  actionKeyArrowLeft,
+  actionKeyArrowRight,
+  actionKeyArrowUp,
+  actionKeyEnd,
+  actionKeyEnter,
+  actionKeyEscape,
+  actionKeyHome,
+  actionKeyPageDown,
+  actionKeyPageUp,
+  actionKeyShiftPageDown,
+  actionKeyShiftPageUp,
   actionNextDay,
   actionNextMonth,
   actionNextWeek,
   actionNextYear,
+  actionOpenCalendar,
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
@@ -20,18 +37,8 @@ import {
   actionSelectDate,
   actionSelectHighlighted,
   actionStartOfWeek,
-  actionKeyArrowLeft,
-  actionKeyArrowRight,
-  actionKeyArrowUp,
-  actionKeyArrowDown,
-  actionKeyPageDown,
-  actionKeyPageUp,
-  actionKeyHome,
-  actionKeyEnd,
-  actionKeyEnter,
-  actionKeyShiftPageUp,
-  actionKeyShiftPageDown,
   RepickAction,
+  actionInputBlur,
 } from '../actions'
 import { RepickState } from './types'
 import { dateIsSelectable, wrapWeekDay } from '../utils'
@@ -54,35 +61,54 @@ export function reducer<State extends RepickState<any>>(
   selectDate: (
     selected: RepickStateSelected<State> | null,
     date: Date,
-  ) => RepickStateSelected<State> | null,
+  ) => [RepickStateSelected<State> | null, boolean],
+  format: (selected: RepickStateSelected<State>, format: string) => string,
 ) {
+  function reduceSelected(state: State, date: Date) {
+    if (!dateIsSelectable(state, date)) {
+      return {}
+    }
+
+    const [selected, shouldClose] = selectDate(state.selected, date)
+
+    return {
+      selected,
+      highlighted: date,
+      isOpen: !shouldClose && state.isOpen,
+      inputValue: selected
+        ? format(selected, state.format || 'yyyy-MM-dd')
+        : '',
+    } as Partial<State>
+  }
+
   function reducer(state: State, action: RepickAction): Partial<State> {
     switch (action.type) {
+      case actionInputFocus:
+      case actionInputKeyArrowDown:
+      case actionOpenCalendar: {
+        return {
+          isOpen: true,
+        } as Partial<State>
+      }
+      case actionBlur:
+      case actionInputBlur:
+      case actionKeyEscape:
+      case actionCloseCalendar: {
+        return {
+          isOpen: false,
+        } as Partial<State>
+      }
       case actionDateClick:
       case actionSelectDate: {
         const date =
           action.date instanceof Date ? action.date : new Date(action.date)
 
-        if (!dateIsSelectable(state, date)) {
-          return {}
-        }
-
-        return {
-          highlighted: date,
-          selected: selectDate(state.selected, date),
-        } as Partial<State>
+        return reduceSelected(state, date)
       }
 
       case actionKeyEnter:
       case actionSelectHighlighted: {
-        if (!dateIsSelectable(state, state.highlighted)) {
-          return {}
-        }
-
-        return {
-          highlighted: state.highlighted,
-          selected: selectDate(state.selected, state.highlighted),
-        } as Partial<State>
+        return reduceSelected(state, state.highlighted)
       }
 
       case actionKeyArrowLeft:

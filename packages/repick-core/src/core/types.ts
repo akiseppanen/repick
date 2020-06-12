@@ -6,6 +6,7 @@ export type Weekday = {
 }
 
 export type RepickOptions = Partial<{
+  format: string
   monthCount: number
   locale: Locale
   disabledDates: Date[]
@@ -18,6 +19,8 @@ export type RepickOptions = Partial<{
 
 export type RepickState<Selected> = {
   highlighted: Date
+  inputValue: string
+  isOpen: boolean
   selected: Selected | null
 } & RepickOptions
 
@@ -50,6 +53,8 @@ export type RepickMonth<Day extends RepickDay<any>> = {
 export type RepickCalendar<Day extends RepickDay<any>> = RepickMonth<Day>[]
 
 export type RepickContext<Selected, Day extends RepickDay<any>> = {
+  isOpen: boolean
+  inputValue: string
   selected: Selected
   highlighted: Date
   month: number

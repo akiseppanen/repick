@@ -8,10 +8,12 @@ import { RepickState } from '../dist'
 describe('selectDateRange', () => {
   it('empty selected, date is inserted', () => {
     expect(selectDateRange(null, new Date('2018-01-01'))).toEqual([
-      new Date('2018-01-01'),
+      [new Date('2018-01-01')],
+      false,
     ])
     expect(selectDateRange(null, new Date('2018-01-05'))).toEqual([
-      new Date('2018-01-05'),
+      [new Date('2018-01-05')],
+      false,
     ])
   })
 
@@ -19,12 +21,12 @@ describe('selectDateRange', () => {
     const selected: [Date] = [new Date('2018-01-05')]
 
     expect(selectDateRange(selected, new Date('2018-01-01'))).toEqual([
-      new Date('2018-01-01'),
-      ...selected,
+      [new Date('2018-01-01'), ...selected],
+      true,
     ])
     expect(selectDateRange(selected, new Date('2018-01-10'))).toEqual([
-      ...selected,
-      new Date('2018-01-10'),
+      [...selected, new Date('2018-01-10')],
+      true,
     ])
   })
 
@@ -32,7 +34,7 @@ describe('selectDateRange', () => {
     const date = new Date('2018-01-05')
     const selected: [Date] = [date]
 
-    expect(selectDateRange(selected, date)).toEqual(selected)
+    expect(selectDateRange(selected, date)).toEqual([selected, false])
   })
 
   it('multiple date selected, new date is selected', () => {
@@ -43,7 +45,7 @@ describe('selectDateRange', () => {
 
     const newDate = new Date('2018-01-01')
 
-    expect(selectDateRange(selected, newDate)).toEqual([newDate])
+    expect(selectDateRange(selected, newDate)).toEqual([[newDate], false])
   })
 })
 
@@ -68,6 +70,8 @@ describe('buildCalendarContextDayRange', () => {
   const state: RepickState<[Date, Date?]> = {
     highlighted: new Date('2018-01-01'),
     selected: range,
+    isOpen: false,
+    inputValue: '',
   }
 
   it('rangeStart', () => {

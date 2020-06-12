@@ -1,3 +1,4 @@
+import format from 'date-fns/format'
 import {
   reducer as reducerCore,
   RepickStateChangeOptions,
@@ -23,10 +24,13 @@ describe('reducerGeneric', () => {
 
   const state: RepickState<Date> = {
     highlighted,
+    inputValue: format(selected, 'yyyy-MM-dd'),
+    isOpen: false,
     selected,
   }
 
-  const mockedSelectDate = jest.fn<Date, [Date | null, Date]>()
+  const mockedSelectDate = jest.fn<[Date, boolean], [Date | null, Date]>()
+  const mockedFormat = jest.fn<string, [Date, string]>(format)
   const mockedStateReducer = jest.fn<
     RepickState<Date>,
     [RepickState<Date>, RepickStateChangeOptions<Date>]
@@ -34,9 +38,10 @@ describe('reducerGeneric', () => {
     ...state,
     ...changes,
   }))
-  const reducer = reducerCore<RepickState<Date>>(mockedSelectDate)(
-    mockedStateReducer,
-  )
+  const reducer = reducerCore<RepickState<Date>>(
+    mockedSelectDate,
+    mockedFormat,
+  )(mockedStateReducer)
 
   mockedDateIsSelectable.mockReturnValue(true)
 
@@ -63,6 +68,8 @@ describe('reducerGeneric', () => {
     const expectedDate = new Date('2018-01-10 00:00:00')
     const expected = {
       highlighted: expectedDate,
+      inputValue: format(expectedDate, 'yyyy-MM-dd'),
+      isOpen: true,
       selected: expectedDate,
     }
     const action: ActionSelectDate = {
@@ -70,7 +77,7 @@ describe('reducerGeneric', () => {
       type: 'SelectDate',
     }
 
-    mockedSelectDate.mockReturnValue(inputDate)
+    mockedSelectDate.mockReturnValue([inputDate, true])
     mockedStateReducer.mockReturnValueOnce(expected)
 
     const newState = reducer(state, action)
@@ -84,6 +91,8 @@ describe('reducerGeneric', () => {
       action,
       changes: {
         highlighted: inputDate,
+        inputValue: format(inputDate, 'yyyy-MM-dd'),
+        isOpen: false,
         selected: inputDate,
       },
     })
@@ -92,7 +101,7 @@ describe('reducerGeneric', () => {
   it('SelectDate', () => {
     const expectedDate = new Date('2018-01-10 00:00:00')
 
-    mockedSelectDate.mockReturnValue(expectedDate)
+    mockedSelectDate.mockReturnValue([expectedDate, true])
 
     assertAction(
       {
@@ -102,6 +111,8 @@ describe('reducerGeneric', () => {
       {
         highlighted: expectedDate,
         selected: expectedDate,
+        inputValue: format(expectedDate, 'yyyy-MM-dd'),
+        isOpen: false,
       },
     )
 
@@ -126,7 +137,7 @@ describe('reducerGeneric', () => {
   it('DateClick', () => {
     const expectedDate = new Date('2018-01-10 00:00:00')
 
-    mockedSelectDate.mockReturnValue(expectedDate)
+    mockedSelectDate.mockReturnValue([expectedDate, true])
 
     assertAction(
       {
@@ -136,6 +147,8 @@ describe('reducerGeneric', () => {
       {
         highlighted: expectedDate,
         selected: expectedDate,
+        inputValue: format(expectedDate, 'yyyy-MM-dd'),
+        isOpen: false,
       },
     )
 
@@ -158,7 +171,7 @@ describe('reducerGeneric', () => {
   })
 
   it('SelectHighlighted', () => {
-    mockedSelectDate.mockReturnValue(highlighted)
+    mockedSelectDate.mockReturnValue([highlighted, true])
 
     assertAction(
       {
@@ -167,6 +180,8 @@ describe('reducerGeneric', () => {
       {
         highlighted,
         selected: highlighted,
+        inputValue: format(highlighted, 'yyyy-MM-dd'),
+        isOpen: false,
       },
     )
 
@@ -314,6 +329,8 @@ describe('reducerGeneric', () => {
       {
         selected: highlighted,
         highlighted,
+        inputValue: format(highlighted, 'yyyy-MM-dd'),
+        isOpen: false,
       },
     )
   })

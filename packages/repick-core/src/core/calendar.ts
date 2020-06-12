@@ -100,6 +100,8 @@ export function buildContext<
     )
 
     return {
+      isOpen: state.isOpen,
+      inputValue: state.inputValue,
       highlighted: highlighted || null,
       month: highlighted.getMonth() + 1,
       monthLong: format(highlighted, 'MMMM', { locale: state.locale }),

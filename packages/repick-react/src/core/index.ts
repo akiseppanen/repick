@@ -1,15 +1,17 @@
 import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import {
   actionDateClick,
   actionEndOfWeek,
   actionNextDay,
   actionNextMonth,
   actionNextWeek,
+  actionNextYear,
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
+  actionPrevYear,
   actionSelectDate,
   actionSelectHighlighted,
   actionStartOfWeek,
@@ -19,6 +21,11 @@ import {
   RepickDay,
   RepickState,
   RepickStateReducer,
+  actionOpenCalendar,
+  actionCloseCalendar,
+  actionInputFocus,
+  actionInputKeyArrowDown,
+  actionInputBlur,
 } from 'repick-core'
 
 import { useControllableReducer } from './use-controllable-reducer'
@@ -28,6 +35,8 @@ import {
   CalendarProps,
   MonthProps,
   DateProps,
+  InputProps,
+  ToggleButtonProps,
 } from './types'
 
 export type RepickCoreDeps<Selected, DayContext extends RepickDay<any>> = {
@@ -62,6 +71,8 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
       highlighted:
         props.highlighted || props.initialHighlighted || startOfDay(new Date()),
       selected: props.selected || props.initialSelected || null,
+      isOpen: props.isOpen || props.initialIsOpen || false,
+      inputValue: '',
     }
   }
 
@@ -70,6 +81,7 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
   ): Partial<RepickState<Selected>> {
     return {
       highlighted: props.highlighted,
+      isOpen: props.isOpen,
       locale: props.locale,
       selected: props.selected,
       weekStartsOn: props.weekStartsOn,
@@ -81,10 +93,6 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
       monthCount: props.monthCount,
     }
   }
-
-  const hasFocusRef = useRef<boolean>(false)
-  const calendarRef = useRef<HTMLElement>()
-  const dateRefs: Record<string, HTMLElement> = {}
 
   const [state, dispatch] = useControllableReducer(
     reducer(props.stateReducer),
@@ -101,6 +109,42 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
     },
   )
 
+  const isMouseDownRef = useRef<boolean>(false)
+  const shouldFocusRef = useRef<boolean>(!!props.autoFocus)
+  const shouldBlurRef = useRef<boolean>(true)
+  const inputRef = useRef<HTMLElement>()
+  const toggleButtonRef = useRef<HTMLElement>()
+  const calendarRef = useRef<HTMLElement>()
+  const dateRefs: Record<string, HTMLElement> = {}
+
+  useEffect(() => {
+    const onMouseDown = () => {
+      isMouseDownRef.current = true
+    }
+    const onMouseUp = (e: MouseEvent) => {
+      isMouseDownRef.current = false
+
+      if (
+        state.isOpen &&
+        !(
+          toggleButtonRef.current?.contains(e.target as HTMLElement) ||
+          inputRef.current?.contains(e.target as HTMLElement) ||
+          calendarRef.current?.contains(e.target as HTMLElement)
+        )
+      ) {
+        dispatch({ type: 'CloseCalendar' })
+      }
+    }
+
+    window.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mouseup', onMouseUp)
+
+    return () => {
+      window.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
+  }, [state.isOpen])
+
   const formatDateRefId = (date: Date) => format(date, 'yyyy-MM-dd')
 
   const setFocusToDate = React.useCallback(
@@ -108,7 +152,7 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
       window.requestAnimationFrame(() => {
         const id = formatDateRefId(date)
         if (dateRefs[id]) {
-          hasFocusRef.current = true
+          shouldFocusRef.current = false
           dateRefs[id].focus()
         }
       })
@@ -116,72 +160,121 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
     [dateRefs],
   )
 
-  React.useEffect(() => {
-    if (props.autoFocus === true) {
-      setFocusToCalendar()
-    }
-  }, [])
-
-  React.useEffect(() => {
-    if (hasFocusRef.current === true) {
-      setFocusToDate(state.highlighted)
-    }
-  }, [setFocusToDate, state.highlighted])
-
-  const handleFocusIn = () => {
-    hasFocusRef.current = true
-  }
-
-  const handleFocusOut = (e: FocusEvent) => {
-    if (
-      !(
-        calendarRef.current &&
-        calendarRef.current.contains(e.relatedTarget as HTMLElement)
-      )
-    ) {
-      hasFocusRef.current = false
-    }
-  }
-
-  React.useEffect(() => {
-    if (calendarRef.current) {
-      calendarRef.current.addEventListener('focusin', handleFocusIn)
-      calendarRef.current.addEventListener('focusout', handleFocusOut)
-    }
-
-    return () => {
-      if (calendarRef.current) {
-        calendarRef.current.removeEventListener('focusin', handleFocusIn)
-        calendarRef.current.removeEventListener('focusout', handleFocusOut)
-      }
-    }
-  }, [calendarRef.current])
-
   const setFocusToCalendar = () => {
     window.requestAnimationFrame(() => {
       const id = formatDateRefId(state.highlighted)
+
       if (dateRefs[id]) {
-        hasFocusRef.current = true
         dateRefs[id].focus()
       }
     })
   }
+
+  React.useEffect(() => {
+    if (shouldFocusRef.current === true && state.isOpen) {
+      shouldFocusRef.current = false
+      setFocusToCalendar()
+    }
+  }, [state.isOpen])
+
+  React.useEffect(() => {
+    if (shouldFocusRef.current === true && state.isOpen) {
+      shouldFocusRef.current = false
+
+      setFocusToDate(state.highlighted)
+    }
+  }, [setFocusToDate, state.highlighted, state.isOpen])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     const action = keyToAction(e.key)
 
     if (action) {
       e.preventDefault()
+      shouldBlurRef.current = false
+      shouldFocusRef.current = true
       dispatch(action)
     }
   }
 
   const getCalendarProps = (): CalendarProps => {
     return {
+      onBlur: e => {
+        if (
+          shouldBlurRef.current === false ||
+          calendarRef.current?.contains(e.relatedTarget as HTMLElement)
+        ) {
+          shouldBlurRef.current = true
+          return
+        }
+
+        const shouldBlur = !isMouseDownRef.current
+
+        if (shouldBlur) {
+          dispatch({ type: 'CloseCalendar' })
+        }
+      },
       onKeyDown: handleKeyDown,
       tabIndex: 0,
       ref: (el: HTMLElement | null) => {
         calendarRef.current = el || undefined
+      },
+    }
+  }
+
+  const getInputProps = (): InputProps => {
+    return {
+      onBlur: () => {
+        if (shouldBlurRef.current === false) {
+          shouldBlurRef.current = true
+          return
+        }
+
+        const shouldBlur = !isMouseDownRef.current
+
+        if (shouldBlur) {
+          dispatch({ type: actionInputBlur })
+        }
+      },
+      onFocus: () => {
+        dispatch({
+          type: actionInputFocus,
+        })
+      },
+      onKeyDown: (e: React.KeyboardEvent) => {
+        if (e.key === 'ArrowDown') {
+          shouldBlurRef.current = false
+          shouldFocusRef.current = true
+          dispatch({
+            type: actionInputKeyArrowDown,
+          })
+        }
+      },
+      readOnly: true,
+      ref: el => {
+        inputRef.current = el || undefined
+      },
+      type: 'text',
+      value: state.inputValue,
+    }
+  }
+
+  const getToggleButtonProps = (): ToggleButtonProps => {
+    return {
+      onClick: () => {
+        if (state.isOpen) {
+          shouldBlurRef.current = false
+          dispatch({
+            type: actionCloseCalendar,
+          })
+        } else {
+          shouldFocusRef.current = true
+          dispatch({
+            type: actionOpenCalendar,
+          })
+        }
+      },
+      ref: el => {
+        toggleButtonRef.current = el || undefined
       },
     }
   }
@@ -224,6 +317,8 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
 
   return {
     ...context,
+    openCalendar: () => dispatch({ type: actionOpenCalendar }),
+    closeCalendar: () => dispatch({ type: actionCloseCalendar }),
     selectDate: (date: string | number | Date) =>
       dispatch({ type: actionSelectDate, date }),
     selectCurrent: () => dispatch({ type: actionSelectHighlighted }),
@@ -233,11 +328,13 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
     nextWeek: () => dispatch({ type: actionNextWeek }),
     prevMonth: () => dispatch({ type: actionPrevMonth }),
     nextMonth: () => dispatch({ type: actionNextMonth }),
-    prevYear: () => dispatch({ type: 'PrevYear' }),
-    nextYear: () => dispatch({ type: 'NextYear' }),
+    prevYear: () => dispatch({ type: actionPrevYear }),
+    nextYear: () => dispatch({ type: actionNextYear }),
     startOfWeek: () => dispatch({ type: actionStartOfWeek }),
     endOfWeek: () => dispatch({ type: actionEndOfWeek }),
     getCalendarProps,
+    getInputProps,
+    getToggleButtonProps,
     getDateProps,
     getNextMonthProps,
     getPrevMonthProps,

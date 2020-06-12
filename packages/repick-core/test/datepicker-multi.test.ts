@@ -10,32 +10,36 @@ describe('selectDateMulti', () => {
 
   it('new date is inserted to array', () => {
     expect(selectDateMulti(selected, new Date('2018-01-05'))).toEqual([
-      selected[0],
-      new Date('2018-01-05'),
-      selected[1],
-      selected[2],
-      selected[3],
+      [
+        selected[0],
+        new Date('2018-01-05'),
+        selected[1],
+        selected[2],
+        selected[3],
+      ],
+      false,
     ])
 
     expect(selectDateMulti(selected, new Date('2018-01-25'))).toEqual([
-      selected[0],
-      selected[1],
-      selected[2],
-      new Date('2018-01-25'),
-      selected[3],
+      [
+        selected[0],
+        selected[1],
+        selected[2],
+        new Date('2018-01-25'),
+        selected[3],
+      ],
+      false,
     ])
   })
 
   it('date is removed', () => {
     expect(selectDateMulti(selected, selected[0])).toEqual([
-      selected[1],
-      selected[2],
-      selected[3],
+      [selected[1], selected[2], selected[3]],
+      false,
     ])
     expect(selectDateMulti(selected, selected[2])).toEqual([
-      selected[0],
-      selected[1],
-      selected[3],
+      [selected[0], selected[1], selected[3]],
+      false,
     ])
   })
 })

@@ -3,11 +3,11 @@ import { selectDateSingle, isSelectedSingle } from '../src/datepicker'
 describe('selectDateSingle', () => {
   it('return given date when dates does not match', () => {
     const date = new Date('2018-01-01')
-    expect(selectDateSingle(new Date('2000-01-01'), date)).toEqual(date)
+    expect(selectDateSingle(new Date('2000-01-01'), date)).toEqual([date, true])
   })
   it('return given null when dates does match', () => {
     const date = new Date('2018-01-01')
-    expect(selectDateSingle(date, date)).toEqual(null)
+    expect(selectDateSingle(date, date)).toEqual([null, true])
   })
 })
 

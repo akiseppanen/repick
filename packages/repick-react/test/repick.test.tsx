@@ -50,6 +50,8 @@ describe('calendar', () => {
   const state: RepickState<Date> = {
     highlighted: calendarFixture.highlighted,
     selected: calendarFixture.selected,
+    isOpen: false,
+    inputValue: '',
   }
 
   beforeEach(() => {
@@ -211,6 +213,8 @@ it('dispatch', () => {
   const state: RepickState<Date> = {
     highlighted: date,
     selected: null,
+    isOpen: false,
+    inputValue: '',
     ...options,
   }
 
@@ -256,7 +260,12 @@ describe('actions', () => {
 
   beforeEach(() => {
     results = setup({ highlighted })[0]
-    mockedReducer.mockReturnValue({ highlighted: expected, selected: expected })
+    mockedReducer.mockReturnValue({
+      highlighted: expected,
+      selected: expected,
+      isOpen: false,
+      inputValue: '',
+    })
   })
 
   afterEach(() => {
@@ -265,7 +274,7 @@ describe('actions', () => {
 
   const assertAction = (action: RepickAction) => {
     expect(mockedReducer).toHaveBeenCalledWith(
-      { highlighted, selected: null },
+      { highlighted, selected: null, isOpen: false, inputValue: '' },
       action,
     )
   }

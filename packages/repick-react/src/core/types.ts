@@ -12,15 +12,33 @@ export type RepickProps<Selected> = {
   onUpdate?: (date: Date) => void
   highlighted?: Date
   initialHighlighted?: Date
+  isOpen?: boolean
+  initialIsOpen?: boolean
   selected?: Selected | null
   initialSelected?: Selected
   stateReducer?: RepickStateReducer<RepickState<Selected>>
 } & RepickOptions
 
+export type InputProps = {
+  onBlur: (e: React.FocusEvent) => void
+  onFocus: (e: React.FocusEvent) => void
+  onKeyDown: (e: React.KeyboardEvent) => void
+  readOnly: true
+  ref: (el: HTMLElement | null) => void
+  type: string
+  value: string
+}
+
+export type ToggleButtonProps = {
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  ref: (el: HTMLElement | null) => void
+}
+
 export type CalendarProps = {
   onKeyDown: (e: React.KeyboardEvent) => void
   tabIndex: number
   ref: (el: HTMLElement | null) => void
+  onBlur: (e: React.FocusEvent) => void
 }
 
 export type MonthProps = {
@@ -41,6 +59,8 @@ export type DateProps = {
 export type RepickHelpers<DayContext extends RepickDay<any>> = {
   selectDate: (date: string | number | Date) => void
   selectCurrent: () => void
+  openCalendar: () => void
+  closeCalendar: () => void
   prevDay: () => void
   nextDay: () => void
   prevWeek: () => void
@@ -52,6 +72,8 @@ export type RepickHelpers<DayContext extends RepickDay<any>> = {
   startOfWeek: () => void
   endOfWeek: () => void
   getCalendarProps: () => CalendarProps
+  getInputProps: () => InputProps
+  getToggleButtonProps: () => ToggleButtonProps
   getDateProps: (repickDayContext: DayContext) => DateProps
   getNextMonthProps: () => MonthProps
   getPrevMonthProps: () => MonthProps

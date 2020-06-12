@@ -58,9 +58,6 @@
   "jest": {
     "snapshotSerializers": [
       "jest-date-serializer"
-    ],
-    "moduleNameMapper": {
-      "\\.css$": "<rootDir>/test/__filemock__.ts"
-    }
+    ]
   }
 }

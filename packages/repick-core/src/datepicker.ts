@@ -1,4 +1,5 @@
 import isSameDay from 'date-fns/isSameDay'
+import formatDate from 'date-fns/format'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
 import { reducer } from './core/reducer'
@@ -10,10 +11,21 @@ export type RepickDaySingle = RepickDay
 
 export type RepickContextSingle = RepickContext<Date, RepickDaySingle>
 
-export const selectDateSingle = (selected: Date | null, date: Date) =>
-  selected !== null && isSameDay(selected, date) ? null : date
+export const selectDateSingle = (
+  selected: Date | null,
+  date: Date,
+): [Date | null, boolean] => [
+  selected !== null && isSameDay(selected, date) ? null : date,
+  true,
+]
 
-export const reducerSingle = reducer<RepickStateSingle>(selectDateSingle)
+export const formatSingle = (selected: Date, format: string) =>
+  formatDate(selected, format)
+
+export const reducerSingle = reducer<RepickStateSingle>(
+  selectDateSingle,
+  formatSingle,
+)
 
 export const isSelectedSingle = (selected: Date | null, date: Date) =>
   !!selected && isSameDay(selected, date)
