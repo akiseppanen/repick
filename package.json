@@ -8,7 +8,7 @@
     "lint:fix": "lerna run lint -- --fix",
     "test": "tsdx test --env=jsdom",
     "watch": "lerna run --parallel watch",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -p 6006"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^5.3.14",
