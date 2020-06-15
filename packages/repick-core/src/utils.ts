@@ -4,13 +4,7 @@ import isBefore from 'date-fns/isBefore'
 import isSameDay from 'date-fns/isSameDay'
 import setDay from 'date-fns/setDay'
 
-import {
-  RepickDay,
-  RepickMonth,
-  RepickOptions,
-  RepickWeek,
-  Weekday,
-} from './core/types'
+import { RepickOptions, Weekday } from './core/types'
 import {
   RepickAction,
   actionKeyArrowLeft,
@@ -139,40 +133,3 @@ export const dateIsSelectable = (
     (!!minDate && isAfter(minDate, date)) ||
     (!!maxDate && isBefore(maxDate, date))
   )
-
-function isRepickMonthCore(
-  monthOrWeek: RepickMonth<any> | RepickWeek<any>,
-): monthOrWeek is RepickMonth<any> {
-  return monthOrWeek.hasOwnProperty('weeks')
-}
-
-export function mapDays<D extends RepickDay<{}>, R>(
-  months: RepickMonth<D>[],
-  callbackfn: (day: D) => R,
-): R[]
-export function mapDays<D extends RepickDay<{}>, R>(
-  weeks: RepickWeek<D>[],
-  callbackfn: (day: D) => R,
-): R[]
-export function mapDays<D extends RepickDay<{}>, R>(
-  monthsOrWeeks: (RepickMonth<D> | RepickWeek<D>)[],
-  callbackfn: (day: D) => R,
-): R[] {
-  return monthsOrWeeks.reduce<R[]>((x, monthOrWeek) => {
-    if (isRepickMonthCore(monthOrWeek)) {
-      return [...x, ...mapDays(monthOrWeek.weeks, callbackfn)]
-    }
-
-    return [...x, ...monthOrWeek.days.map(callbackfn)]
-  }, [])
-}
-
-export function mapWeeks<D extends RepickDay<{}>, R>(
-  months: RepickMonth<D>[],
-  callbackfn: (day: RepickWeek<D>) => R,
-): R[] {
-  return months.reduce<R[]>(
-    (x, month) => [...x, ...month.weeks.map(callbackfn)],
-    [],
-  )
-}

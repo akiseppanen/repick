@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { mapDays, useRangeDatePicker } from '../src'
+import { useRangeDatePicker } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -13,7 +13,7 @@ const Component = () => {
   const date = new Date('2018-01-01')
 
   const {
-    calendar,
+    days,
     selected,
     monthLong,
     year,
@@ -61,7 +61,7 @@ const Component = () => {
           ))}
         </div>
         <div className="calendarDayContainer">
-          {mapDays(calendar, calendarDay => (
+          {days.map(calendarDay => (
             <button
               {...getDateProps(calendarDay)}
               key={calendarDay.date.toISOString()}

@@ -7,19 +7,11 @@ import {
   RepickState,
   RepickOptions,
   RepickDay,
-  RepickMonth,
   RepickAction,
 } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
 jest.mock('repick-core')
-
-const { mapDays } = jest.requireActual<{
-  mapDays<D extends RepickDay<{}>, R>(
-    months: RepickMonth<D>[],
-    callbackfn: (day: D) => R,
-  ): R[]
-}>('repick-core')
 
 const options: RepickOptions = {
   weekStartsOn: 1,
@@ -81,7 +73,7 @@ describe('calendar', () => {
     expect(mockedBuildCalendar).toHaveBeenCalledWith({ ...state, ...options })
 
     expect(result.highlighted).toEqual(calendarFixture.highlighted)
-    expect(result.calendar).toEqual(calendarFixture.calendar)
+    expect(result.days).toEqual(calendarFixture.days)
     expect(result.month).toEqual(calendarFixture.month)
     expect(result.monthLong).toEqual(calendarFixture.monthLong)
     expect(result.monthShort).toEqual(calendarFixture.monthShort)
@@ -107,9 +99,9 @@ describe('calendar', () => {
         initialHighlighted: calendarFixture.highlighted,
         initialSelected: calendarFixture.selected,
       },
-      ({ calendar, getDateProps }) => (
+      ({ days, getDateProps }) => (
         <>
-          {mapDays(calendar, calendarDay => (
+          {days.map(calendarDay => (
             <button
               {...getDateProps(calendarDay)}
               key={calendarDay.date.toISOString()}
@@ -125,20 +117,20 @@ describe('calendar', () => {
     fireEvent.click(view.container.children[20])
     fireEvent.click(view.container.children[30])
 
-    const { calendar } = calendarFixture
+    const { days } = calendarFixture
 
     expect(mockedReducer).toHaveBeenNthCalledWith(1, state, {
-      date: calendar[0].weeks[1].days[3].date,
+      date: days[10].date,
       type: 'DateClick',
     })
 
     expect(mockedReducer).toHaveBeenNthCalledWith(2, state, {
-      date: calendar[0].weeks[2].days[6].date,
+      date: days[20].date,
       type: 'DateClick',
     })
 
     expect(mockedReducer).toHaveBeenNthCalledWith(3, state, {
-      date: calendar[0].weeks[4].days[2].date,
+      date: days[30].date,
       type: 'DateClick',
     })
   })

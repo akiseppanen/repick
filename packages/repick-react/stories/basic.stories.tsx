@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { mapDays, useDatePicker } from '../src'
+import { useDatePicker } from '../src'
 import { ArrowLeft, ArrowRight } from './arrows'
 
 import './style.css'
@@ -14,7 +14,7 @@ const Component: React.FunctionComponent = () => {
   const date = new Date('2018-01-01')
 
   const {
-    calendar,
+    days,
     selected,
     monthLong,
     year,
@@ -52,7 +52,7 @@ const Component: React.FunctionComponent = () => {
           ))}
         </div>
         <div className="calendarDayContainer">
-          {mapDays(calendar, calendarDay => (
+          {days.map(calendarDay => (
             <button
               {...getDateProps(calendarDay)}
               key={calendarDay.date.toISOString()}

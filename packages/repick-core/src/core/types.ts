@@ -44,6 +44,7 @@ export type RepickMonth<Day extends RepickDay<any>> = {
   monthShort: string
   year: number
   weeks: RepickWeek<Day>[]
+  days: Day[]
 }
 
 export type RepickCalendar<Day extends RepickDay<any>> = RepickMonth<Day>[]
@@ -56,5 +57,7 @@ export type RepickContext<Selected, Day extends RepickDay<any>> = {
   monthShort: string
   year: number
   weekdays: Weekday[]
-  calendar: RepickCalendar<Day>
+  months: RepickMonth<Day>[]
+  weeks: RepickWeek<Day>[]
+  days: Day[]
 }

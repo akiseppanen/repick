@@ -10,7 +10,7 @@ import startOfWeek from 'date-fns/startOfWeek'
 import subMonths from 'date-fns/subMonths'
 
 import { buildWeekdays, dateIsSelectable, arrayGenerate } from '../utils'
-import { RepickContext, RepickDay, RepickState } from './types'
+import { RepickContext, RepickDay, RepickState, RepickWeek } from './types'
 
 export function buildCalendarDay<
   State extends RepickState<any>,
@@ -54,6 +54,51 @@ export function buildContext<
   return function (state: State): RepickContext<any, RepickDay<Extra>> {
     const { highlighted } = state
 
+    const months = arrayGenerate(state.monthCount || 1, monthIndex => {
+      const firstDayOfMonth = startOfMonth(addMonths(highlighted, monthIndex))
+      const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
+        weekStartsOn: state.weekStartsOn,
+      })
+
+      const weeks = arrayGenerate(6, weekIndex => ({
+        weekNumber: getWeek(addDays(firstWeekOfMonth, weekIndex * 7), {
+          weekStartsOn: state.weekStartsOn,
+        }),
+        year: highlighted.getFullYear(),
+        days: arrayGenerate(7, dayIndex =>
+          buildCalendarDay(
+            state,
+            firstDayOfMonth,
+            addDays(firstWeekOfMonth, weekIndex * 7 + dayIndex),
+          ),
+        ),
+      }))
+
+      const days = weeks.reduce<RepickDay<Extra>[]>(
+        (x, week) => [...x, ...week.days],
+        [],
+      )
+
+      return {
+        month: firstDayOfMonth.getMonth() + 1,
+        monthLong: format(firstDayOfMonth, 'MMMM', { locale: state.locale }),
+        monthShort: format(firstDayOfMonth, 'MMM', { locale: state.locale }),
+        year: firstDayOfMonth.getFullYear(),
+        weeks,
+        days,
+      }
+    })
+
+    const weeks = months.reduce<RepickWeek<RepickDay<Extra>>[]>(
+      (x, month) => [...x, ...month.weeks],
+      [],
+    )
+
+    const days = weeks.reduce<RepickDay<Extra>[]>(
+      (x, week) => [...x, ...week.days],
+      [],
+    )
+
     return {
       highlighted: highlighted || null,
       month: highlighted.getMonth() + 1,
@@ -62,32 +107,9 @@ export function buildContext<
       year: highlighted.getFullYear(),
       weekdays: buildWeekdays(state),
       selected: state.selected,
-      calendar: arrayGenerate(state.monthCount || 1, monthIndex => {
-        const firstDayOfMonth = startOfMonth(addMonths(highlighted, monthIndex))
-        const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
-          weekStartsOn: state.weekStartsOn,
-        })
-
-        return {
-          month: firstDayOfMonth.getMonth() + 1,
-          monthLong: format(firstDayOfMonth, 'MMMM', { locale: state.locale }),
-          monthShort: format(firstDayOfMonth, 'MMM', { locale: state.locale }),
-          year: firstDayOfMonth.getFullYear(),
-          weeks: arrayGenerate(6, weekIndex => ({
-            weekNumber: getWeek(addDays(firstWeekOfMonth, weekIndex * 7), {
-              weekStartsOn: state.weekStartsOn,
-            }),
-            year: highlighted.getFullYear(),
-            days: arrayGenerate(7, dayIndex =>
-              buildCalendarDay(
-                state,
-                firstDayOfMonth,
-                addDays(firstWeekOfMonth, weekIndex * 7 + dayIndex),
-              ),
-            ),
-          })),
-        }
-      }),
+      months,
+      weeks,
+      days,
     }
   }
 }

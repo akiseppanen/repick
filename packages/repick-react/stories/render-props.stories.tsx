@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import format from 'date-fns/format'
 import * as React from 'react'
-import { DatePicker, mapDays } from '../src'
+import { DatePicker } from '../src'
 
 import { ArrowLeft, ArrowRight } from './arrows'
 
@@ -17,7 +17,7 @@ const Component = () => {
       weekStartsOn={1}
       initialHighlighted={date}
       render={({
-        calendar,
+        days,
         selected,
         monthLong,
         year,
@@ -56,7 +56,7 @@ const Component = () => {
               ))}
             </div>
             <div className="calendarDayContainer">
-              {mapDays(calendar, calendarDay => (
+              {days.map(calendarDay => (
                 <button
                   {...getDateProps(calendarDay)}
                   key={calendarDay.date.toISOString()}
