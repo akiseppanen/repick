@@ -5,6 +5,7 @@ import setDay from 'date-fns/setDay'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
+import { Locale } from 'date-fns'
 
 import {
   actionBlur,
@@ -55,37 +56,46 @@ export type RepickStateReducer<Selected extends Date | Date[]> = (
   actionAndChanges: RepickStateChangeOptions<Selected>,
 ) => RepickState<Selected>
 
-export function reducer<Selected extends Date | Date[]>(
+export function createReducer<Selected extends Date | Date[]>(
   selectDate: (
     selected: Selected | null,
     date: Date,
   ) => [Selected | null, boolean],
-  format: (selected: Selected, format: string) => string,
-  parse: (dateString: string, format: string) => Selected | false,
+  defaultFormatter: (selected: Selected | null, format: string) => string,
+  defaultParser: (dateString: string, format: string) => Selected | false,
 ) {
-  function reduceSelected(state: RepickState<Selected>, date: Date) {
-    if (!dateIsSelectable(state, date)) {
-      return {}
-    }
-
-    const [selected, shouldClose] = selectDate(state.selected, date)
-
-    return {
-      selected,
-      highlighted: date,
-      isOpen: !shouldClose && state.isOpen,
-      inputValue: selected
-        ? typeof state.formatter === 'function'
-          ? state.formatter(selected, state.format || 'yyyy-MM-dd')
-          : format(selected, state.format || 'yyyy-MM-dd')
-        : '',
-    } as Partial<RepickState<Selected>>
-  }
-
   function reducer(
     state: RepickState<Selected>,
     action: RepickAction,
   ): Partial<RepickState<Selected>> {
+    const options: {
+      format: string
+      weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
+      locale: Locale | undefined
+    } = {
+      format: state.format || 'yyyy-MM-dd',
+      weekStartsOn: state.weekStartsOn || 0,
+      locale: state.locale,
+    }
+
+    const formatter = state.formatter || defaultFormatter
+    const parser = state.parser || defaultParser
+
+    function reduceSelected(state: RepickState<Selected>, date: Date) {
+      if (!dateIsSelectable(state, date)) {
+        return {}
+      }
+
+      const [selected, shouldClose] = selectDate(state.selected, date)
+
+      return {
+        selected,
+        highlighted: date,
+        isOpen: !shouldClose && state.isOpen,
+        inputValue: formatter(selected, options.format),
+      } as Partial<RepickState<Selected>>
+    }
+
     switch (action.type) {
       case actionInputFocus:
       case actionInputKeyArrowDown:
@@ -103,15 +113,7 @@ export function reducer<Selected extends Date | Date[]>(
         } as Partial<RepickState<Selected>>
       }
       case actionInputChange: {
-        const parsedDate =
-          typeof state.parser === 'function'
-            ? state.parser(action.value, state.format || 'yyyy-MM-dd')
-            : parse(
-                action.value,
-                typeof state.format === 'string' && !!state.format
-                  ? state.format
-                  : 'yyyy-MM-dd',
-              )
+        const parsedDate = parser(action.value, options.format)
 
         const highlighted = parsedDate
           ? Array.isArray(parsedDate)
@@ -125,15 +127,7 @@ export function reducer<Selected extends Date | Date[]>(
         } as Partial<RepickState<Selected>>
       }
       case actionInputKeyEnter: {
-        const parsedDate =
-          typeof state.parser === 'function'
-            ? state.parser(state.inputValue, state.format || 'yyyy-MM-dd')
-            : parse(
-                state.inputValue,
-                typeof state.format === 'string' && !!state.format
-                  ? state.format
-                  : 'yyyy-MM-dd',
-              )
+        const parsedDate = parser(state.inputValue, options.format)
 
         const highlighted = parsedDate
           ? Array.isArray(parsedDate)
@@ -146,11 +140,7 @@ export function reducer<Selected extends Date | Date[]>(
         return {
           highlighted,
           selected,
-          inputValue: selected
-            ? typeof state.formatter === 'function'
-              ? state.formatter(selected, state.format || 'yyyy-MM-dd')
-              : format(selected, state.format || 'yyyy-MM-dd')
-            : '',
+          inputValue: formatter(selected, options.format),
         }
       }
       case actionDateClick:
@@ -206,8 +196,8 @@ export function reducer<Selected extends Date | Date[]>(
       case actionStartOfWeek: {
         return {
           highlighted: setDay(state.highlighted, state.weekStartsOn || 0, {
-            locale: state.locale,
-            weekStartsOn: state.weekStartsOn,
+            locale: options.locale,
+            weekStartsOn: options.weekStartsOn,
           }),
         } as Partial<RepickState<Selected>>
       }
@@ -217,10 +207,10 @@ export function reducer<Selected extends Date | Date[]>(
         return {
           highlighted: setDay(
             state.highlighted,
-            wrapWeekDay((state.weekStartsOn || 0) + 6),
+            wrapWeekDay(options.weekStartsOn + 6),
             {
-              locale: state.locale,
-              weekStartsOn: state.weekStartsOn,
+              locale: options.locale,
+              weekStartsOn: options.weekStartsOn,
             },
           ),
         } as Partial<RepickState<Selected>>

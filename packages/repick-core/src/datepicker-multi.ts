@@ -6,7 +6,7 @@ import parseDate from 'date-fns/parse'
 import isSameDay from 'date-fns/isSameDay'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
-import { reducer } from './core/reducer'
+import { createReducer } from './core/reducer'
 import { RepickContext, RepickDay, RepickState } from './core/types'
 import { sort, toggleValue } from './utils'
 
@@ -43,7 +43,7 @@ export const parseMulti = (dateString: string, format: string) => {
     : false
 }
 
-export const reducerMulti = reducer<Date[]>(
+export const reducerMulti = createReducer<Date[]>(
   selectDateMulti,
   formatMulti,
   parseMulti,

@@ -7,7 +7,7 @@ import isSameDay from 'date-fns/isSameDay'
 import isWithinInterval from 'date-fns/isWithinInterval'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
-import { reducer } from './core/reducer'
+import { createReducer } from './core/reducer'
 import { RepickContext, RepickDay, RepickState } from './core/types'
 import { sort } from './utils'
 
@@ -60,7 +60,7 @@ export const parseRange = (dateString: string, format: string) => {
     : false
 }
 
-export const reducerRange = reducer<[Date] | [Date, Date]>(
+export const reducerRange = createReducer<[Date] | [Date, Date]>(
   selectDateRange,
   formatRange,
   parseRange,

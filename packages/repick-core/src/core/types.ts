@@ -8,8 +8,8 @@ export type Weekday = {
 export type RepickOptions<Selected extends Date | Date[]> = Partial<{
   allowInput: boolean
   format: string
-  formatter: (selected: Selected, format: string) => string
-  parser: (dateString: string, format: string) => Selected
+  formatter: (selected: Selected | null, format: string) => string
+  parser: (dateString: string, format: string) => Selected | false
   monthCount: number
   locale: Locale
   disabledDates: Date[]

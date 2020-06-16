@@ -5,7 +5,7 @@ import parseDate from 'date-fns/parse'
 import startOfToday from 'date-fns/startOfToday'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
-import { reducer } from './core/reducer'
+import { createReducer } from './core/reducer'
 import { RepickContext, RepickDay, RepickState } from './core/types'
 
 export type RepickStateSingle = RepickState<Date>
@@ -22,8 +22,8 @@ export const selectDateSingle = (
   true,
 ]
 
-export const formatSingle = (selected: Date, format: string) =>
-  formatDate(selected, format)
+export const formatSingle = (selected: Date | null, format: string) =>
+  selected ? formatDate(selected, format) : ''
 
 export const parseSingle = (dateString: string, format: string) => {
   const parsedDate = parseDate(dateString, format, startOfToday())
@@ -31,7 +31,7 @@ export const parseSingle = (dateString: string, format: string) => {
   return isValid(parsedDate) ? parsedDate : false
 }
 
-export const reducerSingle = reducer<Date>(
+export const reducerSingle = createReducer<Date>(
   selectDateSingle,
   formatSingle,
   parseSingle,
