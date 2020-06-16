@@ -2,6 +2,7 @@ import compareAsc from 'date-fns/compareAsc'
 import formatDate from 'date-fns/format'
 import isValid from 'date-fns/isValid'
 import parseDate from 'date-fns/parse'
+import startOfToday from 'date-fns/startOfToday'
 import isSameDay from 'date-fns/isSameDay'
 import isWithinInterval from 'date-fns/isWithinInterval'
 
@@ -35,15 +36,24 @@ export const selectDateRange = (
         true,
       ]
 
-export const formatRange = (selected: [Date] | [Date, Date], format: string) =>
-  selected[1] !== undefined
-    ? formatDate(selected[0], format) + ' - ' + formatDate(selected[1], format)
-    : formatDate(selected[0], format)
+export const formatRange = (
+  selected: [Date] | [Date, Date] | null,
+  format: string,
+) =>
+  selected
+    ? selected[1] !== undefined
+      ? formatDate(selected[0], format) +
+        ' - ' +
+        formatDate(selected[1], format)
+      : formatDate(selected[0], format)
+    : ''
 
 export const parseRange = (dateString: string, format: string) => {
+  const baseDate = startOfToday()
+
   const parsedDate = dateString
     .split('-')
-    .map(x => parseDate(x, format, new Date()))
+    .map(x => parseDate(x, format, baseDate))
 
   return parsedDate.length <= 2 && parsedDate.every(isValid)
     ? (parsedDate as [Date] | [Date, Date])

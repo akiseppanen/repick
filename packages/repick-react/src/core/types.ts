@@ -16,7 +16,7 @@ export type RepickProps<Selected extends Date | Date[]> = {
   onUpdate?: (date: Date) => void
   selected?: Selected | null
   stateReducer?: RepickStateReducer<Selected>
-} & RepickOptions
+} & RepickOptions<Selected>
 
 export type InputProps = {
   id: string

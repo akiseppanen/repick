@@ -91,6 +91,10 @@ export function useDatePickerCore<
     props: RepickProps<Selected>,
   ): Partial<RepickState<Selected>> {
     return {
+      allowInput: props.allowInput,
+      format: props.format,
+      formatter: props.formatter,
+      parser: props.parser,
       highlighted: props.highlighted,
       isOpen: props.isOpen,
       locale: props.locale,

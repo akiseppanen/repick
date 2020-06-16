@@ -64,7 +64,7 @@ export function keyToAction(key: string): RepickAction | null {
   return null
 }
 
-export function buildWeekdays(options: RepickOptions = {}): Weekday[] {
+export function buildWeekdays(options: RepickOptions<any> = {}): Weekday[] {
   const date = new Date()
 
   return Array.apply(null, Array(7)).map((_, i) => {
@@ -123,7 +123,13 @@ export function assertNever(x: never): never {
 export const emptyFn = <T>(e: T) => (): T => e
 
 export const dateIsSelectable = (
-  { enabledDates, disabledDates, minDate, filterDates, maxDate }: RepickOptions,
+  {
+    enabledDates,
+    disabledDates,
+    minDate,
+    filterDates,
+    maxDate,
+  }: RepickOptions<any>,
   date: Date,
 ) =>
   !(

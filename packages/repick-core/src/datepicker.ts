@@ -2,6 +2,7 @@ import isSameDay from 'date-fns/isSameDay'
 import formatDate from 'date-fns/format'
 import isValid from 'date-fns/isValid'
 import parseDate from 'date-fns/parse'
+import startOfToday from 'date-fns/startOfToday'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
 import { reducer } from './core/reducer'
@@ -25,7 +26,7 @@ export const formatSingle = (selected: Date, format: string) =>
   formatDate(selected, format)
 
 export const parseSingle = (dateString: string, format: string) => {
-  const parsedDate = parseDate(dateString, format, new Date())
+  const parsedDate = parseDate(dateString, format, startOfToday())
 
   return isValid(parsedDate) ? parsedDate : false
 }

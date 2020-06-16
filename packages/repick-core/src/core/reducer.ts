@@ -75,7 +75,9 @@ export function reducer<Selected extends Date | Date[]>(
       highlighted: date,
       isOpen: !shouldClose && state.isOpen,
       inputValue: selected
-        ? format(selected, state.format || 'yyyy-MM-dd')
+        ? typeof state.formatter === 'function'
+          ? state.formatter(selected, state.format || 'yyyy-MM-dd')
+          : format(selected, state.format || 'yyyy-MM-dd')
         : '',
     } as Partial<RepickState<Selected>>
   }
@@ -101,7 +103,15 @@ export function reducer<Selected extends Date | Date[]>(
         } as Partial<RepickState<Selected>>
       }
       case actionInputChange: {
-        const parsedDate = parse(action.value, state.format || 'yyyy-MM-dd')
+        const parsedDate =
+          typeof state.parser === 'function'
+            ? state.parser(action.value, state.format || 'yyyy-MM-dd')
+            : parse(
+                action.value,
+                typeof state.format === 'string' && !!state.format
+                  ? state.format
+                  : 'yyyy-MM-dd',
+              )
 
         const highlighted = parsedDate
           ? Array.isArray(parsedDate)
@@ -115,7 +125,15 @@ export function reducer<Selected extends Date | Date[]>(
         } as Partial<RepickState<Selected>>
       }
       case actionInputKeyEnter: {
-        const parsedDate = parse(state.inputValue, state.format || 'yyyy-MM-dd')
+        const parsedDate =
+          typeof state.parser === 'function'
+            ? state.parser(state.inputValue, state.format || 'yyyy-MM-dd')
+            : parse(
+                state.inputValue,
+                typeof state.format === 'string' && !!state.format
+                  ? state.format
+                  : 'yyyy-MM-dd',
+              )
 
         const highlighted = parsedDate
           ? Array.isArray(parsedDate)
@@ -129,7 +147,9 @@ export function reducer<Selected extends Date | Date[]>(
           highlighted,
           selected,
           inputValue: selected
-            ? format(selected, state.format || 'yyyy-MM-dd')
+            ? typeof state.formatter === 'function'
+              ? state.formatter(selected, state.format || 'yyyy-MM-dd')
+              : format(selected, state.format || 'yyyy-MM-dd')
             : '',
         }
       }

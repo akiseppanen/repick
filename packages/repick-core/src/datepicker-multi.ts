@@ -1,6 +1,7 @@
 import compareAsc from 'date-fns/compareAsc'
 import formatDate from 'date-fns/format'
 import isValid from 'date-fns/isValid'
+import startOfToday from 'date-fns/startOfToday'
 import parseDate from 'date-fns/parse'
 import isSameDay from 'date-fns/isSameDay'
 
@@ -28,13 +29,14 @@ export const selectDateMulti = (
 export const isSelectedMulti = (selected: Date[] | null, date: Date) =>
   !!selected && selected.findIndex(x => isSameDay(x, date)) >= 0
 
-export const formatMulti = (selected: Date[], format: string) =>
-  selected.map(date => formatDate(date, format)).join(', ')
+export const formatMulti = (selected: Date[] | null, format: string) =>
+  selected ? selected.map(date => formatDate(date, format)).join(', ') : ''
 
 export const parseMulti = (dateString: string, format: string) => {
+  const baseDate = startOfToday()
   const parsedDate = dateString
     .split(/,/)
-    .map(x => parseDate(x, format, new Date()))
+    .map(x => parseDate(x, format, baseDate))
 
   return parsedDate.every(isValid)
     ? (parsedDate as [Date] | [Date, Date])

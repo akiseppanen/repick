@@ -13,7 +13,7 @@ import { calendarFixture } from './fixtures/calendar'
 
 jest.mock('repick-core')
 
-const options: RepickOptions = {
+const options: RepickOptions<Date> = {
   weekStartsOn: 1,
 }
 const mockedKeyToAction = keyToAction as jest.Mock

@@ -5,9 +5,11 @@ export type Weekday = {
   short: string
 }
 
-export type RepickOptions = Partial<{
+export type RepickOptions<Selected extends Date | Date[]> = Partial<{
   allowInput: boolean
   format: string
+  formatter: (selected: Selected, format: string) => string
+  parser: (dateString: string, format: string) => Selected
   monthCount: number
   locale: Locale
   disabledDates: Date[]
@@ -18,12 +20,12 @@ export type RepickOptions = Partial<{
   filterDates: (date: Date) => boolean
 }>
 
-export type RepickState<Selected> = {
+export type RepickState<Selected extends Date | Date[]> = {
   highlighted: Date
   inputValue: string
   isOpen: boolean
   selected: Selected | null
-} & RepickOptions
+} & RepickOptions<Selected>
 
 export type RepickDay<Extra extends { [key: string]: any } = {}> = {
   date: Date

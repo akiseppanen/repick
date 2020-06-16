@@ -12,7 +12,7 @@ jest.mock('../../src/utils')
 
 const mockedDateIsSelectable = dateIsSelectable as jest.Mock<
   boolean,
-  [RepickOptions, Date]
+  [RepickOptions<Date>, Date]
 >
 const mockedWrapWeekDay = wrapWeekDay as jest.Mock<number, [number]>
 mockedWrapWeekDay.mockImplementation(
