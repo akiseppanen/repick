@@ -473,6 +473,8 @@ const months = [
 ]
 
 export const calendarFixture: RepickContextSingle = {
+  isOpen: false,
+  inputValue: '',
   highlighted: new Date('2017-12-31T22:00:00.000Z'),
   selected: new Date('2018-01-09T22:00:00.000Z'),
   month: 1,
