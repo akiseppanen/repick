@@ -4,9 +4,9 @@ import { buildContextRange, reducerRange, RepickDayRange } from 'repick-core'
 import { RepickProps, RepickReturnValue } from './core/types'
 import { useDatePickerCore } from './core'
 
-export type RepickPropsRange = RepickProps<[Date, Date?]>
+export type RepickPropsRange = RepickProps<[Date] | [Date, Date]>
 export type RepickReturnValueRange = RepickReturnValue<
-  [Date, Date?],
+  [Date] | [Date, Date],
   RepickDayRange
 >
 

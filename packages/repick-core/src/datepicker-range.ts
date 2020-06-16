@@ -1,5 +1,7 @@
 import compareAsc from 'date-fns/compareAsc'
 import formatDate from 'date-fns/format'
+import isValid from 'date-fns/isValid'
+import parseDate from 'date-fns/parse'
 import isSameDay from 'date-fns/isSameDay'
 import isWithinInterval from 'date-fns/isWithinInterval'
 
@@ -8,34 +10,56 @@ import { reducer } from './core/reducer'
 import { RepickContext, RepickDay, RepickState } from './core/types'
 import { sort } from './utils'
 
-export type RepickStateRange = RepickState<[Date, Date?]>
+export type RepickStateRange = RepickState<[Date] | [Date, Date]>
 
 export type RepickDayRange = RepickDay<{
   rangeStart: boolean
   rangeEnd: boolean
 }>
 
-export type RepickContextRange = RepickContext<[Date, Date?], RepickDayRange>
+export type RepickContextRange = RepickContext<
+  [Date] | [Date, Date],
+  RepickDayRange
+>
 
 export const selectDateRange = (
-  selected: [Date, Date?] | null,
+  selected: [Date] | [Date, Date] | null,
   date: Date,
-): [[Date, Date?], boolean] =>
+): [[Date] | [Date, Date], boolean] =>
   selected === null || isSameDay(selected[0], date) || selected.length === 2
     ? [[date], false]
-    : [sort(compareAsc, [...selected, date] as Date[]) as [Date, Date?], true]
+    : [
+        sort(compareAsc, [...selected, date] as Date[]) as
+          | [Date]
+          | [Date, Date],
+        true,
+      ]
 
-export const formatRange = (selected: [Date, Date?], format: string) =>
+export const formatRange = (selected: [Date] | [Date, Date], format: string) =>
   selected[1] !== undefined
     ? formatDate(selected[0], format) + ' - ' + formatDate(selected[1], format)
     : formatDate(selected[0], format)
 
-export const reducerRange = reducer<RepickStateRange>(
+export const parseRange = (dateString: string, format: string) => {
+  const parsedDate = dateString
+    .split('-')
+    .map(x => parseDate(x, format, new Date()))
+
+  return parsedDate.length <= 2 && parsedDate.every(isValid)
+    ? (parsedDate as [Date] | [Date, Date])
+    : false
+}
+
+export const reducerRange = reducer<[Date] | [Date, Date]>(
   selectDateRange,
   formatRange,
+  parseRange,
 )
 
-export const isSelectedRange = (selected: [Date, Date?] | null, date: Date) =>
+export const isSelectedRange = (
+  selected: [Date] | [Date, Date] | null,
+  date: Date,
+) =>
   !!selected &&
   (selected[1] !== undefined
     ? isWithinInterval(date, { start: selected[0], end: selected[1] })

@@ -6,6 +6,7 @@ export type Weekday = {
 }
 
 export type RepickOptions = Partial<{
+  allowInput: boolean
   format: string
   monthCount: number
   locale: Locale

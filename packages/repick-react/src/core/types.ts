@@ -2,11 +2,10 @@ import {
   RepickContext,
   RepickDay,
   RepickOptions,
-  RepickState,
   RepickStateReducer,
 } from 'repick-core'
 
-export type RepickProps<Selected> = {
+export type RepickProps<Selected extends Date | Date[]> = {
   autoFocus?: boolean
   highlighted?: Date
   initialHighlighted?: Date
@@ -16,15 +15,16 @@ export type RepickProps<Selected> = {
   onChange?: (date: Selected | null) => void
   onUpdate?: (date: Date) => void
   selected?: Selected | null
-  stateReducer?: RepickStateReducer<RepickState<Selected>>
+  stateReducer?: RepickStateReducer<Selected>
 } & RepickOptions
 
 export type InputProps = {
   id: string
   onBlur: (e: React.FocusEvent) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onFocus: (e: React.FocusEvent) => void
   onKeyDown: (e: React.KeyboardEvent) => void
-  readOnly: true
+  readOnly: boolean
   ref: (el: HTMLElement | null) => void
   type: string
   value: string

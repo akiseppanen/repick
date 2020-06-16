@@ -26,6 +26,8 @@ import {
   actionInputFocus,
   actionInputKeyArrowDown,
   actionInputBlur,
+  actionInputChange,
+  actionInputKeyEnter,
 } from 'repick-core'
 
 import { useControllableReducer } from './use-controllable-reducer'
@@ -42,9 +44,12 @@ import {
   ToggleButtonProps,
 } from './types'
 
-export type RepickCoreDeps<Selected, DayContext extends RepickDay<any>> = {
+export type RepickCoreDeps<
+  Selected extends Date | Date[],
+  DayContext extends RepickDay<any>
+> = {
   reducer: (
-    stateReducer?: RepickStateReducer<RepickState<Selected>>,
+    stateReducer?: RepickStateReducer<Selected>,
   ) => (
     state: RepickState<Selected>,
     action: RepickAction,
@@ -55,11 +60,14 @@ export type RepickCoreDeps<Selected, DayContext extends RepickDay<any>> = {
 }
 
 export type RepickPropsWithCoreDeps<
-  Selected,
+  Selected extends Date | Date[],
   DayContext extends RepickDay<any>
 > = RepickProps<Selected> & RepickCoreDeps<Selected, DayContext>
 
-export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
+export function useDatePickerCore<
+  Selected extends Date | Date[],
+  DayContext extends RepickDay<any>
+>({
   buildContext,
   reducer,
   ...props
@@ -243,7 +251,12 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
   const getInputProps = (): InputProps => {
     return {
       id: `${id}-input`,
-
+      onChange: e => {
+        dispatch({
+          type: actionInputChange,
+          value: e.currentTarget.value,
+        })
+      },
       onBlur: () => {
         if (shouldBlurRef.current === false) {
           shouldBlurRef.current = true
@@ -270,8 +283,13 @@ export function useDatePickerCore<Selected, DayContext extends RepickDay<any>>({
             type: actionInputKeyArrowDown,
           })
         }
+        if (e.key === 'Enter') {
+          dispatch({
+            type: actionInputKeyEnter,
+          })
+        }
       },
-      readOnly: true,
+      readOnly: !props.allowInput,
       ref: el => {
         inputRef.current = el || undefined
       },

@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import parse from 'date-fns/parse'
 import {
   reducer as reducerCore,
   RepickStateChangeOptions,
@@ -31,6 +32,9 @@ describe('reducerGeneric', () => {
 
   const mockedSelectDate = jest.fn<[Date, boolean], [Date | null, Date]>()
   const mockedFormat = jest.fn<string, [Date, string]>(format)
+  const mockedParse = jest.fn<Date, [string, string]>((dateString, format) =>
+    parse(dateString, format, new Date('2018-01-01 00:00:00')),
+  )
   const mockedStateReducer = jest.fn<
     RepickState<Date>,
     [RepickState<Date>, RepickStateChangeOptions<Date>]
@@ -38,9 +42,10 @@ describe('reducerGeneric', () => {
     ...state,
     ...changes,
   }))
-  const reducer = reducerCore<RepickState<Date>>(
+  const reducer = reducerCore<Date>(
     mockedSelectDate,
     mockedFormat,
+    mockedParse,
   )(mockedStateReducer)
 
   mockedDateIsSelectable.mockReturnValue(true)

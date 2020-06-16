@@ -1,5 +1,7 @@
 import isSameDay from 'date-fns/isSameDay'
 import formatDate from 'date-fns/format'
+import isValid from 'date-fns/isValid'
+import parseDate from 'date-fns/parse'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
 import { reducer } from './core/reducer'
@@ -22,9 +24,16 @@ export const selectDateSingle = (
 export const formatSingle = (selected: Date, format: string) =>
   formatDate(selected, format)
 
-export const reducerSingle = reducer<RepickStateSingle>(
+export const parseSingle = (dateString: string, format: string) => {
+  const parsedDate = parseDate(dateString, format, new Date())
+
+  return isValid(parsedDate) ? parsedDate : false
+}
+
+export const reducerSingle = reducer<Date>(
   selectDateSingle,
   formatSingle,
+  parseSingle,
 )
 
 export const isSelectedSingle = (selected: Date | null, date: Date) =>

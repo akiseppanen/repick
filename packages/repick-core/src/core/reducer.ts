@@ -39,32 +39,31 @@ import {
   actionStartOfWeek,
   RepickAction,
   actionInputBlur,
+  actionInputChange,
+  actionInputKeyEnter,
 } from '../actions'
 import { RepickState } from './types'
 import { dateIsSelectable, wrapWeekDay } from '../utils'
 
-type RepickStateSelected<
-  State extends RepickState<any>
-> = State extends RepickState<infer Selected> ? Selected : never
-
-export type RepickStateChangeOptions<Selected> = {
+export type RepickStateChangeOptions<Selected extends Date | Date[]> = {
   action: RepickAction
   changes: Partial<RepickState<Selected>>
 }
 
-export type RepickStateReducer<State extends RepickState<any>> = (
-  state: State,
-  actionAndChanges: RepickStateChangeOptions<RepickStateSelected<State>>,
-) => State
+export type RepickStateReducer<Selected extends Date | Date[]> = (
+  state: RepickState<Selected>,
+  actionAndChanges: RepickStateChangeOptions<Selected>,
+) => RepickState<Selected>
 
-export function reducer<State extends RepickState<any>>(
+export function reducer<Selected extends Date | Date[]>(
   selectDate: (
-    selected: RepickStateSelected<State> | null,
+    selected: Selected | null,
     date: Date,
-  ) => [RepickStateSelected<State> | null, boolean],
-  format: (selected: RepickStateSelected<State>, format: string) => string,
+  ) => [Selected | null, boolean],
+  format: (selected: Selected, format: string) => string,
+  parse: (dateString: string, format: string) => Selected | false,
 ) {
-  function reduceSelected(state: State, date: Date) {
+  function reduceSelected(state: RepickState<Selected>, date: Date) {
     if (!dateIsSelectable(state, date)) {
       return {}
     }
@@ -78,17 +77,20 @@ export function reducer<State extends RepickState<any>>(
       inputValue: selected
         ? format(selected, state.format || 'yyyy-MM-dd')
         : '',
-    } as Partial<State>
+    } as Partial<RepickState<Selected>>
   }
 
-  function reducer(state: State, action: RepickAction): Partial<State> {
+  function reducer(
+    state: RepickState<Selected>,
+    action: RepickAction,
+  ): Partial<RepickState<Selected>> {
     switch (action.type) {
       case actionInputFocus:
       case actionInputKeyArrowDown:
       case actionOpenCalendar: {
         return {
           isOpen: true,
-        } as Partial<State>
+        } as Partial<RepickState<Selected>>
       }
       case actionBlur:
       case actionInputBlur:
@@ -96,7 +98,40 @@ export function reducer<State extends RepickState<any>>(
       case actionCloseCalendar: {
         return {
           isOpen: false,
-        } as Partial<State>
+        } as Partial<RepickState<Selected>>
+      }
+      case actionInputChange: {
+        const parsedDate = parse(action.value, state.format || 'yyyy-MM-dd')
+
+        const highlighted = parsedDate
+          ? Array.isArray(parsedDate)
+            ? parsedDate[0]
+            : parsedDate
+          : state.highlighted
+
+        return {
+          highlighted,
+          inputValue: action.value,
+        } as Partial<RepickState<Selected>>
+      }
+      case actionInputKeyEnter: {
+        const parsedDate = parse(state.inputValue, state.format || 'yyyy-MM-dd')
+
+        const highlighted = parsedDate
+          ? Array.isArray(parsedDate)
+            ? parsedDate[0]
+            : parsedDate
+          : state.highlighted
+
+        const selected = parsedDate ? parsedDate : state.selected
+
+        return {
+          highlighted,
+          selected,
+          inputValue: selected
+            ? format(selected, state.format || 'yyyy-MM-dd')
+            : '',
+        }
       }
       case actionDateClick:
       case actionSelectDate: {
@@ -115,30 +150,36 @@ export function reducer<State extends RepickState<any>>(
       case actionPrevDay: {
         return {
           highlighted: subDays(state.highlighted, 1),
-        } as Partial<State>
+        } as Partial<RepickState<Selected>>
       }
       case actionKeyArrowRight:
       case actionNextDay: {
-        return { highlighted: addDays(state.highlighted, 1) } as Partial<State>
+        return { highlighted: addDays(state.highlighted, 1) } as Partial<
+          RepickState<Selected>
+        >
       }
       case actionKeyArrowUp:
       case actionPrevWeek: {
-        return { highlighted: subDays(state.highlighted, 7) } as Partial<State>
+        return { highlighted: subDays(state.highlighted, 7) } as Partial<
+          RepickState<Selected>
+        >
       }
       case actionKeyArrowDown:
       case actionNextWeek: {
-        return { highlighted: addDays(state.highlighted, 7) } as Partial<State>
+        return { highlighted: addDays(state.highlighted, 7) } as Partial<
+          RepickState<Selected>
+        >
       }
       case actionKeyPageDown:
       case actionPrevMonth: {
         return { highlighted: subMonths(state.highlighted, 1) } as Partial<
-          State
+          RepickState<Selected>
         >
       }
       case actionKeyPageUp:
       case actionNextMonth: {
         return { highlighted: addMonths(state.highlighted, 1) } as Partial<
-          State
+          RepickState<Selected>
         >
       }
       case actionKeyHome:
@@ -148,7 +189,7 @@ export function reducer<State extends RepickState<any>>(
             locale: state.locale,
             weekStartsOn: state.weekStartsOn,
           }),
-        } as Partial<State>
+        } as Partial<RepickState<Selected>>
       }
 
       case actionKeyEnd:
@@ -162,17 +203,21 @@ export function reducer<State extends RepickState<any>>(
               weekStartsOn: state.weekStartsOn,
             },
           ),
-        } as Partial<State>
+        } as Partial<RepickState<Selected>>
       }
 
       case actionKeyShiftPageDown:
       case actionPrevYear: {
-        return { highlighted: subYears(state.highlighted, 1) } as Partial<State>
+        return { highlighted: subYears(state.highlighted, 1) } as Partial<
+          RepickState<Selected>
+        >
       }
 
       case actionKeyShiftPageUp:
       case actionNextYear: {
-        return { highlighted: addYears(state.highlighted, 1) } as Partial<State>
+        return { highlighted: addYears(state.highlighted, 1) } as Partial<
+          RepickState<Selected>
+        >
       }
 
       default: {
@@ -183,11 +228,11 @@ export function reducer<State extends RepickState<any>>(
   }
 
   return (
-    stateReducer: RepickStateReducer<State> | undefined = (
+    stateReducer: RepickStateReducer<Selected> | undefined = (
       state,
       { changes },
     ) => ({ ...state, ...changes }),
-  ) => (state: State, action: RepickAction) => {
+  ) => (state: RepickState<Selected>, action: RepickAction) => {
     const changes = reducer(state, action)
 
     return stateReducer(state, { action, changes })

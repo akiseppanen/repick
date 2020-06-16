@@ -3,8 +3,10 @@ export const actionCloseCalendar = 'CloseCalendar'
 export const actionDateClick = 'DateClick'
 export const actionEndOfWeek = 'EndOfWeek'
 export const actionInputBlur = 'InputBlur'
+export const actionInputChange = 'InputChange'
 export const actionInputFocus = 'InputFocus'
 export const actionInputKeyArrowDown = 'InputKeyArrowDown'
+export const actionInputKeyEnter = 'InputKeyEnter'
 export const actionKeyArrowDown = 'KeyArrowDown'
 export const actionKeyArrowLeft = 'KeyArrowLeft'
 export const actionKeyArrowRight = 'KeyArrowRight'
@@ -46,12 +48,21 @@ export interface ActionDateClick {
 export interface ActionInputBlur {
   type: typeof actionInputBlur
 }
+
+export interface ActionInputChange {
+  type: typeof actionInputChange
+  value: string
+}
+
 export interface ActionInputFocus {
   type: typeof actionInputFocus
 }
 
 export interface ActionInputKeyArrowDown {
   type: typeof actionInputKeyArrowDown
+}
+export interface ActionInputKeyEnter {
+  type: typeof actionInputKeyEnter
 }
 
 export interface ActionEndOfWeek {
@@ -161,8 +172,10 @@ export type RepickAction =
   | ActionDateClick
   | ActionEndOfWeek
   | ActionInputBlur
+  | ActionInputChange
   | ActionInputFocus
   | ActionInputKeyArrowDown
+  | ActionInputKeyEnter
   | ActionKeyArrowDown
   | ActionKeyArrowLeft
   | ActionKeyArrowRight

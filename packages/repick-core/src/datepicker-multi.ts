@@ -1,5 +1,7 @@
 import compareAsc from 'date-fns/compareAsc'
 import formatDate from 'date-fns/format'
+import isValid from 'date-fns/isValid'
+import parseDate from 'date-fns/parse'
 import isSameDay from 'date-fns/isSameDay'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
@@ -29,9 +31,20 @@ export const isSelectedMulti = (selected: Date[] | null, date: Date) =>
 export const formatMulti = (selected: Date[], format: string) =>
   selected.map(date => formatDate(date, format)).join(', ')
 
-export const reducerMulti = reducer<RepickStateMulti>(
+export const parseMulti = (dateString: string, format: string) => {
+  const parsedDate = dateString
+    .split(/,/)
+    .map(x => parseDate(x, format, new Date()))
+
+  return parsedDate.every(isValid)
+    ? (parsedDate as [Date] | [Date, Date])
+    : false
+}
+
+export const reducerMulti = reducer<Date[]>(
   selectDateMulti,
   formatMulti,
+  parseMulti,
 )
 
 const buildCalendarContextDayMulti: (
