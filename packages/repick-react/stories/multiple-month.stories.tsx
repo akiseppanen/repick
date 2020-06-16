@@ -11,76 +11,91 @@ export default {
 
 const Component: React.FunctionComponent = () => {
   const date = new Date('2018-01-01')
+
+  const monthCount = 2
   const {
-    getToggleButtonProps,
+    getCalendarHeaderProps,
     getCalendarProps,
     getDateProps,
+    getDialogProps,
     getInputProps,
+    getLabelProps,
     getNextMonthProps,
     getPrevMonthProps,
-    months,
+    getToggleButtonProps,
     isOpen,
+    months,
     weekdays,
   } = useDatePicker({
     initialHighlighted: date,
-    monthCount: 2,
     weekStartsOn: 1,
+    monthCount,
+    isOpen: true,
   })
 
   return (
     <>
+      <label {...getLabelProps()}>Date</label>
       <input {...getInputProps()} type="text" />
       <button {...getToggleButtonProps()}>
         <Calendar />
       </button>
-      <div {...getCalendarProps()} className="calendar multipleMonths">
+      <div className="dialog multipleMonths" {...getDialogProps()}>
         {isOpen && (
           <>
-            <div className="calendarHeader">
-              <div {...getPrevMonthProps()} className="calendarMonthPrev">
-                <ArrowLeft />
-              </div>
-              <div {...getNextMonthProps()} className="calendarMonthNext">
-                <ArrowRight />
-              </div>
-            </div>
-            {months.map(({ month, monthLong, year, days }) => (
-              <div className="calendarMonth" key={`${month}-${year}`}>
-                <div className="calendarHeader">
-                  <div className="calendarCurrentMonth">
+            {months.map(({ month, monthLong, year, weeks }, index) => (
+              <div key={`${month}-${year}`}>
+                <nav>
+                  {index === 0 && (
+                    <button {...getPrevMonthProps()} className="monthPrev">
+                      <ArrowLeft />
+                    </button>
+                  )}
+                  <div className="header" {...getCalendarHeaderProps(index)}>
                     {monthLong} {year}
                   </div>
-                </div>
-                <div className="calendarWeekdays">
-                  {weekdays.map(weekday => (
-                    <div
-                      key={`weekday-${weekday.short}`}
-                      className="calendarWeekday"
-                    >
-                      {weekday.short}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="calendarDayContainer">
-                  {days.map(calendarDay => (
-                    <button
-                      {...getDateProps(calendarDay)}
-                      key={calendarDay.date.toISOString()}
-                      className={classnames('calendarDay', {
-                        nextMonth: calendarDay.nextMonth,
-                        prevMonth: calendarDay.prevMonth,
-                        selected:
-                          calendarDay.selected &&
-                          !calendarDay.nextMonth &&
-                          !calendarDay.prevMonth,
-                        today: calendarDay.today,
-                      })}
-                    >
-                      {calendarDay.day}
+                  {index === monthCount - 1 && (
+                    <button {...getNextMonthProps()} className="monthNext">
+                      <ArrowRight />
                     </button>
-                  ))}
-                </div>
+                  )}
+                </nav>
+                <table className="calendar" {...getCalendarProps(index)}>
+                  <thead>
+                    <tr>
+                      {weekdays.map(weekday => (
+                        <th
+                          key={`weekday-${weekday.short}`}
+                          abbr={weekday.long}
+                          className="calendarWeekday"
+                        >
+                          {weekday.short}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {weeks.map(({ weekNumber, year, days }) => (
+                      <tr key={`week-${year}-${weekNumber}`}>
+                        {days.map(calendarDay => (
+                          <td key={`date-${calendarDay.date.toDateString()}`}>
+                            <button
+                              {...getDateProps(calendarDay)}
+                              className={classnames('calendarDay', {
+                                nextMonth: calendarDay.nextMonth,
+                                prevMonth: calendarDay.prevMonth,
+                                selected: calendarDay.selected,
+                                today: calendarDay.today,
+                              })}
+                            >
+                              {calendarDay.day}
+                            </button>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             ))}
           </>

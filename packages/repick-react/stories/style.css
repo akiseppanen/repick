@@ -2,98 +2,70 @@
   --dayWidth: 40px;
 }
 
-.calendar,
-.calendarMonth {
+.dialog {
   position: relative;
-  display: flex;
   user-select: none;
   outline: 0;
-  width: calc(var(--dayWidth) * 7);
-  flex-direction: column;
-}
-
-.calendar.calendar.withWeekNumbers {
-  width: calc(var(--dayWidth) * 8);
-}
-
-.calendar {
+  width: fit-content;
   border-radius: 5px;
   box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
     0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
-.calendar.multipleMonths {
-  width: fit-content;
+.dialog.multipleMonths {
+  display: flex;
   flex-direction: row;
 }
 
-.calendarHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 40px;
-}
-
-.calendarMonth + .calendarMonth {
+.dialog.multipleMonths > div + div {
   margin-left: 20px;
 }
 
-.calendar.multipleMonths .calendarMonthPrev,
-.calendar.multipleMonths .calendarMonthNext {
-  position: absolute;
-  z-index: 1;
+.dialog > nav,
+.dialog.multipleMonths > div > nav {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  align-items: center;
 }
 
-.calendar.multipleMonths .calendarMonthPrev {
-  left: 0;
-}
-
-.calendar.multipleMonths .calendarMonthNext {
-  right: 0;
-}
-
-.calendarMonthPrev,
-.calendarMonthNext {
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.calendarMonthPrev svg,
-.calendarMonthNext svg {
-  vertical-align: middle;
-  width: 14px;
-  height: 14px;
-}
-
-.calendarCurrentMonth {
+.dialog > nav .header,
+.dialog.multipleMonths > div > nav .header {
   font-size: 1.3em;
   text-align: center;
   flex-grow: 1;
 }
 
-.calendarWeek {
-  display: flex;
+.monthPrev,
+.monthNext {
+  border: none;
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
 }
 
-.calendarDayContainer {
-  display: flex;
-  flex-wrap: wrap;
+.monthPrev svg,
+.monthNext svg {
+  vertical-align: middle;
+  width: 14px;
+  height: 14px;
 }
 
-.calendarWeekdays {
-  display: flex;
+.calendar {
+  border-spacing: 0;
 }
-.calendarWeekdays .calendarWeekNumber,
-.calendarWeekday {
+.calendar td {
+  padding: 0;
+}
+
+.calendar thead th {
   width: var(--dayWidth);
   text-align: center;
 }
 
-.calendarWeek .calendarWeekNumber,
-.calendarDay {
-  border-color: transparent;
+.calendar tbody td {
   width: var(--dayWidth);
   height: var(--dayWidth);
   line-height: var(--dayWidth);
@@ -102,15 +74,23 @@
   box-sizing: border-box;
 }
 
-.calendarDay {
-  border-radius: 100%;
-  cursor: pointer;
-  background-color: transparent;
-}
-.calendarWeekdays .calendarWeekNumber,
-.calendarWeek .calendarWeekNumber {
+.calendar thead th.calendarWeekNumber,
+.calendar tbody td.calendarWeekNumber {
   background-color: #fafafa;
   font-weight: bold;
+}
+
+.calendarDay {
+  border-radius: 100%;
+  border-color: transparent;
+  line-height: 100%;
+  text-align: center;
+  color: #393939;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: transparent;
 }
 
 .calendarDay.prevMonth,

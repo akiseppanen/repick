@@ -12,16 +12,19 @@ const Component = () => {
   const date = new Date('2018-01-01')
 
   const {
-    getToggleButtonProps,
+    getCalendarHeaderProps,
     getCalendarProps,
     getDateProps,
+    getDialogProps,
     getInputProps,
+    getLabelProps,
     getNextMonthProps,
     getPrevMonthProps,
-    days,
+    getToggleButtonProps,
     isOpen,
     monthLong,
     weekdays,
+    weeks,
     year,
   } = useRangeDatePicker({
     initialHighlighted: date,
@@ -30,52 +33,64 @@ const Component = () => {
 
   return (
     <>
-      <input {...getInputProps()} type="text" size={100} />
+      <label {...getLabelProps()}>Date</label>
+      <input {...getInputProps()} type="text" />
       <button {...getToggleButtonProps()}>
         <Calendar />
       </button>
-      <div {...getCalendarProps()} className="calendar">
+      <div className="dialog" {...getDialogProps()}>
         {isOpen && (
           <>
-            <div className="calendarHeader">
-              <div {...getPrevMonthProps()} className="calendarMonthPrev">
+            <nav>
+              <button {...getPrevMonthProps()} className="monthPrev">
                 <ArrowLeft />
-              </div>
-              <div className="calendarCurrentMonth">
+              </button>
+              <div className="header" {...getCalendarHeaderProps()}>
                 {monthLong} {year}
               </div>
-              <div {...getNextMonthProps()} className="calendarMonthNext">
+              <button {...getNextMonthProps()} className="monthNext">
                 <ArrowRight />
-              </div>
-            </div>
-            <div className="calendarWeekdays">
-              {weekdays.map(weekday => (
-                <div
-                  key={`weekday-${weekday.short}`}
-                  className="calendarWeekday"
-                >
-                  {weekday.short}
-                </div>
-              ))}
-            </div>
-            <div className="calendarDayContainer">
-              {days.map(calendarDay => (
-                <button
-                  {...getDateProps(calendarDay)}
-                  key={calendarDay.date.toISOString()}
-                  className={classnames('calendarDay', {
-                    nextMonth: calendarDay.nextMonth,
-                    prevMonth: calendarDay.prevMonth,
-                    inRange: calendarDay.selected,
-                    today: calendarDay.today,
-                    rangeStart: calendarDay.rangeStart,
-                    rangeEnd: calendarDay.rangeEnd,
-                  })}
-                >
-                  {calendarDay.day}
-                </button>
-              ))}
-            </div>
+              </button>
+            </nav>
+            <table className="calendar" {...getCalendarProps()}>
+              <thead>
+                <tr>
+                  {weekdays.map(weekday => (
+                    <th
+                      key={`weekday-${weekday.short}`}
+                      abbr={weekday.long}
+                      className="calendarWeekday"
+                    >
+                      {weekday.short}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {weeks.map(({ weekNumber, year, days }) => (
+                  <tr key={`week-${year}-${weekNumber}`}>
+                    {days.map(calendarDay => (
+                      <td key={`date-${calendarDay.date.toDateString()}`}>
+                        <button
+                          {...getDateProps(calendarDay)}
+                          className={classnames('calendarDay', {
+                            nextMonth: calendarDay.nextMonth,
+                            prevMonth: calendarDay.prevMonth,
+                            selected: calendarDay.selected,
+                            today: calendarDay.today,
+                            inRange: calendarDay.selected,
+                            rangeStart: calendarDay.rangeStart,
+                            rangeEnd: calendarDay.rangeEnd,
+                          })}
+                        >
+                          {calendarDay.day}
+                        </button>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </>
         )}
       </div>

@@ -143,7 +143,7 @@ describe('calendar', () => {
         highlighted: calendarFixture.highlighted,
         selected: calendarFixture.selected,
       },
-      ({ getCalendarProps }) => <div {...getCalendarProps()} />,
+      ({ getDialogProps }) => <div {...getDialogProps()} />,
     )
 
     mockedKeyToAction.mockReturnValueOnce({ type: 'PrevDay' })

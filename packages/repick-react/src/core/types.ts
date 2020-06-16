@@ -8,18 +8,19 @@ import {
 
 export type RepickProps<Selected> = {
   autoFocus?: boolean
-  onChange?: (date: Selected | null) => void
-  onUpdate?: (date: Date) => void
   highlighted?: Date
   initialHighlighted?: Date
-  isOpen?: boolean
   initialIsOpen?: boolean
-  selected?: Selected | null
   initialSelected?: Selected
+  isOpen?: boolean
+  onChange?: (date: Selected | null) => void
+  onUpdate?: (date: Date) => void
+  selected?: Selected | null
   stateReducer?: RepickStateReducer<RepickState<Selected>>
 } & RepickOptions
 
 export type InputProps = {
+  id: string
   onBlur: (e: React.FocusEvent) => void
   onFocus: (e: React.FocusEvent) => void
   onKeyDown: (e: React.KeyboardEvent) => void
@@ -30,59 +31,82 @@ export type InputProps = {
 }
 
 export type ToggleButtonProps = {
+  'aria-label': string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   ref: (el: HTMLElement | null) => void
 }
 
-export type CalendarProps = {
-  onKeyDown: (e: React.KeyboardEvent) => void
-  tabIndex: number
-  ref: (el: HTMLElement | null) => void
+export type LabelProps = {
+  htmlFor: string
+}
+
+export type DialogProps = {
+  'aria-labelledby': string
+  'aria-modal': true
   onBlur: (e: React.FocusEvent) => void
+  onKeyDown: (e: React.KeyboardEvent) => void
+  ref: (el: HTMLElement | null) => void
+  role: 'dialog'
+  tabIndex: number
+}
+
+export type HeaderProps = {
+  'aria-live': 'polite'
+  id: string
 }
 
 export type MonthProps = {
-  onClick: (e: React.MouseEvent) => void
   'aria-label': string
+  onClick: (e: React.MouseEvent) => void
   role: string
+}
+
+export type CalendarProps = {
+  'aria-labelledby': string
+  role: 'grid'
+  onKeyDown: (e: React.KeyboardEvent) => void
 }
 
 export type DateProps = {
-  onClick: (e: React.MouseEvent) => void
   'aria-label': string
   'aria-pressed': boolean
+  'aria-selected': boolean
+  onClick: (e: React.MouseEvent) => void
+  ref: (el: HTMLElement | null) => void
   role: string
   tabIndex: number
-  ref: (el: HTMLElement | null) => void
 }
 
 export type RepickHelpers<DayContext extends RepickDay<any>> = {
-  selectDate: (date: string | number | Date) => void
-  selectCurrent: () => void
-  openCalendar: () => void
   closeCalendar: () => void
-  prevDay: () => void
-  nextDay: () => void
-  prevWeek: () => void
-  nextWeek: () => void
-  prevMonth: () => void
-  nextMonth: () => void
-  prevYear: () => void
-  nextYear: () => void
-  startOfWeek: () => void
   endOfWeek: () => void
-  getCalendarProps: () => CalendarProps
+  getCalendarProps: (index?: number) => CalendarProps
+  getDateProps: (repickDay: DayContext) => DateProps
+  getDialogProps: () => DialogProps
+  getCalendarHeaderProps: (index?: number) => HeaderProps
   getInputProps: () => InputProps
-  getToggleButtonProps: () => ToggleButtonProps
-  getDateProps: (repickDayContext: DayContext) => DateProps
+  getLabelProps: () => LabelProps
   getNextMonthProps: () => MonthProps
   getPrevMonthProps: () => MonthProps
+  getToggleButtonProps: () => ToggleButtonProps
   handleKeyDown: (e: React.KeyboardEvent) => void
+  nextDay: () => void
+  nextMonth: () => void
+  nextWeek: () => void
+  nextYear: () => void
+  openCalendar: () => void
+  prevDay: () => void
+  prevMonth: () => void
+  prevWeek: () => void
+  prevYear: () => void
+  selectCurrent: () => void
+  selectDate: (date: string | number | Date) => void
   setFocusToCalendar: () => void
   setFocusToDate: (date: Date) => void
+  startOfWeek: () => void
 }
 
 export type RepickReturnValue<
   Selected,
   DayContext extends RepickDay<any>
-> = RepickHelpers<any> & RepickContext<Selected, DayContext>
+> = RepickHelpers<DayContext> & RepickContext<Selected, DayContext>
