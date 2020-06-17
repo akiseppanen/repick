@@ -1,6 +1,6 @@
 import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import {
   actionDateClick,
   actionEndOfWeek,
@@ -124,7 +124,7 @@ export function useDatePickerCore<
     },
   )
 
-  const id = props.id || `repick-${Date.now().toString(36)}`
+  const id = props.id || useMemo(() => `repick-${Date.now().toString(36)}`, [])
   const focusFromRef = useRef<HTMLElement>()
   const isMouseDownRef = useRef<boolean>(false)
   const shouldFocusRef = useRef<boolean>(!!props.autoFocus)
