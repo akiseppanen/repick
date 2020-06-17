@@ -8,7 +8,7 @@ export type RepickPropsSingle = RepickProps<Date>
 export type RepickReturnValueSingle = RepickReturnValue<Date, RepickDaySingle>
 
 export const useDatePicker = (
-  props: RepickPropsSingle,
+  props: RepickPropsSingle = {},
 ): RepickReturnValueSingle => {
   return useDatePickerCore({
     ...props,

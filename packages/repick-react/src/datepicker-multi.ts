@@ -8,7 +8,7 @@ export type RepickPropsMulti = RepickProps<Date[]>
 export type RepickReturnValueMulti = RepickReturnValue<Date[], RepickDayMulti>
 
 export const useMultiDatePicker = (
-  props: RepickProps<Date[]>,
+  props: RepickProps<Date[]> = {},
 ): RepickReturnValueMulti => {
   return useDatePickerCore({
     ...props,

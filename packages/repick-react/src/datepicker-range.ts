@@ -11,7 +11,7 @@ export type RepickReturnValueRange = RepickReturnValue<
 >
 
 export const useRangeDatePicker = (
-  props: RepickPropsRange,
+  props: RepickPropsRange = {},
 ): RepickReturnValueRange => {
   return useDatePickerCore({
     ...props,
