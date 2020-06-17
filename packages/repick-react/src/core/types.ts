@@ -8,6 +8,7 @@ import {
 export type RepickProps<Selected extends Date | Date[]> = {
   autoFocus?: boolean
   highlighted?: Date
+  id?: string
   initialHighlighted?: Date
   initialIsOpen?: boolean
   initialSelected?: Selected

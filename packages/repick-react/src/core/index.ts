@@ -124,7 +124,7 @@ export function useDatePickerCore<
     },
   )
 
-  const id = 'repick'
+  const id = props.id || `repick-${Date.now().toString(36)}`
   const focusFromRef = useRef<HTMLElement>()
   const isMouseDownRef = useRef<boolean>(false)
   const shouldFocusRef = useRef<boolean>(!!props.autoFocus)
