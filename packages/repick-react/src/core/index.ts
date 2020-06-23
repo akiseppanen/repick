@@ -1,13 +1,28 @@
 import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
-import React, { useRef, useEffect, useMemo } from 'react'
+import React, {
+  useRef,
+  useEffect,
+  useMemo,
+  useReducer,
+  useCallback,
+  Reducer,
+  ReducerState,
+} from 'react'
 import {
+  actionCloseCalendar,
   actionDateClick,
   actionEndOfWeek,
+  actionInputBlur,
+  actionInputChange,
+  actionInputFocus,
+  actionInputKeyArrowDown,
+  actionInputKeyEnter,
   actionNextDay,
   actionNextMonth,
   actionNextWeek,
   actionNextYear,
+  actionOpenCalendar,
   actionPrevDay,
   actionPrevMonth,
   actionPrevWeek,
@@ -19,19 +34,11 @@ import {
   RepickAction,
   RepickContext,
   RepickDay,
-  RepickState,
-  actionOpenCalendar,
-  actionCloseCalendar,
-  actionInputFocus,
-  actionInputKeyArrowDown,
-  actionInputBlur,
-  actionInputChange,
-  actionInputKeyEnter,
   RepickOptions,
+  RepickState,
   objectCopyPartial,
 } from 'repick-core'
 
-import { useControllableReducer } from './use-controllable-reducer'
 import {
   RepickProps,
   RepickReturnValue,
@@ -45,7 +52,7 @@ import {
   ToggleButtonProps,
 } from './types'
 
-export type RepickCoreDeps<
+type RepickCoreDeps<
   Selected extends Date | Date[],
   DayContext extends RepickDay<any>
 > = {
@@ -60,10 +67,53 @@ export type RepickCoreDeps<
   ) => RepickContext<Selected, DayContext>
 }
 
-export type RepickPropsWithCoreDeps<
+type RepickPropsWithCoreDeps<
   Selected extends Date | Date[],
   DayContext extends RepickDay<any>
 > = RepickProps<Selected> & RepickCoreDeps<Selected, DayContext>
+
+function useControlledReducer<
+  R extends Reducer<any, any>,
+  V extends Partial<ReducerState<R>>
+>(
+  reducer: R,
+  values: V,
+  initializer: (arg: V) => ReducerState<R>,
+  onChange: (prevState: ReducerState<R>, newState: ReducerState<R>) => void,
+): [ReducerState<R>, React.Dispatch<React.ReducerAction<R>>] {
+  const [state, dispatch] = useReducer(reducer, values, initializer)
+
+  const prevStateRef = useRef(state)
+
+  useEffect(() => {
+    if (prevStateRef.current && prevStateRef.current !== state) {
+      onChange(prevStateRef.current, state)
+    }
+
+    prevStateRef.current = state
+  }, [state])
+
+  const controlledState = ((Object.keys(
+    state,
+  ) as unknown) as (keyof ReducerState<R>)[]).reduce((prevState, key) => {
+    prevState[key] = values[key] !== undefined ? values[key] : state[key]
+
+    return prevState
+  }, state)
+
+  return [controlledState, dispatch]
+}
+
+function callOnChangeHandler<
+  Selected extends Date | Date[],
+  Key extends keyof RepickState<Selected>
+>(props: RepickProps<Selected>, key: Key, value: RepickState<Selected>[Key]) {
+  const handler = `on${key.slice(0, 1).toUpperCase()}${key.slice(1)}Change`
+
+  if (handler in props && typeof (props as any)[handler] === 'function') {
+    ;(props as any)[handler](value)
+  }
+}
 
 export function useDatePickerCore<
   Selected extends Date | Date[],
@@ -71,33 +121,12 @@ export function useDatePickerCore<
 >({
   buildContext,
   reducer,
+  stateReducer,
   ...props
 }: RepickPropsWithCoreDeps<Selected, DayContext>): RepickReturnValue<
   Selected,
   DayContext
 > {
-  function initializeState(
-    props: RepickProps<Selected>,
-  ): RepickState<Selected> {
-    return {
-      highlighted:
-        props.highlighted || props.initialHighlighted || startOfDay(new Date()),
-      selected: props.selected || props.initialSelected || null,
-      isOpen: props.isOpen || props.initialIsOpen || false,
-      inputValue: '',
-    }
-  }
-
-  function getControlledProps(
-    props: RepickProps<Selected>,
-  ): Partial<RepickState<Selected>> {
-    return {
-      highlighted: props.highlighted,
-      isOpen: props.isOpen,
-      selected: props.selected,
-    }
-  }
-
   const options = objectCopyPartial(
     [
       'allowInput',
@@ -116,26 +145,35 @@ export function useDatePickerCore<
     props,
   )
 
-  const [state, dispatch] = useControllableReducer(
-    (state: RepickState<Selected>, action: RepickAction) => {
-      const changes = reducer(state, action, options)
+  const [state, dispatch] = useControlledReducer(
+    useCallback(
+      (state: RepickState<Selected>, action: RepickAction) => {
+        const changes = reducer(state, action, options)
 
-      if (typeof props.stateReducer === 'function') {
-        return props.stateReducer(state, { action, changes, options })
-      }
+        if (typeof stateReducer === 'function') {
+          return stateReducer(state, { action, changes, options })
+        }
 
-      return { ...state, ...changes }
-    },
+        return { ...state, ...changes }
+      },
+      [reducer, stateReducer],
+    ),
     props,
-    initializeState,
-    getControlledProps,
-    (oldState, newState) => {
-      if (props.onChange && oldState.selected !== newState.selected) {
-        props.onChange(newState.selected)
-      }
-      if (props.onUpdate && oldState.highlighted !== newState.highlighted) {
-        props.onUpdate(newState.highlighted)
-      }
+    props => ({
+      highlighted:
+        props.highlighted || props.initialHighlighted || startOfDay(new Date()),
+      selected: props.selected || props.initialSelected || null,
+      isOpen: props.isOpen || props.initialIsOpen || false,
+      inputValue: '',
+    }),
+    (prevState, newState) => {
+      ;((Object.keys(newState) as unknown) as (keyof RepickState<
+        Selected
+      >)[]).forEach(key => {
+        if (prevState[key] !== newState[key]) {
+          callOnChangeHandler(props, key, newState[key])
+        }
+      })
     },
   )
 
@@ -228,6 +266,7 @@ export function useDatePickerCore<
     const action = keyToAction(e.key)
 
     if (action) {
+      e.stopPropagation()
       e.preventDefault()
       shouldBlurRef.current = false
       shouldFocusRef.current = true

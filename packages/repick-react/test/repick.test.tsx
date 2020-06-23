@@ -266,10 +266,10 @@ it('dispatch', () => {
     selected: expected,
   })
 
-  const onChange = jest.fn()
+  const onSelectedChange = jest.fn()
 
   const [results] = setup({
-    onChange,
+    onSelectedChange,
     initialHighlighted: date,
     ...options,
   })
@@ -291,7 +291,7 @@ it('dispatch', () => {
   expect(results.highlighted).toEqual(expected)
   expect(results.selected).toEqual(expected)
 
-  expect(onChange).toHaveBeenCalledWith(expected)
+  expect(onSelectedChange).toHaveBeenCalledWith(expected)
 })
 
 it('StateReducer', () => {

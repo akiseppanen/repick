@@ -19,16 +19,26 @@ export type RepickStateReducer<Selected extends Date | Date[]> = (
 
 export type RepickProps<Selected extends Date | Date[]> = {
   autoFocus?: boolean
-  highlighted?: Date
   id?: string
-  initialHighlighted?: Date
-  initialIsOpen?: boolean
-  initialSelected?: Selected
-  isOpen?: boolean
-  onChange?: (date: Selected | null) => void
-  onUpdate?: (date: Date) => void
-  selected?: Selected | null
   stateReducer?: RepickStateReducer<Selected>
+
+  // Control Props
+  highlighted?: Date
+  selected?: Selected | null
+  inputValue?: string
+  isOpen?: boolean
+
+  // Initial Values
+  initialHighlighted?: Date
+  initialSelected?: Selected | null
+  initialInputValue?: string
+  initialIsOpen?: boolean
+
+  // On Change Handlers
+  onHighlightedChange?: (highlighted: Date) => void
+  onSelectedChange?: (selected?: Selected | null) => void
+  onInputValueChange?: (inputValue: string) => void
+  onIsOpenChange?: (isOpen: boolean) => void
 } & RepickOptions<Selected>
 
 export type InputProps = {

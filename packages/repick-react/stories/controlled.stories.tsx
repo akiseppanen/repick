@@ -29,7 +29,7 @@ const Component = () => {
     year,
   } = useDatePicker({
     highlighted,
-    onChange: setSelected,
+    onSelectedChange: setSelected,
     onHighlightedChange: setDate,
     selected,
     weekStartsOn: 1,
