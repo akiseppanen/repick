@@ -1,4 +1,3 @@
-export { RepickStateReducer } from './core/reducer'
 export * from './core/types'
 export * from './actions'
 export * from './datepicker-multi'

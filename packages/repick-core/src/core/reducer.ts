@@ -46,16 +46,6 @@ import {
 import { RepickState } from './types'
 import { dateIsSelectable, wrapWeekDay } from '../utils'
 
-export type RepickStateChangeOptions<Selected extends Date | Date[]> = {
-  action: RepickAction
-  changes: Partial<RepickState<Selected>>
-}
-
-export type RepickStateReducer<Selected extends Date | Date[]> = (
-  state: RepickState<Selected>,
-  actionAndChanges: RepickStateChangeOptions<Selected>,
-) => RepickState<Selected>
-
 export function createReducer<Selected extends Date | Date[]>(
   selectDate: (
     selected: Selected | null,
@@ -64,7 +54,7 @@ export function createReducer<Selected extends Date | Date[]>(
   defaultFormatter: (selected: Selected | null, format: string) => string,
   defaultParser: (dateString: string, format: string) => Selected | false,
 ) {
-  function reducer(
+  return function reducer(
     state: RepickState<Selected>,
     action: RepickAction,
   ): Partial<RepickState<Selected>> {
@@ -235,16 +225,5 @@ export function createReducer<Selected extends Date | Date[]>(
         return _
       }
     }
-  }
-
-  return (
-    stateReducer: RepickStateReducer<Selected> | undefined = (
-      state,
-      { changes },
-    ) => ({ ...state, ...changes }),
-  ) => (state: RepickState<Selected>, action: RepickAction) => {
-    const changes = reducer(state, action)
-
-    return stateReducer(state, { action, changes })
   }
 }

@@ -2,8 +2,19 @@ import {
   RepickContext,
   RepickDay,
   RepickOptions,
-  RepickStateReducer,
+  RepickState,
+  RepickAction,
 } from 'repick-core'
+
+export type RepickStateChangeOptions<Selected extends Date | Date[]> = {
+  action: RepickAction
+  changes: Partial<RepickState<Selected>>
+}
+
+export type RepickStateReducer<Selected extends Date | Date[]> = (
+  state: RepickState<Selected>,
+  actionAndChanges: RepickStateChangeOptions<Selected>,
+) => RepickState<Selected>
 
 export type RepickProps<Selected extends Date | Date[]> = {
   autoFocus?: boolean

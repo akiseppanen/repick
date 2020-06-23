@@ -20,7 +20,6 @@ import {
   RepickContext,
   RepickDay,
   RepickState,
-  RepickStateReducer,
   actionOpenCalendar,
   actionCloseCalendar,
   actionInputFocus,
@@ -49,11 +48,9 @@ export type RepickCoreDeps<
   DayContext extends RepickDay<any>
 > = {
   reducer: (
-    stateReducer?: RepickStateReducer<Selected>,
-  ) => (
     state: RepickState<Selected>,
     action: RepickAction,
-  ) => RepickState<Selected>
+  ) => Partial<RepickState<Selected>>
   buildContext: (
     state: RepickState<Selected>,
   ) => RepickContext<Selected, DayContext>
@@ -110,7 +107,15 @@ export function useDatePickerCore<
   }
 
   const [state, dispatch] = useControllableReducer(
-    reducer(props.stateReducer),
+    (state: RepickState<Selected>, action: RepickAction) => {
+      const changes = reducer(state, action)
+
+      if (typeof props.stateReducer === 'function') {
+        return props.stateReducer(state, { action, changes })
+      }
+
+      return { ...state, ...changes }
+    },
     props,
     initializeState,
     getControlledProps,
@@ -124,7 +129,9 @@ export function useDatePickerCore<
     },
   )
 
-  const id = props.id || useMemo(() => `repick-${Date.now().toString(36)}`, [])
+  const id = useMemo(() => props.id || `repick-${Date.now().toString(36)}`, [
+    props.id,
+  ])
   const focusFromRef = useRef<HTMLElement>()
   const isMouseDownRef = useRef<boolean>(false)
   const shouldFocusRef = useRef<boolean>(!!props.autoFocus)
@@ -160,7 +167,7 @@ export function useDatePickerCore<
       window.removeEventListener('mousedown', onMouseDown)
       window.removeEventListener('mouseup', onMouseUp)
     }
-  }, [state.isOpen])
+  }, [dispatch, state.isOpen])
 
   const formatDateRefId = (date: Date) => format(date, 'yyyy-MM-dd')
 
@@ -197,7 +204,7 @@ export function useDatePickerCore<
       shouldBlurRef.current = true
       focusFromRef.current?.focus()
     }
-  }, [state.isOpen])
+  }, [setFocusToCalendar, state.isOpen])
 
   React.useEffect(() => {
     if (shouldFocusRef.current === true && state.isOpen) {

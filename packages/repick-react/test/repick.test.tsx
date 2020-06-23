@@ -1,6 +1,11 @@
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
+import format from 'date-fns/format'
 import React from 'react'
-import { RepickProps, RepickReturnValue } from '../src/core/types'
+import {
+  RepickProps,
+  RepickReturnValue,
+  RepickStateChangeOptions,
+} from '../src/core/types'
 import { useDatePickerCore } from '../src/core'
 import {
   keyToAction,
@@ -19,7 +24,6 @@ const options: RepickOptions<Date> = {
 const mockedKeyToAction = keyToAction as jest.Mock
 const mockedBuildCalendar = jest.fn()
 const mockedReducer = jest.fn()
-const mockedReducerInitializer = jest.fn(() => mockedReducer)
 
 function setup(
   props: RepickProps<Date> = {},
@@ -31,7 +35,7 @@ function setup(
 
   const Component = () => {
     const hookResult = useDatePickerCore<Date, RepickDay<{}>>({
-      reducer: mockedReducerInitializer,
+      reducer: mockedReducer,
       buildContext: mockedBuildCalendar,
       ...props,
     })
@@ -82,17 +86,6 @@ describe('calendar', () => {
     expect(result.selected).toEqual(calendarFixture.selected)
     expect(result.weekdays).toEqual(calendarFixture.weekdays)
     expect(result.year).toEqual(calendarFixture.year)
-  })
-
-  it('stateReducer is passed correctly', () => {
-    const stateReducer = jest.fn()
-
-    setup({
-      stateReducer,
-      ...options,
-    })
-
-    expect(mockedReducerInitializer).toHaveBeenCalledWith(stateReducer)
   })
 
   it('date click dispatches correct action', () => {
@@ -250,6 +243,71 @@ it('dispatch', () => {
   expect(results.selected).toEqual(expected)
 
   expect(onChange).toHaveBeenCalledWith(expected)
+})
+
+it('StateReducer', () => {
+  const state: RepickState<Date> = {
+    highlighted: calendarFixture.highlighted,
+    selected: calendarFixture.selected,
+    isOpen: false,
+    inputValue: '',
+    ...options,
+  }
+
+  const inputDate = new Date('2018-01-10 12:00:00')
+  const expectedDate = new Date('2018-01-10 00:00:00')
+
+  const expectedChanges = {
+    highlighted: expectedDate,
+    inputValue: format(expectedDate, 'yyyy-MM-dd'),
+    isOpen: false,
+    selected: expectedDate,
+  }
+
+  const mockedStateReducer = jest.fn<
+    RepickState<Date>,
+    [RepickState<Date>, RepickStateChangeOptions<Date>]
+  >(() => ({ ...state, ...expectedChanges }))
+
+  const [results] = setup({
+    initialHighlighted: calendarFixture.highlighted,
+    initialSelected: calendarFixture.selected,
+    stateReducer: mockedStateReducer,
+    ...options,
+  })
+
+  mockedReducer.mockReturnValueOnce({
+    highlighted: inputDate,
+    inputValue: format(inputDate, 'yyyy-MM-dd'),
+    isOpen: false,
+    selected: inputDate,
+  })
+
+  mockedBuildCalendar.mockImplementationOnce(s => ({
+    highlighted: s.highlighted,
+    selected: s.selected,
+  }))
+
+  act(() => results.selectDate(inputDate))
+
+  expect(results.highlighted).toEqual(expectedDate)
+  expect(results.selected).toEqual(expectedDate)
+
+  expect(mockedStateReducer).toHaveBeenCalledWith(
+    { ...state, ...options },
+    {
+      action: {
+        date: inputDate,
+        type: 'SelectDate',
+      },
+      changes: {
+        highlighted: inputDate,
+        inputValue: format(inputDate, 'yyyy-MM-dd'),
+        isOpen: false,
+        selected: inputDate,
+      },
+    },
+  )
 })
 
 describe('actions', () => {

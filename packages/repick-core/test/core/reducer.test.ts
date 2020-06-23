@@ -1,9 +1,9 @@
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
-import { createReducer, RepickStateChangeOptions } from '../../src/core/reducer'
+import { createReducer } from '../../src/core/reducer'
 import { RepickOptions, RepickState } from '../../src/core/types'
 import { dateIsSelectable, wrapWeekDay } from '../../src/utils'
-import { RepickAction, ActionSelectDate } from '../../src/actions'
+import { RepickAction } from '../../src/actions'
 
 jest.mock('../../src/utils')
 
@@ -34,18 +34,12 @@ describe('reducerGeneric', () => {
   const mockedParse = jest.fn<Date, [string, string]>((dateString, format) =>
     parse(dateString, format, new Date('2018-01-01 00:00:00')),
   )
-  const mockedStateReducer = jest.fn<
-    RepickState<Date>,
-    [RepickState<Date>, RepickStateChangeOptions<Date>]
-  >((state, { changes }) => ({
-    ...state,
-    ...changes,
-  }))
+
   const reducer = createReducer<Date>(
     mockedSelectDate,
     mockedFormat,
     mockedParse,
-  )(mockedStateReducer)
+  )
 
   mockedDateIsSelectable.mockReturnValue(true)
 
@@ -55,52 +49,8 @@ describe('reducerGeneric', () => {
   ) => {
     const newState = reducer(state, action)
 
-    expect(newState).toEqual({ ...state, ...expectedChanges })
-
-    expect(mockedStateReducer).toHaveBeenCalledWith(state, {
-      action,
-      changes: expectedChanges,
-    })
+    expect(newState).toEqual(expectedChanges)
   }
-
-  afterEach(() => {
-    mockedStateReducer.mockClear()
-  })
-
-  it('StateReducer', () => {
-    const inputDate = new Date('2018-01-10 12:00:00')
-    const expectedDate = new Date('2018-01-10 00:00:00')
-    const expected = {
-      highlighted: expectedDate,
-      inputValue: format(expectedDate, 'yyyy-MM-dd'),
-      isOpen: true,
-      selected: expectedDate,
-    }
-    const action: ActionSelectDate = {
-      date: inputDate,
-      type: 'SelectDate',
-    }
-
-    mockedSelectDate.mockReturnValue([inputDate, true])
-    mockedStateReducer.mockReturnValueOnce(expected)
-
-    const newState = reducer(state, action)
-
-    expect(newState).toEqual({
-      ...state,
-      ...expected,
-    })
-
-    expect(mockedStateReducer).toHaveBeenCalledWith(state, {
-      action,
-      changes: {
-        highlighted: inputDate,
-        inputValue: format(inputDate, 'yyyy-MM-dd'),
-        isOpen: false,
-        selected: inputDate,
-      },
-    })
-  })
 
   it('SelectDate', () => {
     const expectedDate = new Date('2018-01-10 00:00:00')
