@@ -18,6 +18,16 @@ import {
   actionKeyEnter,
 } from './actions'
 
+export const defaultOptions: Required<Pick<
+  RepickOptions<Date | Date[]>,
+  'allowInput' | 'format' | 'monthCount' | 'weekStartsOn'
+>> = {
+  allowInput: false,
+  format: 'yyyy-MM-dd',
+  monthCount: 1,
+  weekStartsOn: 0,
+}
+
 export const arrayGenerate = <A>(
   arrayLength: number,
   fn: (i: number) => A,
@@ -139,3 +149,15 @@ export const dateIsSelectable = (
     (!!minDate && isAfter(minDate, date)) ||
     (!!maxDate && isBefore(maxDate, date))
   )
+
+export const objectCopyPartial = <O extends Object>(
+  keys: (keyof O)[],
+  obj: O,
+): Partial<O> => {
+  return keys.reduce<Partial<O>>((res, key) => {
+    if (obj[key] !== undefined) {
+      res[key] = obj[key]
+    }
+    return res
+  }, {})
+}

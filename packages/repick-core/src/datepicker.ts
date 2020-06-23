@@ -6,12 +6,16 @@ import startOfToday from 'date-fns/startOfToday'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
 import { createReducer } from './core/reducer'
-import { RepickContext, RepickDay, RepickState } from './core/types'
+import {
+  RepickContext,
+  RepickDay,
+  RepickState,
+  RepickOptions,
+} from './core/types'
 
+export type RepickOptionsSingle = RepickOptions<Date>
 export type RepickStateSingle = RepickState<Date>
-
 export type RepickDaySingle = RepickDay
-
 export type RepickContextSingle = RepickContext<Date, RepickDaySingle>
 
 export const selectDateSingle = (
@@ -44,6 +48,7 @@ export const buildCalendarDaySingle: (
   state: RepickStateSingle,
   currentMonth: Date,
   date: Date,
+  options: RepickOptionsSingle,
 ) => RepickDaySingle = buildCalendarDay(
   (selected: Date | null, date: Date) =>
     !!selected && isSameDay(selected, date),
@@ -52,4 +57,5 @@ export const buildCalendarDaySingle: (
 
 export const buildContextSingle: (
   state: RepickStateSingle,
+  options: RepickOptionsSingle,
 ) => RepickContextSingle = buildContext(buildCalendarDaySingle)

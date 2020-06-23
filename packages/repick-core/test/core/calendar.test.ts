@@ -36,26 +36,32 @@ describe('buildContext', () => {
 
   it('single month', () => {
     expect(
-      buildContext({
-        disabledDates,
-        highlighted,
-        inputValue: '',
-        isOpen: false,
-        selected,
-      }),
+      buildContext(
+        {
+          highlighted,
+          inputValue: '',
+          isOpen: false,
+          selected,
+        },
+        { disabledDates },
+      ),
     ).toMatchSnapshot()
   })
 
   it('multiple months', () => {
     expect(
-      buildContext({
-        disabledDates,
-        highlighted,
-        inputValue: '',
-        isOpen: false,
-        monthCount: 2,
-        selected,
-      }),
+      buildContext(
+        {
+          highlighted,
+          inputValue: '',
+          isOpen: false,
+          selected,
+        },
+        {
+          disabledDates,
+          monthCount: 2,
+        },
+      ),
     ).toMatchSnapshot()
   })
 })

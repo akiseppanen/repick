@@ -27,6 +27,8 @@ import {
   actionInputBlur,
   actionInputChange,
   actionInputKeyEnter,
+  RepickOptions,
+  objectCopyPartial,
 } from 'repick-core'
 
 import { useControllableReducer } from './use-controllable-reducer'
@@ -50,9 +52,11 @@ export type RepickCoreDeps<
   reducer: (
     state: RepickState<Selected>,
     action: RepickAction,
+    options: RepickOptions<Selected>,
   ) => Partial<RepickState<Selected>>
   buildContext: (
     state: RepickState<Selected>,
+    options: RepickOptions<Selected>,
   ) => RepickContext<Selected, DayContext>
 }
 
@@ -88,30 +92,36 @@ export function useDatePickerCore<
     props: RepickProps<Selected>,
   ): Partial<RepickState<Selected>> {
     return {
-      allowInput: props.allowInput,
-      format: props.format,
-      formatter: props.formatter,
-      parser: props.parser,
       highlighted: props.highlighted,
       isOpen: props.isOpen,
-      locale: props.locale,
       selected: props.selected,
-      weekStartsOn: props.weekStartsOn,
-      filterDates: props.filterDates,
-      disabledDates: props.disabledDates,
-      enabledDates: props.enabledDates,
-      minDate: props.minDate,
-      maxDate: props.maxDate,
-      monthCount: props.monthCount,
     }
   }
 
+  const options = objectCopyPartial(
+    [
+      'allowInput',
+      'format',
+      'formatter',
+      'parser',
+      'monthCount',
+      'locale',
+      'disabledDates',
+      'enabledDates',
+      'weekStartsOn',
+      'minDate',
+      'maxDate',
+      'filterDates',
+    ],
+    props,
+  )
+
   const [state, dispatch] = useControllableReducer(
     (state: RepickState<Selected>, action: RepickAction) => {
-      const changes = reducer(state, action)
+      const changes = reducer(state, action, options)
 
       if (typeof props.stateReducer === 'function') {
-        return props.stateReducer(state, { action, changes })
+        return props.stateReducer(state, { action, changes, options })
       }
 
       return { ...state, ...changes }
@@ -383,7 +393,7 @@ export function useDatePickerCore<
     }
   }
 
-  const context = buildContext(state)
+  const context = buildContext(state, options)
 
   return {
     ...context,

@@ -13,6 +13,7 @@ import {
   RepickOptions,
   RepickDay,
   RepickAction,
+  objectCopyPartial,
 } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
@@ -22,8 +23,13 @@ const options: RepickOptions<Date> = {
   weekStartsOn: 1,
 }
 const mockedKeyToAction = keyToAction as jest.Mock
+const mockedObjectCopyPartial = objectCopyPartial as jest.Mock
 const mockedBuildCalendar = jest.fn()
 const mockedReducer = jest.fn()
+
+mockedObjectCopyPartial.mockImplementation(
+  jest.requireActual('repick-core').objectCopyPartial,
+)
 
 function setup(
   props: RepickProps<Date> = {},
@@ -76,7 +82,7 @@ describe('calendar', () => {
     })
 
     expect(mockedBuildCalendar).toHaveBeenCalledTimes(1)
-    expect(mockedBuildCalendar).toHaveBeenCalledWith({ ...state, ...options })
+    expect(mockedBuildCalendar).toHaveBeenCalledWith(state, options)
 
     expect(result.highlighted).toEqual(calendarFixture.highlighted)
     expect(result.days).toEqual(calendarFixture.days)
@@ -114,20 +120,35 @@ describe('calendar', () => {
 
     const { days } = calendarFixture
 
-    expect(mockedReducer).toHaveBeenNthCalledWith(1, state, {
-      date: days[10].date,
-      type: 'DateClick',
-    })
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      1,
+      state,
+      {
+        date: days[10].date,
+        type: 'DateClick',
+      },
+      {},
+    )
 
-    expect(mockedReducer).toHaveBeenNthCalledWith(2, state, {
-      date: days[20].date,
-      type: 'DateClick',
-    })
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      2,
+      state,
+      {
+        date: days[20].date,
+        type: 'DateClick',
+      },
+      {},
+    )
 
-    expect(mockedReducer).toHaveBeenNthCalledWith(3, state, {
-      date: days[30].date,
-      type: 'DateClick',
-    })
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      3,
+      state,
+      {
+        date: days[30].date,
+        type: 'DateClick',
+      },
+      {},
+    )
   })
 
   it('keyPress is handled correctly', () => {
@@ -163,11 +184,26 @@ describe('calendar', () => {
     expect(mockedKeyToAction).toHaveBeenNthCalledWith(4, 'Escape')
 
     expect(mockedReducer).toHaveBeenCalledTimes(3)
-    expect(mockedReducer).toHaveBeenNthCalledWith(1, state, { type: 'PrevDay' })
-    expect(mockedReducer).toHaveBeenNthCalledWith(2, state, { type: 'NextDay' })
-    expect(mockedReducer).toHaveBeenNthCalledWith(3, state, {
-      type: 'StartOfWeek',
-    })
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      1,
+      state,
+      { type: 'PrevDay' },
+      {},
+    )
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      2,
+      state,
+      { type: 'NextDay' },
+      {},
+    )
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      3,
+      state,
+      {
+        type: 'StartOfWeek',
+      },
+      {},
+    )
 
     mockedKeyToAction.mockReset()
   })
@@ -189,13 +225,23 @@ describe('calendar', () => {
     fireEvent.click(view.container.children[0])
     fireEvent.click(view.container.children[1])
 
-    expect(mockedReducer).toHaveBeenNthCalledWith(1, state, {
-      type: 'PrevMonth',
-    })
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      1,
+      state,
+      {
+        type: 'PrevMonth',
+      },
+      {},
+    )
 
-    expect(mockedReducer).toHaveBeenNthCalledWith(2, state, {
-      type: 'NextMonth',
-    })
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      2,
+      state,
+      {
+        type: 'NextMonth',
+      },
+      {},
+    )
   })
 })
 
@@ -208,7 +254,6 @@ it('dispatch', () => {
     selected: null,
     isOpen: false,
     inputValue: '',
-    ...options,
   }
 
   mockedBuildCalendar.mockImplementation(s => ({
@@ -234,10 +279,14 @@ it('dispatch', () => {
 
   act(() => results.selectDate(expected))
 
-  expect(mockedReducer).toHaveBeenCalledWith(state, {
-    date: expected,
-    type: 'SelectDate',
-  })
+  expect(mockedReducer).toHaveBeenCalledWith(
+    state,
+    {
+      date: expected,
+      type: 'SelectDate',
+    },
+    options,
+  )
 
   expect(results.highlighted).toEqual(expected)
   expect(results.selected).toEqual(expected)
@@ -251,7 +300,6 @@ it('StateReducer', () => {
     selected: calendarFixture.selected,
     isOpen: false,
     inputValue: '',
-    ...options,
   }
 
   const inputDate = new Date('2018-01-10 12:00:00')
@@ -293,21 +341,19 @@ it('StateReducer', () => {
   expect(results.highlighted).toEqual(expectedDate)
   expect(results.selected).toEqual(expectedDate)
 
-  expect(mockedStateReducer).toHaveBeenCalledWith(
-    { ...state, ...options },
-    {
-      action: {
-        date: inputDate,
-        type: 'SelectDate',
-      },
-      changes: {
-        highlighted: inputDate,
-        inputValue: format(inputDate, 'yyyy-MM-dd'),
-        isOpen: false,
-        selected: inputDate,
-      },
+  expect(mockedStateReducer).toHaveBeenCalledWith(state, {
+    action: {
+      date: inputDate,
+      type: 'SelectDate',
     },
-  )
+    changes: {
+      highlighted: inputDate,
+      inputValue: format(inputDate, 'yyyy-MM-dd'),
+      isOpen: false,
+      selected: inputDate,
+    },
+    options,
+  })
 })
 
 describe('actions', () => {
@@ -334,6 +380,7 @@ describe('actions', () => {
     expect(mockedReducer).toHaveBeenCalledWith(
       { highlighted, selected: null, isOpen: false, inputValue: '' },
       action,
+      {},
     )
   }
   it('selectDate', () => {

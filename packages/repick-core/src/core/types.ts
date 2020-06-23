@@ -5,7 +5,7 @@ export type Weekday = {
   short: string
 }
 
-export type RepickOptions<Selected extends Date | Date[]> = Partial<{
+export type RepickOptions<Selected> = Partial<{
   allowInput: boolean
   format: string
   formatter: (selected: Selected | null, format: string) => string
@@ -25,7 +25,11 @@ export type RepickState<Selected extends Date | Date[]> = {
   inputValue: string
   isOpen: boolean
   selected: Selected | null
-} & RepickOptions<Selected>
+}
+
+export type RepickStateSelected<
+  State extends RepickState<any>
+> = State extends RepickState<infer Selected> ? Selected : never
 
 export type RepickDay<Extra extends { [key: string]: any } = {}> = {
   date: Date

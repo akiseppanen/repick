@@ -8,16 +8,20 @@ import isWithinInterval from 'date-fns/isWithinInterval'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
 import { createReducer } from './core/reducer'
-import { RepickContext, RepickDay, RepickState } from './core/types'
+import {
+  RepickContext,
+  RepickDay,
+  RepickState,
+  RepickOptions,
+} from './core/types'
 import { sort } from './utils'
 
+export type RepickOptionsRange = RepickOptions<[Date] | [Date, Date]>
 export type RepickStateRange = RepickState<[Date] | [Date, Date]>
-
 export type RepickDayRange = RepickDay<{
   rangeStart: boolean
   rangeEnd: boolean
 }>
-
 export type RepickContextRange = RepickContext<
   [Date] | [Date, Date],
   RepickDayRange
@@ -90,6 +94,7 @@ export const buildCalendarDayRange: (
   state: RepickStateRange,
   currentMonth: Date,
   date: Date,
+  options: RepickOptionsRange,
 ) => RepickDayRange = buildCalendarDay(
   isSelectedRange,
   buildCalendarDayRangeExtra,
@@ -97,4 +102,5 @@ export const buildCalendarDayRange: (
 
 export const buildContextRange: (
   state: RepickStateRange,
+  options: RepickOptionsRange,
 ) => RepickContextRange = buildContext(buildCalendarDayRange)

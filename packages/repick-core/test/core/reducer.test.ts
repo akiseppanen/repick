@@ -2,7 +2,7 @@ import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import { createReducer } from '../../src/core/reducer'
 import { RepickOptions, RepickState } from '../../src/core/types'
-import { dateIsSelectable, wrapWeekDay } from '../../src/utils'
+import { dateIsSelectable, wrapWeekDay, defaultOptions } from '../../src/utils'
 import { RepickAction } from '../../src/actions'
 
 jest.mock('../../src/utils')
@@ -47,7 +47,7 @@ describe('reducerGeneric', () => {
     action: RepickAction,
     expectedChanges: Partial<RepickState<Date>>,
   ) => {
-    const newState = reducer(state, action)
+    const newState = reducer(state, action, {})
 
     expect(newState).toEqual(expectedChanges)
   }
@@ -85,7 +85,7 @@ describe('reducerGeneric', () => {
       },
       {},
     )
-    expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, date)
+    expect(mockedDateIsSelectable).toHaveBeenCalledWith(defaultOptions, date)
   })
 
   it('DateClick', () => {
@@ -121,7 +121,7 @@ describe('reducerGeneric', () => {
       },
       {},
     )
-    expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, date)
+    expect(mockedDateIsSelectable).toHaveBeenCalledWith(defaultOptions, date)
   })
 
   it('SelectHighlighted', () => {
@@ -151,7 +151,10 @@ describe('reducerGeneric', () => {
       },
       {},
     )
-    expect(mockedDateIsSelectable).toHaveBeenCalledWith(state, highlighted)
+    expect(mockedDateIsSelectable).toHaveBeenCalledWith(
+      defaultOptions,
+      highlighted,
+    )
   })
 
   it('ArrowLeft', () => {

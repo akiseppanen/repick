@@ -5,7 +5,6 @@ import setDay from 'date-fns/setDay'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
-import { Locale } from 'date-fns'
 
 import {
   actionBlur,
@@ -43,8 +42,8 @@ import {
   actionInputChange,
   actionInputKeyEnter,
 } from '../actions'
-import { RepickState } from './types'
-import { dateIsSelectable, wrapWeekDay } from '../utils'
+import { RepickState, RepickOptions } from './types'
+import { dateIsSelectable, wrapWeekDay, defaultOptions } from '../utils'
 
 export function createReducer<Selected extends Date | Date[]>(
   selectDate: (
@@ -57,22 +56,15 @@ export function createReducer<Selected extends Date | Date[]>(
   return function reducer(
     state: RepickState<Selected>,
     action: RepickAction,
+    argOptions: RepickOptions<Selected>,
   ): Partial<RepickState<Selected>> {
-    const options: {
-      format: string
-      weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
-      locale: Locale | undefined
-    } = {
-      format: state.format || 'yyyy-MM-dd',
-      weekStartsOn: state.weekStartsOn || 0,
-      locale: state.locale,
-    }
+    const options = { ...defaultOptions, ...argOptions }
 
-    const formatter = state.formatter || defaultFormatter
-    const parser = state.parser || defaultParser
+    const formatter = options.formatter || defaultFormatter
+    const parser = options.parser || defaultParser
 
     function reduceSelected(state: RepickState<Selected>, date: Date) {
-      if (!dateIsSelectable(state, date)) {
+      if (!dateIsSelectable(options, date)) {
         return {}
       }
 
@@ -185,7 +177,7 @@ export function createReducer<Selected extends Date | Date[]>(
       case actionKeyHome:
       case actionStartOfWeek: {
         return {
-          highlighted: setDay(state.highlighted, state.weekStartsOn || 0, {
+          highlighted: setDay(state.highlighted, options.weekStartsOn || 0, {
             locale: options.locale,
             weekStartsOn: options.weekStartsOn,
           }),

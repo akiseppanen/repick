@@ -7,13 +7,17 @@ import isSameDay from 'date-fns/isSameDay'
 
 import { buildCalendarDay, buildContext } from './core/calendar'
 import { createReducer } from './core/reducer'
-import { RepickContext, RepickDay, RepickState } from './core/types'
+import {
+  RepickContext,
+  RepickDay,
+  RepickState,
+  RepickOptions,
+} from './core/types'
 import { sort, toggleValue } from './utils'
 
+export type RepickOptionsMulti = RepickOptions<Date[]>
 export type RepickStateMulti = RepickState<Date[]>
-
 export type RepickDayMulti = RepickDay
-
 export type RepickContextMulti = RepickContext<Date[], RepickDayMulti>
 
 export const selectDateMulti = (
@@ -53,8 +57,10 @@ const buildCalendarContextDayMulti: (
   state: RepickStateMulti,
   currentMonth: Date,
   date: Date,
+  options: RepickOptionsMulti,
 ) => RepickDayMulti = buildCalendarDay(isSelectedMulti, () => ({}))
 
 export const buildContextMulti: (
   state: RepickStateMulti,
+  options: RepickOptionsMulti,
 ) => RepickContextMulti = buildContext(buildCalendarContextDayMulti)

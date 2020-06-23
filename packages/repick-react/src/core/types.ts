@@ -9,6 +9,7 @@ import {
 export type RepickStateChangeOptions<Selected extends Date | Date[]> = {
   action: RepickAction
   changes: Partial<RepickState<Selected>>
+  options: RepickOptions<Selected>
 }
 
 export type RepickStateReducer<Selected extends Date | Date[]> = (

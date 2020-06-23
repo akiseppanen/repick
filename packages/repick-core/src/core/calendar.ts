@@ -10,7 +10,14 @@ import startOfWeek from 'date-fns/startOfWeek'
 import subMonths from 'date-fns/subMonths'
 
 import { buildWeekdays, dateIsSelectable, arrayGenerate } from '../utils'
-import { RepickContext, RepickDay, RepickState, RepickWeek } from './types'
+import {
+  RepickContext,
+  RepickDay,
+  RepickState,
+  RepickWeek,
+  RepickOptions,
+  RepickStateSelected,
+} from './types'
 
 export function buildCalendarDay<
   State extends RepickState<any>,
@@ -23,6 +30,7 @@ export function buildCalendarDay<
     state: State,
     currentMonth: Date,
     date: Date,
+    options: RepickOptions<RepickStateSelected<State>> = {},
   ): RepickDay<Extra> {
     const prevMonth = subMonths(currentMonth, 1)
     const nextMonth = addMonths(currentMonth, 1)
@@ -34,7 +42,7 @@ export function buildCalendarDay<
       prevMonth: isSameMonth(prevMonth, date),
       selected: isSelected(state.selected, date),
       highlighted: isSameDay(state.highlighted, date),
-      disabled: !dateIsSelectable(state, date),
+      disabled: !dateIsSelectable(options, date),
       today: isSameDay(new Date(), date),
       ...extraFn(state, date),
     }
@@ -49,20 +57,24 @@ export function buildContext<
     state: State,
     currentMonth: Date,
     date: Date,
+    options: RepickOptions<RepickStateSelected<State>>,
   ) => RepickDay<Extra>,
 ) {
-  return function (state: State): RepickContext<any, RepickDay<Extra>> {
+  return function (
+    state: State,
+    options: RepickOptions<RepickStateSelected<State>> = {},
+  ): RepickContext<any, RepickDay<Extra>> {
     const { highlighted } = state
 
-    const months = arrayGenerate(state.monthCount || 1, monthIndex => {
+    const months = arrayGenerate(options.monthCount || 1, monthIndex => {
       const firstDayOfMonth = startOfMonth(addMonths(highlighted, monthIndex))
       const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
-        weekStartsOn: state.weekStartsOn,
+        weekStartsOn: options.weekStartsOn,
       })
 
       const weeks = arrayGenerate(6, weekIndex => ({
         weekNumber: getWeek(addDays(firstWeekOfMonth, weekIndex * 7), {
-          weekStartsOn: state.weekStartsOn,
+          weekStartsOn: options.weekStartsOn,
         }),
         year: highlighted.getFullYear(),
         days: arrayGenerate(7, dayIndex =>
@@ -70,6 +82,7 @@ export function buildContext<
             state,
             firstDayOfMonth,
             addDays(firstWeekOfMonth, weekIndex * 7 + dayIndex),
+            options,
           ),
         ),
       }))
@@ -81,8 +94,8 @@ export function buildContext<
 
       return {
         month: firstDayOfMonth.getMonth() + 1,
-        monthLong: format(firstDayOfMonth, 'MMMM', { locale: state.locale }),
-        monthShort: format(firstDayOfMonth, 'MMM', { locale: state.locale }),
+        monthLong: format(firstDayOfMonth, 'MMMM', { locale: options.locale }),
+        monthShort: format(firstDayOfMonth, 'MMM', { locale: options.locale }),
         year: firstDayOfMonth.getFullYear(),
         weeks,
         days,
@@ -104,10 +117,10 @@ export function buildContext<
       inputValue: state.inputValue,
       highlighted: highlighted || null,
       month: highlighted.getMonth() + 1,
-      monthLong: format(highlighted, 'MMMM', { locale: state.locale }),
-      monthShort: format(highlighted, 'MMM', { locale: state.locale }),
+      monthLong: format(highlighted, 'MMMM', { locale: options.locale }),
+      monthShort: format(highlighted, 'MMM', { locale: options.locale }),
       year: highlighted.getFullYear(),
-      weekdays: buildWeekdays(state),
+      weekdays: buildWeekdays(options),
       selected: state.selected,
       months,
       weeks,
