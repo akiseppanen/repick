@@ -8,6 +8,7 @@ import React, {
   useCallback,
   Reducer,
   ReducerState,
+  KeyboardEvent,
 } from 'react'
 import {
   actionCloseCalendar,
@@ -219,7 +220,7 @@ export function useDatePickerCore<
 
   const formatDateRefId = (date: Date) => format(date, 'yyyy-MM-dd')
 
-  const setFocusToDate = React.useCallback(
+  const setFocusToDate = useCallback(
     (date: Date) => {
       window.requestAnimationFrame(() => {
         const id = formatDateRefId(date)
@@ -232,7 +233,7 @@ export function useDatePickerCore<
     [dateRefs],
   )
 
-  const setFocusToCalendar = () => {
+  const setFocusToCalendar = useCallback(() => {
     window.requestAnimationFrame(() => {
       const id = formatDateRefId(state.highlighted)
 
@@ -240,9 +241,9 @@ export function useDatePickerCore<
         dateRefs[id].focus()
       }
     })
-  }
+  }, [dateRefs])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (shouldFocusRef.current === true && state.isOpen) {
       shouldFocusRef.current = false
       setFocusToCalendar()
@@ -254,7 +255,7 @@ export function useDatePickerCore<
     }
   }, [setFocusToCalendar, state.isOpen])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (shouldFocusRef.current === true && state.isOpen) {
       shouldFocusRef.current = false
 
@@ -262,19 +263,22 @@ export function useDatePickerCore<
     }
   }, [setFocusToDate, state.highlighted, state.isOpen])
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    const action = keyToAction(e.key)
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      const action = keyToAction(e.key)
 
-    if (action) {
-      e.stopPropagation()
-      e.preventDefault()
-      shouldBlurRef.current = false
-      shouldFocusRef.current = true
-      dispatch(action)
-    }
-  }
+      if (action) {
+        e.stopPropagation()
+        e.preventDefault()
+        shouldBlurRef.current = false
+        shouldFocusRef.current = true
+        dispatch(action)
+      }
+    },
+    [dispatch],
+  )
 
-  const getDialogProps = (): DialogProps => {
+  const getDialogProps = useCallback((): DialogProps => {
     return {
       'aria-modal': true,
       'aria-labelledby': `${id}-header`,
@@ -300,15 +304,15 @@ export function useDatePickerCore<
         calendarRef.current = el || undefined
       },
     }
-  }
+  }, [id, dispatch, handleKeyDown])
 
-  const getLabelProps = (): LabelProps => {
+  const getLabelProps = useCallback((): LabelProps => {
     return {
       htmlFor: `${id}-input`,
     }
-  }
+  }, [id])
 
-  const getInputProps = (): InputProps => {
+  const getInputProps = useCallback((): InputProps => {
     return {
       id: `${id}-input`,
       onChange: e => {
@@ -334,7 +338,7 @@ export function useDatePickerCore<
           type: actionInputFocus,
         })
       },
-      onKeyDown: (e: React.KeyboardEvent) => {
+      onKeyDown: e => {
         if (e.key === 'ArrowDown') {
           focusFromRef.current = e.target as HTMLElement
           shouldBlurRef.current = false
@@ -356,25 +360,31 @@ export function useDatePickerCore<
       type: 'text',
       value: state.inputValue,
     }
-  }
+  }, [id, dispatch, state.inputValue])
 
-  const getCalendarHeaderProps = (index?: number): HeaderProps => {
-    return {
-      'aria-live': 'polite',
-      id: index !== undefined ? `${id}-${index}-header` : `${id}-header`,
-    }
-  }
+  const getCalendarHeaderProps = useCallback(
+    (index?: number): HeaderProps => {
+      return {
+        'aria-live': 'polite',
+        id: index !== undefined ? `${id}-${index}-header` : `${id}-header`,
+      }
+    },
+    [id],
+  )
 
-  const getCalendarProps = (index?: number): CalendarProps => {
-    return {
-      'aria-labelledby':
-        index !== undefined ? `${id}-${index}-header` : `${id}-header`,
-      onKeyDown: handleKeyDown,
-      role: 'grid',
-    }
-  }
+  const getCalendarProps = useCallback(
+    (index?: number): CalendarProps => {
+      return {
+        'aria-labelledby':
+          index !== undefined ? `${id}-${index}-header` : `${id}-header`,
+        onKeyDown: handleKeyDown,
+        role: 'grid',
+      }
+    },
+    [id, handleKeyDown],
+  )
 
-  const getToggleButtonProps = (): ToggleButtonProps => {
+  const getToggleButtonProps = useCallback((): ToggleButtonProps => {
     return {
       'aria-label': 'Choose Date',
       onClick: e => {
@@ -395,49 +405,111 @@ export function useDatePickerCore<
         toggleButtonRef.current = el || undefined
       },
     }
-  }
+  }, [dispatch])
 
-  const getPrevMonthProps = (): MonthProps => {
+  const getPrevMonthProps = useCallback((): MonthProps => {
     return {
       onClick: () => dispatch({ type: actionPrevMonth }),
       'aria-label': `Go back 1 month`,
       role: 'button',
     }
-  }
+  }, [dispatch])
 
-  const getNextMonthProps = (): MonthProps => {
+  const getNextMonthProps = useCallback((): MonthProps => {
     return {
       onClick: () => dispatch({ type: actionNextMonth }),
       'aria-label': `Go ahead 1 month`,
       role: 'button',
     }
-  }
+  }, [dispatch])
 
-  const getDateProps = (calendarDay: RepickDay<any>): DateProps => {
-    return {
-      onClick: e => {
-        e.preventDefault()
-        dispatch({ type: actionDateClick, date: calendarDay.date })
-      },
-      'aria-label': calendarDay.date.toDateString(),
-      'aria-pressed': calendarDay.selected,
-      'aria-selected': calendarDay.selected,
-      role: 'button',
-      tabIndex: calendarDay.highlighted ? 0 : -1,
-      ref: (el: HTMLElement | null) => {
-        if (el) {
-          dateRefs[formatDateRefId(calendarDay.date)] = el
-        }
-      },
-    }
-  }
+  const getDateProps = useCallback(
+    (calendarDay: RepickDay<any>): DateProps => {
+      return {
+        onClick: e => {
+          e.preventDefault()
+          dispatch({ type: actionDateClick, date: calendarDay.date })
+        },
+        'aria-label': calendarDay.date.toDateString(),
+        'aria-pressed': calendarDay.selected,
+        'aria-selected': calendarDay.selected,
+        role: 'button',
+        tabIndex: calendarDay.highlighted ? 0 : -1,
+        ref: (el: HTMLElement | null) => {
+          if (el) {
+            dateRefs[formatDateRefId(calendarDay.date)] = el
+          }
+        },
+      }
+    },
+    [dispatch, dateRefs],
+  )
 
-  const context = buildContext(state, options)
+  const closeCalendar = useCallback(
+    () => dispatch({ type: actionCloseCalendar }),
+    [dispatch],
+  )
+
+  const endOfWeek = useCallback(() => dispatch({ type: actionEndOfWeek }), [
+    dispatch,
+  ])
+
+  const nextDay = useCallback(() => dispatch({ type: actionNextDay }), [
+    dispatch,
+  ])
+
+  const nextMonth = useCallback(() => dispatch({ type: actionNextMonth }), [
+    dispatch,
+  ])
+
+  const nextWeek = useCallback(() => dispatch({ type: actionNextWeek }), [
+    dispatch,
+  ])
+
+  const nextYear = useCallback(() => dispatch({ type: actionNextYear }), [
+    dispatch,
+  ])
+
+  const openCalendar = useCallback(
+    () => dispatch({ type: actionOpenCalendar }),
+    [dispatch],
+  )
+
+  const prevDay = useCallback(() => dispatch({ type: actionPrevDay }), [
+    dispatch,
+  ])
+
+  const prevMonth = useCallback(() => dispatch({ type: actionPrevMonth }), [
+    dispatch,
+  ])
+
+  const prevWeek = useCallback(() => dispatch({ type: actionPrevWeek }), [
+    dispatch,
+  ])
+
+  const prevYear = useCallback(() => dispatch({ type: actionPrevYear }), [
+    dispatch,
+  ])
+
+  const selectCurrent = useCallback(
+    () => dispatch({ type: actionSelectHighlighted }),
+    [dispatch],
+  )
+
+  const selectDate = useCallback(
+    (date: string | number | Date) =>
+      dispatch({ type: actionSelectDate, date }),
+    [dispatch],
+  )
+
+  const startOfWeek = useCallback(() => dispatch({ type: actionStartOfWeek }), [
+    dispatch,
+  ])
 
   return {
-    ...context,
-    closeCalendar: () => dispatch({ type: actionCloseCalendar }),
-    endOfWeek: () => dispatch({ type: actionEndOfWeek }),
+    ...buildContext(state, options),
+    closeCalendar,
+    endOfWeek,
     getCalendarHeaderProps,
     getCalendarProps,
     getDateProps,
@@ -448,20 +520,19 @@ export function useDatePickerCore<
     getPrevMonthProps,
     getToggleButtonProps,
     handleKeyDown,
-    nextDay: () => dispatch({ type: actionNextDay }),
-    nextMonth: () => dispatch({ type: actionNextMonth }),
-    nextWeek: () => dispatch({ type: actionNextWeek }),
-    nextYear: () => dispatch({ type: actionNextYear }),
-    openCalendar: () => dispatch({ type: actionOpenCalendar }),
-    prevDay: () => dispatch({ type: actionPrevDay }),
-    prevMonth: () => dispatch({ type: actionPrevMonth }),
-    prevWeek: () => dispatch({ type: actionPrevWeek }),
-    prevYear: () => dispatch({ type: actionPrevYear }),
-    selectCurrent: () => dispatch({ type: actionSelectHighlighted }),
-    selectDate: (date: string | number | Date) =>
-      dispatch({ type: actionSelectDate, date }),
+    nextDay,
+    nextMonth,
+    nextWeek,
+    nextYear,
+    openCalendar,
+    prevDay,
+    prevMonth,
+    prevWeek,
+    prevYear,
+    selectCurrent,
+    selectDate,
     setFocusToCalendar,
     setFocusToDate,
-    startOfWeek: () => dispatch({ type: actionStartOfWeek }),
+    startOfWeek,
   }
 }
