@@ -175,7 +175,6 @@ export function useDatePickerCore<
         Selected
       >)[]).forEach(key => {
         if (prevState[key] !== newState[key]) {
-          console.log('onchange', key)
           callOnChangeHandler(props, key, newState[key])
         }
       })
