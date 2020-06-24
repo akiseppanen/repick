@@ -50,11 +50,15 @@
     "trailingComma": "all",
     "arrowParens": "avoid"
   },
-  "workspaces": [
-    "examples/*",
-    "packages/*",
-    "stories"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/tsdx",
+      "**/tsdx/**"
+    ]
+  },
   "jest": {
     "snapshotSerializers": [
       "jest-date-serializer"
