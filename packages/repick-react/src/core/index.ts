@@ -96,11 +96,14 @@ function useControlledReducer<
 
   const controlledState = ((Object.keys(
     state,
-  ) as unknown) as (keyof ReducerState<R>)[]).reduce((prevState, key) => {
-    prevState[key] = values[key] !== undefined ? values[key] : state[key]
+  ) as unknown) as (keyof ReducerState<R>)[]).reduce(
+    (prevState, key) => {
+      prevState[key] = values[key] !== undefined ? values[key] : prevState[key]
 
-    return prevState
-  }, state)
+      return prevState
+    },
+    { ...state },
+  )
 
   return [controlledState, dispatch]
 }
@@ -172,6 +175,7 @@ export function useDatePickerCore<
         Selected
       >)[]).forEach(key => {
         if (prevState[key] !== newState[key]) {
+          console.log('onchange', key)
           callOnChangeHandler(props, key, newState[key])
         }
       })
