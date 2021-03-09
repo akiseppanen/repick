@@ -18,10 +18,12 @@ import {
   actionKeyEnter,
 } from './actions'
 
-export const defaultOptions: Required<Pick<
-  RepickOptions<Date | Date[]>,
-  'allowInput' | 'format' | 'monthCount' | 'weekStartsOn'
->> = {
+export const defaultOptions: Required<
+  Pick<
+    RepickOptions<Date | Date[]>,
+    'allowInput' | 'format' | 'monthCount' | 'weekStartsOn'
+  >
+> = {
   allowInput: false,
   format: 'yyyy-MM-dd',
   monthCount: 1,
