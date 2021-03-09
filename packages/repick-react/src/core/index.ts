@@ -171,9 +171,9 @@ export function useDatePickerCore<
       inputValue: '',
     }),
     (prevState, newState) => {
-      ;((Object.keys(newState) as unknown) as (keyof RepickState<
-        Selected
-      >)[]).forEach(key => {
+      ;((Object.keys(
+        newState,
+      ) as unknown) as (keyof RepickState<Selected>)[]).forEach(key => {
         if (prevState[key] !== newState[key]) {
           callOnChangeHandler(props, key, newState[key])
         }
