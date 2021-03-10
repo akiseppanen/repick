@@ -1,5 +1,5 @@
 {
-  "name": "repick-react",
+  "name": "@repick/react",
   "version": "0.5.0",
   "main": "dist/index.js",
   "module": "dist/repick-react.esm.js",
@@ -17,8 +17,8 @@
     "watch": "tsdx watch"
   },
   "dependencies": {
-    "date-fns": "^2.9.0",
-    "repick-core": "^0.5.0"
+    "@repick/core": "^0.5.0",
+    "date-fns": "^2.9.0"
   },
   "peerDependencies": {
     "react": ">=16"

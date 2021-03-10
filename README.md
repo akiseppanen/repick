@@ -7,13 +7,13 @@ Primitives to build simple, flexible, WAI-ARIA compliant React date picker.
 You can install Repick with NPM, Yarn
 
 ```
-npm install repick-react --save
+npm install @repick/react --save
 ```
 
 or
 
 ```
-yarn add repick-react
+yarn add @repick/react
 ```
 
 ## Basic Usage
@@ -23,7 +23,7 @@ Package exports three hooks `useDatePicker`, `UseMultiDatePicker`, `useRangeDate
 > [Try it out in the browser](https://codesandbox.io/s/repick-basic-example-d40d2])
 
 ```js
-import { useDatePicker } from 'repick-react'
+import { useDatePicker } from '@repick/react'
 
 function DatePicker() {
   const {
