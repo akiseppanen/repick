@@ -128,8 +128,8 @@ export function compareUndefined<T>(compareFn: (a: T, b: T) => number) {
     a !== undefined && b !== undefined ? compareFn(a, b) : 0
 }
 
-export function assertNever(x: never): never {
-  throw new Error('Unexpected object: ' + x)
+export function assertNever(x: never, message: string): never {
+  throw new Error(`[repick-core] ${message}: ${JSON.stringify(x)}`)
 }
 
 export const emptyFn = <T>(e: T) => (): T => e

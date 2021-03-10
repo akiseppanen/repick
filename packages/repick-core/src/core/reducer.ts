@@ -43,7 +43,12 @@ import {
   actionInputKeyEnter,
 } from '../actions'
 import { RepickState, RepickOptions } from './types'
-import { dateIsSelectable, wrapWeekDay, defaultOptions } from '../utils'
+import {
+  dateIsSelectable,
+  wrapWeekDay,
+  defaultOptions,
+  assertNever,
+} from '../utils'
 
 export function createReducer<Selected extends Date | Date[]>(
   selectDate: (
@@ -213,8 +218,7 @@ export function createReducer<Selected extends Date | Date[]>(
       }
 
       default: {
-        const _: never = action
-        return _
+        assertNever(action, 'Invalid action type')
       }
     }
   }
