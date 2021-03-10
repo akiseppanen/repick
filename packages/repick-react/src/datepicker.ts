@@ -1,5 +1,9 @@
 import { ReactElement } from 'react'
-import { reducerSingle, buildContextSingle, RepickDaySingle } from 'repick-core'
+import {
+  reducerSingle,
+  buildContextSingle,
+  RepickDaySingle,
+} from '@repick/core'
 
 import { RepickProps, RepickReturnValue } from './core/types'
 import { useDatePickerCore } from './core'

@@ -4,7 +4,7 @@ import {
   RepickOptions,
   RepickState,
   RepickAction,
-} from 'repick-core'
+} from '@repick/core'
 
 export type RepickStateChangeOptions<Selected extends Date | Date[]> = {
   action: RepickAction

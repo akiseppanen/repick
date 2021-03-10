@@ -1,4 +1,4 @@
-import { RepickContextSingle } from 'repick-core'
+import { RepickContextSingle } from '@repick/core'
 
 const days = [
   {

@@ -38,7 +38,7 @@ import {
   RepickOptions,
   RepickState,
   objectCopyPartial,
-} from 'repick-core'
+} from '@repick/core'
 
 import {
   RepickProps,

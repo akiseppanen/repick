@@ -17,7 +17,7 @@ import {
 } from '../src'
 import { calendarFixture } from './fixtures/calendar'
 
-jest.mock('repick-core')
+jest.mock('@repick/core')
 
 const options: RepickOptions<Date> = {
   weekStartsOn: 1,
@@ -28,7 +28,7 @@ const mockedBuildCalendar = jest.fn()
 const mockedReducer = jest.fn()
 
 mockedObjectCopyPartial.mockImplementation(
-  jest.requireActual('repick-core').objectCopyPartial,
+  jest.requireActual('@repick/core').objectCopyPartial,
 )
 
 function setup(
