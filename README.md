@@ -20,7 +20,7 @@ yarn add @repick/react
 
 Package exports three hooks `useDatePicker`, `UseMultiDatePicker`, `useRangeDatePicker`. Usage of these hooks are mostly identical, only being difference type of `Selected`.
 
-> [Try it out in the browser](https://codesandbox.io/s/repick-basic-example-d40d2])
+> [Try it out in the browser](https://codesandbox.io/s/repick-react-basic-example-5mbkk)
 
 ```js
 import { useDatePicker } from '@repick/react'
