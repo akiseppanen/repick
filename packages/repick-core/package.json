@@ -1,6 +1,6 @@
 {
   "name": "@repick/core",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "module": "dist/repick-core.esm.js",
   "typings": "dist/index.d.ts",
