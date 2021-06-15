@@ -132,7 +132,10 @@ export function assertNever(x: never, message: string): never {
   throw new Error(`[repick-core] ${message}: ${JSON.stringify(x)}`)
 }
 
-export const emptyFn = <T>(e: T) => (): T => e
+export const emptyFn =
+  <T>(e: T) =>
+  (): T =>
+    e
 
 export const dateIsSelectable = (
   {

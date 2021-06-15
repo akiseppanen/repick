@@ -55,7 +55,7 @@ import {
 
 type RepickCoreDeps<
   Selected extends Date | Date[],
-  DayContext extends RepickDay<any>
+  DayContext extends RepickDay<any>,
 > = {
   reducer: (
     state: RepickState<Selected>,
@@ -70,12 +70,12 @@ type RepickCoreDeps<
 
 type RepickPropsWithCoreDeps<
   Selected extends Date | Date[],
-  DayContext extends RepickDay<any>
+  DayContext extends RepickDay<any>,
 > = RepickProps<Selected> & RepickCoreDeps<Selected, DayContext>
 
 function useControlledReducer<
   R extends Reducer<any, any>,
-  V extends Partial<ReducerState<R>>
+  V extends Partial<ReducerState<R>>,
 >(
   reducer: R,
   values: V,
@@ -94,9 +94,9 @@ function useControlledReducer<
     prevStateRef.current = state
   }, [state])
 
-  const controlledState = ((Object.keys(
-    state,
-  ) as unknown) as (keyof ReducerState<R>)[]).reduce(
+  const controlledState = (
+    Object.keys(state) as unknown as (keyof ReducerState<R>)[]
+  ).reduce(
     (prevState, key) => {
       prevState[key] = values[key] !== undefined ? values[key] : prevState[key]
 
@@ -110,7 +110,7 @@ function useControlledReducer<
 
 function callOnChangeHandler<
   Selected extends Date | Date[],
-  Key extends keyof RepickState<Selected>
+  Key extends keyof RepickState<Selected>,
 >(props: RepickProps<Selected>, key: Key, value: RepickState<Selected>[Key]) {
   const handler = `on${key.slice(0, 1).toUpperCase()}${key.slice(1)}Change`
 
@@ -121,7 +121,7 @@ function callOnChangeHandler<
 
 export function useDatePickerCore<
   Selected extends Date | Date[],
-  DayContext extends RepickDay<any>
+  DayContext extends RepickDay<any>,
 >({
   buildContext,
   reducer,
@@ -171,9 +171,9 @@ export function useDatePickerCore<
       inputValue: '',
     }),
     (prevState, newState) => {
-      ;((Object.keys(
-        newState,
-      ) as unknown) as (keyof RepickState<Selected>)[]).forEach(key => {
+      ;(
+        Object.keys(newState) as unknown as (keyof RepickState<Selected>)[]
+      ).forEach(key => {
         if (prevState[key] !== newState[key]) {
           callOnChangeHandler(props, key, newState[key])
         }
@@ -181,9 +181,10 @@ export function useDatePickerCore<
     },
   )
 
-  const id = useMemo(() => props.id || `repick-${Date.now().toString(36)}`, [
-    props.id,
-  ])
+  const id = useMemo(
+    () => props.id || `repick-${Date.now().toString(36)}`,
+    [props.id],
+  )
   const focusFromRef = useRef<HTMLElement>()
   const isMouseDownRef = useRef<boolean>(false)
   const shouldFocusRef = useRef<boolean>(!!props.autoFocus)
@@ -453,46 +454,55 @@ export function useDatePickerCore<
     [dispatch],
   )
 
-  const endOfWeek = useCallback(() => dispatch({ type: actionEndOfWeek }), [
-    dispatch,
-  ])
+  const endOfWeek = useCallback(
+    () => dispatch({ type: actionEndOfWeek }),
+    [dispatch],
+  )
 
-  const nextDay = useCallback(() => dispatch({ type: actionNextDay }), [
-    dispatch,
-  ])
+  const nextDay = useCallback(
+    () => dispatch({ type: actionNextDay }),
+    [dispatch],
+  )
 
-  const nextMonth = useCallback(() => dispatch({ type: actionNextMonth }), [
-    dispatch,
-  ])
+  const nextMonth = useCallback(
+    () => dispatch({ type: actionNextMonth }),
+    [dispatch],
+  )
 
-  const nextWeek = useCallback(() => dispatch({ type: actionNextWeek }), [
-    dispatch,
-  ])
+  const nextWeek = useCallback(
+    () => dispatch({ type: actionNextWeek }),
+    [dispatch],
+  )
 
-  const nextYear = useCallback(() => dispatch({ type: actionNextYear }), [
-    dispatch,
-  ])
+  const nextYear = useCallback(
+    () => dispatch({ type: actionNextYear }),
+    [dispatch],
+  )
 
   const openCalendar = useCallback(
     () => dispatch({ type: actionOpenCalendar }),
     [dispatch],
   )
 
-  const prevDay = useCallback(() => dispatch({ type: actionPrevDay }), [
-    dispatch,
-  ])
+  const prevDay = useCallback(
+    () => dispatch({ type: actionPrevDay }),
+    [dispatch],
+  )
 
-  const prevMonth = useCallback(() => dispatch({ type: actionPrevMonth }), [
-    dispatch,
-  ])
+  const prevMonth = useCallback(
+    () => dispatch({ type: actionPrevMonth }),
+    [dispatch],
+  )
 
-  const prevWeek = useCallback(() => dispatch({ type: actionPrevWeek }), [
-    dispatch,
-  ])
+  const prevWeek = useCallback(
+    () => dispatch({ type: actionPrevWeek }),
+    [dispatch],
+  )
 
-  const prevYear = useCallback(() => dispatch({ type: actionPrevYear }), [
-    dispatch,
-  ])
+  const prevYear = useCallback(
+    () => dispatch({ type: actionPrevYear }),
+    [dispatch],
+  )
 
   const selectCurrent = useCallback(
     () => dispatch({ type: actionSelectHighlighted }),
@@ -505,9 +515,10 @@ export function useDatePickerCore<
     [dispatch],
   )
 
-  const startOfWeek = useCallback(() => dispatch({ type: actionStartOfWeek }), [
-    dispatch,
-  ])
+  const startOfWeek = useCallback(
+    () => dispatch({ type: actionStartOfWeek }),
+    [dispatch],
+  )
 
   return {
     ...buildContext(state, options),
