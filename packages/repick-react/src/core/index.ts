@@ -92,7 +92,7 @@ function useControlledReducer<
     }
 
     prevStateRef.current = state
-  }, [state])
+  }, [onChange, state])
 
   const controlledState = (
     Object.keys(state) as unknown as (keyof ReducerState<R>)[]
@@ -160,7 +160,7 @@ export function useDatePickerCore<
 
         return { ...state, ...changes }
       },
-      [reducer, stateReducer],
+      [options, reducer, stateReducer],
     ),
     props,
     props => ({
@@ -245,7 +245,7 @@ export function useDatePickerCore<
         dateRefs[id].focus()
       }
     })
-  }, [dateRefs])
+  }, [dateRefs, state.highlighted])
 
   useEffect(() => {
     if (shouldFocusRef.current === true && state.isOpen) {
@@ -364,7 +364,7 @@ export function useDatePickerCore<
       type: 'text',
       value: state.inputValue,
     }
-  }, [id, dispatch, state.inputValue])
+  }, [id, dispatch, props.allowInput, state.inputValue])
 
   const getCalendarHeaderProps = useCallback(
     (index?: number): HeaderProps => {
@@ -409,7 +409,7 @@ export function useDatePickerCore<
         toggleButtonRef.current = el || undefined
       },
     }
-  }, [dispatch])
+  }, [dispatch, state.isOpen])
 
   const getPrevMonthProps = useCallback((): MonthProps => {
     return {
