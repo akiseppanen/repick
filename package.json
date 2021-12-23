@@ -6,7 +6,7 @@
     "clean": "rm -rf node_modules; lerna run clean",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint -- --fix",
-    "test": "tsdx test --env=jsdom",
+    "test": "lerna run test",
     "watch": "lerna run --parallel watch",
     "storybook": "start-storybook -p 6006"
   },
