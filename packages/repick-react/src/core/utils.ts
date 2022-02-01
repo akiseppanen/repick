@@ -26,9 +26,9 @@ function getState<Selected extends Date | Date[]>(
   state: RepickState<Selected>,
   props: RepickProps<Selected> = {},
 ): RepickState<Selected> {
-  return (
-    Object.keys(state) as unknown as (keyof RepickState<Selected>)[]
-  ).reduce<any>(
+  return ((Object.keys(state) as unknown) as (keyof RepickState<
+    Selected
+  >)[]).reduce<any>(
     (prevState, key) => {
       const isControlledProp = typeof props[key] !== 'undefined'
 
@@ -62,7 +62,7 @@ function callOnchangeProps<Selected extends Date | Date[]>(
   state: RepickState<Selected>,
   newState: RepickState<Selected>,
 ) {
-  ;(Object.keys(state) as unknown as (keyof RepickState<Selected>)[]).forEach(
+  ;((Object.keys(state) as unknown) as (keyof RepickState<Selected>)[]).forEach(
     key => {
       invokeOnchangeHandler(props, key, state, newState)
     },
