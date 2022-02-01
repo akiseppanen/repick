@@ -1,15 +1,6 @@
 import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
-import React, {
-  useRef,
-  useEffect,
-  useMemo,
-  useReducer,
-  useCallback,
-  Reducer,
-  ReducerState,
-  KeyboardEvent,
-} from 'react'
+import { useRef, useEffect, useMemo, useCallback, KeyboardEvent } from 'react'
 import {
   actionCloseCalendar,
   actionDateClick,
@@ -37,7 +28,6 @@ import {
   RepickDay,
   RepickOptions,
   RepickState,
-  objectCopyPartial,
 } from '@repick/core'
 
 import {
@@ -52,6 +42,7 @@ import {
   LabelProps,
   ToggleButtonProps,
 } from './types'
+import { optionsFromProps, useControlledReducer } from './utils'
 
 type RepickCoreDeps<
   Selected extends Date | Date[],
@@ -73,112 +64,27 @@ type RepickPropsWithCoreDeps<
   DayContext extends RepickDay<any>,
 > = RepickProps<Selected> & RepickCoreDeps<Selected, DayContext>
 
-function useControlledReducer<
-  R extends Reducer<any, any>,
-  V extends Partial<ReducerState<R>>,
->(
-  reducer: R,
-  values: V,
-  initializer: (arg: V) => ReducerState<R>,
-  onChange: (prevState: ReducerState<R>, newState: ReducerState<R>) => void,
-): [ReducerState<R>, React.Dispatch<React.ReducerAction<R>>] {
-  const [state, dispatch] = useReducer(reducer, values, initializer)
-
-  const prevStateRef = useRef(state)
-
-  useEffect(() => {
-    if (prevStateRef.current && prevStateRef.current !== state) {
-      onChange(prevStateRef.current, state)
-    }
-
-    prevStateRef.current = state
-  }, [onChange, state])
-
-  const controlledState = (
-    Object.keys(state) as unknown as (keyof ReducerState<R>)[]
-  ).reduce(
-    (prevState, key) => {
-      prevState[key] = values[key] !== undefined ? values[key] : prevState[key]
-
-      return prevState
-    },
-    { ...state },
-  )
-
-  return [controlledState, dispatch]
-}
-
-function callOnChangeHandler<
-  Selected extends Date | Date[],
-  Key extends keyof RepickState<Selected>,
->(props: RepickProps<Selected>, key: Key, value: RepickState<Selected>[Key]) {
-  const handler = `on${key.slice(0, 1).toUpperCase()}${key.slice(1)}Change`
-
-  if (handler in props && typeof (props as any)[handler] === 'function') {
-    ;(props as any)[handler](value)
-  }
-}
-
 export function useDatePickerCore<
   Selected extends Date | Date[],
   DayContext extends RepickDay<any>,
 >({
   buildContext,
   reducer,
-  stateReducer,
   ...props
 }: RepickPropsWithCoreDeps<Selected, DayContext>): RepickReturnValue<
   Selected,
   DayContext
 > {
-  const options = objectCopyPartial(
-    [
-      'allowInput',
-      'format',
-      'formatter',
-      'parser',
-      'monthCount',
-      'locale',
-      'disabledDates',
-      'enabledDates',
-      'weekStartsOn',
-      'minDate',
-      'maxDate',
-      'filterDates',
-    ],
-    props,
-  )
-
   const [state, dispatch] = useControlledReducer(
-    useCallback(
-      (state: RepickState<Selected>, action: RepickAction) => {
-        const changes = reducer(state, action, options)
-
-        if (typeof stateReducer === 'function') {
-          return stateReducer(state, { action, changes, options })
-        }
-
-        return { ...state, ...changes }
-      },
-      [options, reducer, stateReducer],
-    ),
-    props,
-    props => ({
+    reducer,
+    {
       highlighted:
         props.highlighted || props.initialHighlighted || startOfDay(new Date()),
       selected: props.selected || props.initialSelected || null,
       isOpen: props.isOpen || props.initialIsOpen || false,
       inputValue: '',
-    }),
-    (prevState, newState) => {
-      ;(
-        Object.keys(newState) as unknown as (keyof RepickState<Selected>)[]
-      ).forEach(key => {
-        if (prevState[key] !== newState[key]) {
-          callOnChangeHandler(props, key, newState[key])
-        }
-      })
     },
+    props,
   )
 
   const id = useMemo(
@@ -521,7 +427,7 @@ export function useDatePickerCore<
   )
 
   return {
-    ...buildContext(state, options),
+    ...buildContext(state, optionsFromProps(props)),
     closeCalendar,
     endOfWeek,
     getCalendarHeaderProps,
