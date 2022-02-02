@@ -21,12 +21,12 @@ import {
 
 export function buildCalendarDay<
   State extends RepickState<any>,
-  Extra extends { [key: string]: any } = {},
+  Extra extends { [key: string]: any } = {}
 >(
   isSelected: (selected: State['selected'], date: Date) => boolean,
   extraFn: (state: State, date: Date) => Extra,
 ) {
-  return function (
+  return function(
     state: State,
     currentMonth: Date,
     date: Date,
@@ -51,7 +51,7 @@ export function buildCalendarDay<
 
 export function buildContext<
   State extends RepickState<any>,
-  Extra extends { [key: string]: any } = {},
+  Extra extends { [key: string]: any } = {}
 >(
   buildCalendarDay: (
     state: State,
@@ -60,7 +60,7 @@ export function buildContext<
     options: RepickOptions<RepickStateSelected<State>>,
   ) => RepickDay<Extra>,
 ) {
-  return function (
+  return function(
     state: State,
     options: RepickOptions<RepickStateSelected<State>> = {},
   ): RepickContext<any, RepickDay<Extra>> {
