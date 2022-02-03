@@ -128,7 +128,7 @@ export function createReducer<Selected extends Date | Date[]>(
           highlighted,
           selected,
           inputValue: formatter(selected, options.format),
-        }
+        } as Partial<RepickState<Selected>>
       }
       case actionDateClick:
       case actionSelectDate: {
