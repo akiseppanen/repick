@@ -19,6 +19,7 @@ import { sort } from './utils'
 export type RepickOptionsRange = RepickOptions<[Date] | [Date, Date]>
 export type RepickStateRange = RepickState<[Date] | [Date, Date]>
 export type RepickDayRange = RepickDay<{
+  inRange: boolean
   rangeStart: boolean
   rangeEnd: boolean
 }>
@@ -75,20 +76,31 @@ export const isSelectedRange = (
   date: Date,
 ) =>
   !!selected &&
-  (selected[1] !== undefined
-    ? isWithinInterval(date, { start: selected[0], end: selected[1] })
-    : isSameDay(date, selected[0]))
+  (isSameDay(date, selected[0]) ||
+    (!!selected[1] && isSameDay(date, selected[1])))
 
 export const buildCalendarDayRangeExtra = (
   state: RepickStateRange,
   date: Date,
-) => ({
-  rangeStart: !!state.selected && isSameDay(date, state.selected[0]),
-  rangeEnd:
-    !!state.selected &&
-    !!state.selected[1] &&
-    isSameDay(date, state.selected[1]),
-})
+) => {
+  const [rangeStart, rangeEnd] = !!state.selected
+    ? [state.selected[0], state.selected[1] || state.highlighted].sort(
+        compareAsc,
+      )
+    : []
+
+  return {
+    inRange:
+      !!rangeStart &&
+      !!rangeEnd &&
+      isWithinInterval(date, {
+        start: rangeStart,
+        end: rangeEnd,
+      }),
+    rangeStart: !!rangeStart && isSameDay(date, rangeStart),
+    rangeEnd: !!rangeEnd && isSameDay(date, rangeEnd),
+  }
+}
 
 export const buildCalendarDayRange: (
   state: RepickStateRange,

@@ -80,7 +80,7 @@ const Component = () => {
                             prevMonth: calendarDay.prevMonth,
                             selected: calendarDay.selected,
                             today: calendarDay.today,
-                            inRange: calendarDay.selected,
+                            inRange: calendarDay.inRange,
                             rangeStart: calendarDay.rangeStart,
                             rangeEnd: calendarDay.rangeEnd,
                           })}

@@ -55,12 +55,12 @@ describe('isSelectedRange', () => {
   it('selected', () => {
     expect(isSelectedRange(range, range[0])).toEqual(true)
     expect(isSelectedRange(range, range[1])).toEqual(true)
-    expect(isSelectedRange(range, new Date('2018-01-15'))).toEqual(true)
   })
 
   it('not selected', () => {
     expect(isSelectedRange(range, new Date('2018-02-01'))).toEqual(false)
     expect(isSelectedRange(null, new Date('2018-02-01'))).toEqual(false)
+    expect(isSelectedRange(range, new Date('2018-01-15'))).toEqual(false)
   })
 })
 
@@ -77,6 +77,7 @@ describe('buildCalendarContextDayRange', () => {
 
   it('rangeStart', () => {
     expect(buildCalendarDayRangeExtra(state, range[0])).toEqual({
+      inRange: true,
       rangeStart: true,
       rangeEnd: false,
     })
@@ -84,6 +85,7 @@ describe('buildCalendarContextDayRange', () => {
 
   it('rangeEnd', () => {
     expect(buildCalendarDayRangeExtra(state, range[1])).toEqual({
+      inRange: true,
       rangeStart: false,
       rangeEnd: true,
     })
@@ -91,6 +93,7 @@ describe('buildCalendarContextDayRange', () => {
 
   it('not selected', () => {
     expect(buildCalendarDayRangeExtra(state, new Date('2018-02-01'))).toEqual({
+      inRange: false,
       rangeStart: false,
       rangeEnd: false,
     })
