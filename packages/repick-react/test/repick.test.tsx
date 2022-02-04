@@ -152,6 +152,63 @@ describe('calendar', () => {
     )
   })
 
+  it('date hover dispatches correct action', () => {
+    const [, view] = setup(
+      {
+        initialHighlighted: calendarFixture.highlighted,
+        initialSelected: calendarFixture.selected,
+      },
+      ({ days, getDateProps }) => (
+        <>
+          {days.map(calendarDay => (
+            <button
+              {...getDateProps(calendarDay)}
+              key={calendarDay.date.toISOString()}
+            >
+              {calendarDay.day}
+            </button>
+          ))}
+        </>
+      ),
+    )
+
+    fireEvent.mouseOver(view.container.children[10])
+    fireEvent.mouseOver(view.container.children[20])
+    fireEvent.mouseOver(view.container.children[30])
+
+    const { days } = calendarFixture
+
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      1,
+      state,
+      {
+        date: days[10].date,
+        type: 'DateMouseOver',
+      },
+      {},
+    )
+
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      2,
+      state,
+      {
+        date: days[20].date,
+        type: 'DateMouseOver',
+      },
+      {},
+    )
+
+    expect(mockedReducer).toHaveBeenNthCalledWith(
+      3,
+      state,
+      {
+        date: days[30].date,
+        type: 'DateMouseOver',
+      },
+      {},
+    )
+  })
+
   it('keyPress is handled correctly', () => {
     const [, view] = setup(
       {

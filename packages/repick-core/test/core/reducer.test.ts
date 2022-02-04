@@ -48,8 +48,9 @@ describe('reducerGeneric', () => {
   const assertAction = (
     action: RepickAction,
     expectedChanges: Partial<RepickState<Date>>,
+    options: RepickOptions<Date> = {},
   ) => {
-    const newState = reducer(state, action, {})
+    const newState = reducer(state, action, options)
 
     expect(newState).toEqual(expectedChanges)
   }
@@ -124,6 +125,26 @@ describe('reducerGeneric', () => {
       {},
     )
     expect(mockedDateIsSelectable).toHaveBeenCalledWith(defaultOptions, date)
+  })
+
+  it('DateMouseOver', () => {
+    const date = new Date('2018-01-05 00:00:00')
+
+    assertAction(
+      {
+        date: date,
+        type: 'DateMouseOver',
+      },
+      { highlighted: date },
+    )
+    assertAction(
+      {
+        date: date,
+        type: 'DateMouseOver',
+      },
+      {},
+      { updateHighlightedOnHover: false },
+    )
   })
 
   it('SelectHighlighted', () => {

@@ -102,12 +102,6 @@
   border: 1px solid #569ff7;
 }
 
-.calendarDay:focus,
-.calendarDay.focused {
-  box-shadow: 0px 0px 5px 0px #569ff7;
-  outline: none;
-}
-
 .calendarDay.selected {
   background: #569ff7;
   border: none;
@@ -128,10 +122,18 @@
   border-top-right-radius: 100%;
   border-bottom-right-radius: 100%;
 }
-.calendarDay:hover {
-  background: #e6e6e6;
-}
+
 .calendarDay.disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.calendarDay.highlighted {
+  background: #e6e6e6;
+  outline: none;
+}
+
+.calendarDay.selected.highlighted,
+.calendarDay.inRange.highlighted {
+  background: #2584f7;
 }

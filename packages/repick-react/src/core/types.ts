@@ -89,8 +89,8 @@ export type MonthProps = {
 
 export type CalendarProps = {
   'aria-labelledby': string
-  role: 'grid'
   onKeyDown: (e: React.KeyboardEvent) => void
+  role: 'grid'
 }
 
 export type DateProps = {
@@ -98,6 +98,7 @@ export type DateProps = {
   'aria-pressed': boolean
   'aria-selected': boolean
   onClick: (e: React.MouseEvent) => void
+  onMouseOver: (e: React.MouseEvent) => void
   ref: (el: HTMLElement | null) => void
   role: string
   tabIndex: number

@@ -20,12 +20,17 @@ import {
 
 export const defaultOptions: Required<Pick<
   RepickOptions<Date | Date[]>,
-  'allowInput' | 'format' | 'monthCount' | 'weekStartsOn'
+  | 'allowInput'
+  | 'format'
+  | 'monthCount'
+  | 'weekStartsOn'
+  | 'updateHighlightedOnHover'
 >> = {
   allowInput: false,
   format: 'yyyy-MM-dd',
   monthCount: 1,
   weekStartsOn: 0,
+  updateHighlightedOnHover: true,
 }
 
 export const arrayGenerate = <A>(

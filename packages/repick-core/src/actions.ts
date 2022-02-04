@@ -1,6 +1,7 @@
 export const actionBlur = 'Blur'
 export const actionCloseCalendar = 'CloseCalendar'
 export const actionDateClick = 'DateClick'
+export const actionDateMouseOver = 'DateMouseOver'
 export const actionEndOfWeek = 'EndOfWeek'
 export const actionInputBlur = 'InputBlur'
 export const actionInputChange = 'InputChange'
@@ -42,6 +43,11 @@ export interface ActionCloseCalendar {
 
 export interface ActionDateClick {
   type: typeof actionDateClick
+  date: Date
+}
+
+export interface ActionDateMouseOver {
+  type: typeof actionDateMouseOver
   date: Date
 }
 
@@ -170,6 +176,7 @@ export type RepickAction =
   | ActionBlur
   | ActionCloseCalendar
   | ActionDateClick
+  | ActionDateMouseOver
   | ActionEndOfWeek
   | ActionInputBlur
   | ActionInputChange

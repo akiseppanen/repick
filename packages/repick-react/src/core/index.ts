@@ -1,11 +1,11 @@
 import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
 import startOfMonth from 'date-fns/startOfMonth'
-
 import { useRef, useEffect, useMemo, useCallback, KeyboardEvent } from 'react'
 import {
   actionCloseCalendar,
   actionDateClick,
+  actionDateMouseOver,
   actionEndOfWeek,
   actionInputBlur,
   actionInputChange,
@@ -343,6 +343,9 @@ export function useDatePickerCore<
         onClick: e => {
           e.preventDefault()
           dispatch({ type: actionDateClick, date: calendarDay.date })
+        },
+        onMouseOver: () => {
+          dispatch({ type: actionDateMouseOver, date: calendarDay.date })
         },
         'aria-label': calendarDay.date.toDateString(),
         'aria-pressed': calendarDay.selected,

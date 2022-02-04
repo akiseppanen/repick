@@ -29,6 +29,7 @@ const Component = () => {
   } = useRangeDatePicker({
     initialHighlighted: date,
     weekStartsOn: 1,
+    updateHighlightedOnHover: false,
   })
 
   return (
@@ -74,6 +75,7 @@ const Component = () => {
                         <button
                           {...getDateProps(calendarDay)}
                           className={classnames('calendarDay', {
+                            highlighted: calendarDay.highlighted,
                             nextMonth: calendarDay.nextMonth,
                             prevMonth: calendarDay.prevMonth,
                             selected: calendarDay.selected,

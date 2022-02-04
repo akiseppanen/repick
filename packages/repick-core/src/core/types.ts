@@ -18,6 +18,7 @@ export type RepickOptions<Selected> = Partial<{
   minDate: Date
   maxDate: Date
   filterDates: (date: Date) => boolean
+  updateHighlightedOnHover: boolean
 }>
 
 export type RepickState<Selected extends Date | Date[]> = {

@@ -17,6 +17,7 @@ export function optionsFromProps(props: RepickProps<any>) {
       'minDate',
       'maxDate',
       'filterDates',
+      'updateHighlightedOnHover',
     ],
     props,
   )

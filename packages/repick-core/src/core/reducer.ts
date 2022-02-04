@@ -11,6 +11,7 @@ import {
   actionBlur,
   actionCloseCalendar,
   actionDateClick,
+  actionDateMouseOver,
   actionEndOfWeek,
   actionInputFocus,
   actionInputKeyArrowDown,
@@ -137,6 +138,17 @@ export function createReducer<Selected extends Date | Date[]>(
           action.date instanceof Date ? action.date : new Date(action.date)
 
         return reduceSelected(state, date)
+      }
+
+      case actionDateMouseOver: {
+        if (!options.updateHighlightedOnHover) {
+          return {}
+        }
+
+        const date =
+          action.date instanceof Date ? action.date : new Date(action.date)
+
+        return { highlighted: date }
       }
 
       case actionKeyEnter:

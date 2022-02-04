@@ -73,6 +73,7 @@ const Component = () => {
                             <button
                               {...getDateProps(calendarDay)}
                               className={classnames('calendarDay', {
+                                highlighted: calendarDay.highlighted,
                                 nextMonth: calendarDay.nextMonth,
                                 prevMonth: calendarDay.prevMonth,
                                 selected: calendarDay.selected,
