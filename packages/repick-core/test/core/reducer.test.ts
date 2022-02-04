@@ -18,9 +18,11 @@ mockedWrapWeekDay.mockImplementation(
 
 describe('reducerGeneric', () => {
   const selected = new Date('2018-01-05 00:00:00')
+  const activeMonth = new Date('2018-01-01 00:00:00')
   const highlighted = new Date('2018-01-01 00:00:00')
 
   const state: RepickState<Date> = {
+    activeMonth,
     highlighted,
     inputValue: format(selected, 'yyyy-MM-dd'),
     isOpen: false,
@@ -163,6 +165,7 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowLeft',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-31 00:00:00'),
       },
     )
@@ -174,6 +177,7 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowRight',
       },
       {
+        activeMonth: new Date('2018-01-01 00:00:00'),
         highlighted: new Date('2018-01-02 00:00:00'),
       },
     )
@@ -185,6 +189,7 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowUp',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-25 00:00:00'),
       },
     )
@@ -196,6 +201,7 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowDown',
       },
       {
+        activeMonth: new Date('2018-01-01 00:00:00'),
         highlighted: new Date('2018-01-08 00:00:00'),
       },
     )
@@ -207,6 +213,7 @@ describe('reducerGeneric', () => {
         type: 'KeyPageDown',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-01 00:00:00'),
       },
     )
@@ -218,6 +225,7 @@ describe('reducerGeneric', () => {
         type: 'KeyPageUp',
       },
       {
+        activeMonth: new Date('2018-02-01 00:00:00'),
         highlighted: new Date('2018-02-01 00:00:00'),
       },
     )
@@ -229,6 +237,7 @@ describe('reducerGeneric', () => {
         type: 'KeyHome',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-31 00:00:00'),
       },
     )
@@ -240,6 +249,7 @@ describe('reducerGeneric', () => {
         type: 'KeyEnd',
       },
       {
+        activeMonth: new Date('2018-01-01 00:00:00'),
         highlighted: new Date('2018-01-06 00:00:00'),
       },
     )
@@ -251,6 +261,7 @@ describe('reducerGeneric', () => {
         type: 'KeyShiftPageDown',
       },
       {
+        activeMonth: new Date('2017-01-01 00:00:00'),
         highlighted: new Date('2017-01-01 00:00:00'),
       },
     )
@@ -262,6 +273,7 @@ describe('reducerGeneric', () => {
         type: 'KeyShiftPageUp',
       },
       {
+        activeMonth: new Date('2019-01-01 00:00:00'),
         highlighted: new Date('2019-01-01 00:00:00'),
       },
     )
@@ -273,6 +285,7 @@ describe('reducerGeneric', () => {
         type: 'PrevDay',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-31 00:00:00'),
       },
     )
@@ -298,6 +311,7 @@ describe('reducerGeneric', () => {
         type: 'NextDay',
       },
       {
+        activeMonth: new Date('2018-01-01 00:00:00'),
         highlighted: new Date('2018-01-02 00:00:00'),
       },
     )
@@ -309,6 +323,7 @@ describe('reducerGeneric', () => {
         type: 'PrevWeek',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-25 00:00:00'),
       },
     )
@@ -320,6 +335,7 @@ describe('reducerGeneric', () => {
         type: 'NextWeek',
       },
       {
+        activeMonth: new Date('2018-01-01 00:00:00'),
         highlighted: new Date('2018-01-08 00:00:00'),
       },
     )
@@ -331,6 +347,7 @@ describe('reducerGeneric', () => {
         type: 'PrevMonth',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-01 00:00:00'),
       },
     )
@@ -342,6 +359,7 @@ describe('reducerGeneric', () => {
         type: 'NextMonth',
       },
       {
+        activeMonth: new Date('2018-02-01 00:00:00'),
         highlighted: new Date('2018-02-01 00:00:00'),
       },
     )
@@ -353,6 +371,7 @@ describe('reducerGeneric', () => {
         type: 'StartOfWeek',
       },
       {
+        activeMonth: new Date('2017-12-01 00:00:00'),
         highlighted: new Date('2017-12-31 00:00:00'),
       },
     )
@@ -364,6 +383,7 @@ describe('reducerGeneric', () => {
         type: 'EndOfWeek',
       },
       {
+        activeMonth: new Date('2018-01-01 00:00:00'),
         highlighted: new Date('2018-01-06 00:00:00'),
       },
     )

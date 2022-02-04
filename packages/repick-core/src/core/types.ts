@@ -21,6 +21,7 @@ export type RepickOptions<Selected> = Partial<{
 }>
 
 export type RepickState<Selected extends Date | Date[]> = {
+  activeMonth: Date
   highlighted: Date
   inputValue: string
   isOpen: boolean
@@ -60,6 +61,7 @@ export type RepickMonth<Day extends RepickDay<any>> = {
 export type RepickCalendar<Day extends RepickDay<any>> = RepickMonth<Day>[]
 
 export type RepickContext<Selected, Day extends RepickDay<any>> = {
+  activeMonth: Date
   isOpen: boolean
   inputValue: string
   selected: Selected

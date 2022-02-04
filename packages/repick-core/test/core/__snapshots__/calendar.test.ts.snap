@@ -2,6 +2,7 @@
 
 exports[`buildContext multiple months 1`] = `
 Object {
+  "activeMonth": Date { 2018-01-01T00:00:00.000Z },
   "days": Array [
     Object {
       "date": Date { 2017-12-31T00:00:00.000Z },
@@ -3911,6 +3912,7 @@ Object {
 
 exports[`buildContext single month 1`] = `
 Object {
+  "activeMonth": Date { 2018-01-01T00:00:00.000Z },
   "days": Array [
     Object {
       "date": Date { 2017-12-31T00:00:00.000Z },

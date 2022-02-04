@@ -64,10 +64,10 @@ export function buildContext<
     state: State,
     options: RepickOptions<RepickStateSelected<State>> = {},
   ): RepickContext<any, RepickDay<Extra>> {
-    const { highlighted } = state
+    const { activeMonth, highlighted } = state
 
     const months = arrayGenerate(options.monthCount || 1, monthIndex => {
-      const firstDayOfMonth = startOfMonth(addMonths(highlighted, monthIndex))
+      const firstDayOfMonth = startOfMonth(addMonths(activeMonth, monthIndex))
       const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
         weekStartsOn: options.weekStartsOn,
       })
@@ -76,7 +76,7 @@ export function buildContext<
         weekNumber: getWeek(addDays(firstWeekOfMonth, weekIndex * 7), {
           weekStartsOn: options.weekStartsOn,
         }),
-        year: highlighted.getFullYear(),
+        year: activeMonth.getFullYear(),
         days: arrayGenerate(7, dayIndex =>
           buildCalendarDay(
             state,
@@ -113,13 +113,14 @@ export function buildContext<
     )
 
     return {
+      activeMonth,
       isOpen: state.isOpen,
       inputValue: state.inputValue,
       highlighted: highlighted || null,
-      month: highlighted.getMonth() + 1,
-      monthLong: format(highlighted, 'MMMM', { locale: options.locale }),
-      monthShort: format(highlighted, 'MMM', { locale: options.locale }),
-      year: highlighted.getFullYear(),
+      month: activeMonth.getMonth() + 1,
+      monthLong: format(activeMonth, 'MMMM', { locale: options.locale }),
+      monthShort: format(activeMonth, 'MMM', { locale: options.locale }),
+      year: activeMonth.getFullYear(),
       weekdays: buildWeekdays(options),
       selected: state.selected,
       months,

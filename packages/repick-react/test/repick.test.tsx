@@ -58,6 +58,7 @@ function setup(
 
 describe('calendar', () => {
   const state: RepickState<Date> = {
+    activeMonth: calendarFixture.activeMonth,
     highlighted: calendarFixture.highlighted,
     selected: calendarFixture.selected,
     isOpen: false,
@@ -250,6 +251,7 @@ it('dispatch', () => {
   const expected = new Date('2018-01-10 00:00:00')
 
   const state: RepickState<Date> = {
+    activeMonth: calendarFixture.activeMonth,
     highlighted: date,
     selected: null,
     isOpen: false,
@@ -296,6 +298,7 @@ it('dispatch', () => {
 
 it('StateReducer', () => {
   const state: RepickState<Date> = {
+    activeMonth: calendarFixture.activeMonth,
     highlighted: calendarFixture.highlighted,
     selected: calendarFixture.selected,
     isOpen: false,
@@ -357,16 +360,16 @@ it('StateReducer', () => {
 })
 
 describe('actions', () => {
-  const highlighted = new Date('2018-01-01 00:00:00')
+  const date = new Date('2018-01-01 00:00:00')
   const expected = new Date('2018-01-10 00:00:00')
 
   let results: RepickReturnValue<Date, RepickDay<{}>>
 
   beforeEach(() => {
-    results = setup({ highlighted })[0]
+    results = setup({ highlighted: date })[0]
     mockedReducer.mockReturnValue({
-      highlighted: expected,
-      selected: expected,
+      highlighted: date,
+      selected: date,
       isOpen: false,
       inputValue: '',
     })
@@ -378,7 +381,13 @@ describe('actions', () => {
 
   const assertAction = (action: RepickAction) => {
     expect(mockedReducer).toHaveBeenCalledWith(
-      { highlighted, selected: null, isOpen: false, inputValue: '' },
+      {
+        activeMonth: date,
+        highlighted: date,
+        selected: null,
+        isOpen: false,
+        inputValue: '',
+      },
       action,
       {},
     )

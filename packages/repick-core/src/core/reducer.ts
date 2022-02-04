@@ -5,6 +5,7 @@ import setDay from 'date-fns/setDay'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
+import startOfMonth from 'date-fns/startOfMonth'
 
 import {
   actionBlur,
@@ -145,76 +146,66 @@ export function createReducer<Selected extends Date | Date[]>(
 
       case actionKeyArrowLeft:
       case actionPrevDay: {
-        return {
-          highlighted: subDays(state.highlighted, 1),
-        } as Partial<RepickState<Selected>>
+        const date = subDays(state.highlighted, 1)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
       case actionKeyArrowRight:
       case actionNextDay: {
-        return { highlighted: addDays(state.highlighted, 1) } as Partial<
-          RepickState<Selected>
-        >
+        const date = addDays(state.highlighted, 1)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
       case actionKeyArrowUp:
       case actionPrevWeek: {
-        return { highlighted: subDays(state.highlighted, 7) } as Partial<
-          RepickState<Selected>
-        >
+        const date = subDays(state.highlighted, 7)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
       case actionKeyArrowDown:
       case actionNextWeek: {
-        return { highlighted: addDays(state.highlighted, 7) } as Partial<
-          RepickState<Selected>
-        >
+        const date = addDays(state.highlighted, 7)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
       case actionKeyPageDown:
       case actionPrevMonth: {
-        return { highlighted: subMonths(state.highlighted, 1) } as Partial<
-          RepickState<Selected>
-        >
+        const date = subMonths(state.highlighted, 1)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
       case actionKeyPageUp:
       case actionNextMonth: {
-        return { highlighted: addMonths(state.highlighted, 1) } as Partial<
-          RepickState<Selected>
-        >
+        const date = addMonths(state.highlighted, 1)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
       case actionKeyHome:
       case actionStartOfWeek: {
-        return {
-          highlighted: setDay(state.highlighted, options.weekStartsOn || 0, {
-            locale: options.locale,
-            weekStartsOn: options.weekStartsOn,
-          }),
-        } as Partial<RepickState<Selected>>
+        const date = setDay(state.highlighted, options.weekStartsOn || 0, {
+          locale: options.locale,
+          weekStartsOn: options.weekStartsOn,
+        })
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
 
       case actionKeyEnd:
       case actionEndOfWeek: {
-        return {
-          highlighted: setDay(
-            state.highlighted,
-            wrapWeekDay(options.weekStartsOn + 6),
-            {
-              locale: options.locale,
-              weekStartsOn: options.weekStartsOn,
-            },
-          ),
-        } as Partial<RepickState<Selected>>
+        const date = setDay(
+          state.highlighted,
+          wrapWeekDay(options.weekStartsOn + 6),
+          {
+            locale: options.locale,
+            weekStartsOn: options.weekStartsOn,
+          },
+        )
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
 
       case actionKeyShiftPageDown:
       case actionPrevYear: {
-        return { highlighted: subYears(state.highlighted, 1) } as Partial<
-          RepickState<Selected>
-        >
+        const date = subYears(state.highlighted, 1)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
 
       case actionKeyShiftPageUp:
       case actionNextYear: {
-        return { highlighted: addYears(state.highlighted, 1) } as Partial<
-          RepickState<Selected>
-        >
+        const date = addYears(state.highlighted, 1)
+        return { activeMonth: startOfMonth(date), highlighted: date }
       }
 
       default: {

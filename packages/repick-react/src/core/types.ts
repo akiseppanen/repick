@@ -5,6 +5,7 @@ import {
   RepickState,
   RepickAction,
 } from '@repick/core'
+import React from 'react'
 
 export type RepickStateChangeOptions<Selected extends Date | Date[]> = {
   action: RepickAction
@@ -23,12 +24,14 @@ export type RepickProps<Selected extends Date | Date[]> = {
   stateReducer?: RepickStateReducer<Selected>
 
   // Control Props
+  activeMonth?: Date | null
   highlighted?: Date
   selected?: Selected | null
   inputValue?: string
   isOpen?: boolean
 
   // Initial Values
+  initialActiveMonth?: Date | null
   initialHighlighted?: Date
   initialSelected?: Selected | null
   initialInputValue?: string

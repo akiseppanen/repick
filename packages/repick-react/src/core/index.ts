@@ -1,5 +1,7 @@
 import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
+import startOfMonth from 'date-fns/startOfMonth'
+
 import { useRef, useEffect, useMemo, useCallback, KeyboardEvent } from 'react'
 import {
   actionCloseCalendar,
@@ -78,6 +80,9 @@ export function useDatePickerCore<
   const [state, dispatch] = useControlledReducer(
     reducer,
     {
+      activeMonth: startOfMonth(
+        props.highlighted || props.initialHighlighted || new Date(),
+      ),
       highlighted:
         props.highlighted || props.initialHighlighted || startOfDay(new Date()),
       selected: props.selected || props.initialSelected || null,
