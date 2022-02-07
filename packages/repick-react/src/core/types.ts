@@ -38,6 +38,7 @@ export type RepickProps<Selected extends Date | Date[]> = {
   initialIsOpen?: boolean
 
   // On Change Handlers
+  onActiveMonthChange?: (activeMonth: Date) => void
   onHighlightedChange?: (highlighted: Date) => void
   onSelectedChange?: (selected?: Selected | null) => void
   onInputValueChange?: (inputValue: string) => void
