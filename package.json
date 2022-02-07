@@ -34,8 +34,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tsdx lint --fix",
-      "prettier --write"
+      "prettier --write",
+      "tsdx lint"
     ],
     "*.{js,jsx,json}": [
       "prettier --write"

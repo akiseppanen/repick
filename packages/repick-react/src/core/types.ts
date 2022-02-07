@@ -43,6 +43,10 @@ export type RepickProps<Selected extends Date | Date[]> = {
   onSelectedChange?: (selected?: Selected | null) => void
   onInputValueChange?: (inputValue: string) => void
   onIsOpenChange?: (isOpen: boolean) => void
+  onStateChange?: (actionAndChanges: {
+    action: RepickAction
+    changes: Partial<RepickState<Selected>>
+  }) => void
 } & RepickOptions<Selected>
 
 export type InputProps = {

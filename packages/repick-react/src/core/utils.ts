@@ -43,31 +43,43 @@ function getState<Selected extends Date | Date[]>(
 
 function invokeOnchangeHandler<Selected extends Date | Date[]>(
   props: RepickProps<Selected>,
-  key: keyof RepickState<Selected>,
-  state: RepickState<Selected>,
   newState: RepickState<Selected>,
+  key: keyof RepickState<Selected>,
 ) {
   const handler = `on${key.slice(0, 1).toUpperCase()}${key.slice(1)}Change`
 
-  if (
-    handler in props &&
-    newState[key] !== undefined &&
-    newState[key] !== state[key]
-  ) {
+  if (handler in props && newState[key] !== undefined) {
     ;(props as any)[handler](newState[key])
   }
 }
 
 function callOnchangeProps<Selected extends Date | Date[]>(
-  props: RepickProps<Selected>,
+  actionWithProps: RepickAction & { props: RepickProps<Selected> },
   state: RepickState<Selected>,
   newState: RepickState<Selected>,
 ) {
-  ;((Object.keys(state) as unknown) as (keyof RepickState<Selected>)[]).forEach(
-    key => {
-      invokeOnchangeHandler(props, key, state, newState)
-    },
+  const { props, ...action } = actionWithProps
+
+  const changes: (keyof RepickState<Selected>)[] = ((Object.keys(
+    state,
+  ) as unknown) as (keyof RepickState<Selected>)[]).filter(
+    key => state[key] !== newState[key],
   )
+
+  changes.forEach(key => invokeOnchangeHandler(props, newState, key))
+
+  if (props.onStateChange && Object.keys(changes).length) {
+    props.onStateChange({
+      action,
+      changes: changes.reduce(
+        (obj: Partial<RepickState<Selected>>, key) => ({
+          ...obj,
+          [key]: newState[key],
+        }),
+        {},
+      ),
+    })
+  }
 }
 
 type RepickReducer<Selected extends Date | Date[]> = (
@@ -124,13 +136,15 @@ function useEnhancedReducer<Selected extends Date | Date[]>(
       prevStateRef.current &&
       prevStateRef.current !== state
     ) {
-      const { props } = actionWithProps
-
-      callOnchangeProps(props, getState(prevStateRef.current, props), state)
+      callOnchangeProps(
+        actionWithProps,
+        getState(prevStateRef.current, props),
+        state,
+      )
     }
 
     prevStateRef.current = state
-  }, [state, actionWithProps])
+  }, [props, state, actionWithProps])
 
   return [state, dispatchWithProps]
 }
