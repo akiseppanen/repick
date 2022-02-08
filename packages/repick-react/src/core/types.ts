@@ -19,7 +19,6 @@ export type RepickStateReducer<Selected extends Date | Date[]> = (
 ) => RepickState<Selected>
 
 export type RepickProps<Selected extends Date | Date[]> = {
-  autoFocus?: boolean
   id?: string
   stateReducer?: RepickStateReducer<Selected>
 

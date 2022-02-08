@@ -97,7 +97,7 @@ export function useDatePickerCore<
   ])
   const focusFromRef = useRef<HTMLElement>()
   const isMouseDownRef = useRef<boolean>(false)
-  const shouldFocusRef = useRef<boolean>(!!props.autoFocus)
+  const shouldFocusRef = useRef<boolean>(false)
   const shouldBlurRef = useRef<boolean>(true)
   const inputRef = useRef<HTMLElement>()
   const toggleButtonRef = useRef<HTMLElement>()
