@@ -14,7 +14,8 @@
     "lint": "tsdx lint src test",
     "test": "tsdx test --env=jsdom",
     "prepublish": "npm run build",
-    "watch": "tsdx watch"
+    "watch": "tsdx watch",
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
     "@repick/core": "^1.1.0",
@@ -24,14 +25,20 @@
     "react": ">=16"
   },
   "devDependencies": {
+    "@storybook/addon-storysource": "^6.4.18",
+    "@storybook/react": "^6.4.18",
     "@testing-library/jest-dom": "^5.0.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.0",
+    "@types/classnames": "^2.3.1",
     "@types/jest": "^27.0.3",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
+    "classnames": "^2.3.1",
+    "jest-date-serializer": "^1.0.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "ts-loader": "^9.2.6",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1"
   },

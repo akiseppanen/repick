@@ -3,29 +3,17 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
-    "clean": "rm -rf node_modules; lerna run clean",
+    "clean": "lerna run clean; rm -rf node_modules",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint -- --fix",
     "test": "lerna run test",
-    "watch": "lerna run --parallel watch",
-    "storybook": "start-storybook -p 6006"
+    "watch": "lerna run --parallel watch"
   },
   "devDependencies": {
-    "@storybook/addon-storyshots": "^6.0.21",
-    "@storybook/addon-storysource": "^6.0.21",
-    "@storybook/react": "^6.0.21",
-    "@types/classnames": "^2.2.10",
-    "babel-loader": "^8.0.6",
-    "classnames": "^2.2.6",
     "eslint-plugin-prettier": "^4.0.0",
-    "jest-date-serializer": "^1.0.1",
     "lerna": "^4.0.0",
     "lint-staged": "^12.3.2",
     "prettier": "^2.0.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-test-renderer": "^17.0.2",
-    "ts-loader": "^9.1.1",
     "tsdx": "^0.14.1",
     "yorkie": "^2.0.0"
   },
@@ -35,7 +23,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "tsdx lint"
+      "tsdx lint --fix"
     ],
     "*.{js,jsx,json}": [
       "prettier --write"
