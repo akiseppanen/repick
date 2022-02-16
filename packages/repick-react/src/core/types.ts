@@ -139,5 +139,5 @@ export type RepickHelpers<DayContext extends RepickDay<any>> = {
 
 export type RepickReturnValue<
   Selected,
-  DayContext extends RepickDay<any>
+  DayContext extends RepickDay<any>,
 > = RepickHelpers<DayContext> & RepickContext<Selected, DayContext>

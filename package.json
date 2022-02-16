@@ -4,17 +4,23 @@
   "scripts": {
     "build": "lerna run build",
     "clean": "lerna run clean; rm -rf node_modules",
-    "lint": "lerna run lint",
-    "lint:fix": "lerna run lint -- --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "lerna run test",
     "watch": "lerna run --parallel watch"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "lerna": "^4.0.0",
     "lint-staged": "^12.3.2",
-    "prettier": "^2.0.2",
+    "prettier": "^2.5.1",
     "tsdx": "^0.14.1",
+    "typescript": "^4.5.5",
     "yorkie": "^2.0.0"
   },
   "gitHooks": {
@@ -22,8 +28,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write",
-      "tsdx lint --fix"
+      "eslint --fix"
     ],
     "*.{js,jsx,json}": [
       "prettier --write"
@@ -38,10 +43,6 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/tsdx",
-      "**/tsdx/**"
     ]
   },
   "jest": {

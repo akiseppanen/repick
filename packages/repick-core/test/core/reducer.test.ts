@@ -28,10 +28,11 @@ const mockedGetHighlightedDate = getHighlightedDate as jest.Mock<
 mockedGetHighlightedDate.mockImplementation(
   jest.requireActual('../../src/utils').getHighlightedDate,
 )
-const mockedGetHighlightedIndexForDate = getHighlightedIndexForDate as jest.Mock<
-  number,
-  [Date, Date, RepickOptions<Date>]
->
+const mockedGetHighlightedIndexForDate =
+  getHighlightedIndexForDate as jest.Mock<
+    number,
+    [Date, Date, RepickOptions<Date>]
+  >
 mockedGetHighlightedIndexForDate.mockImplementation(
   jest.requireActual('../../src/utils').getHighlightedIndexForDate,
 )

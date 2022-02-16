@@ -22,14 +22,16 @@ import {
   actionKeyEnter,
 } from './actions'
 
-export const defaultOptions: Required<Pick<
-  RepickOptions<Date | Date[]>,
-  | 'allowInput'
-  | 'format'
-  | 'monthCount'
-  | 'weekStartsOn'
-  | 'updateHighlightedOnHover'
->> = {
+export const defaultOptions: Required<
+  Pick<
+    RepickOptions<Date | Date[]>,
+    | 'allowInput'
+    | 'format'
+    | 'monthCount'
+    | 'weekStartsOn'
+    | 'updateHighlightedOnHover'
+  >
+> = {
   allowInput: false,
   format: 'yyyy-MM-dd',
   monthCount: 1,
@@ -139,7 +141,10 @@ export function assertNever(x: never, message: string): never {
   throw new Error(`[repick-core] ${message}: ${JSON.stringify(x)}`)
 }
 
-export const emptyFn = <T>(e: T) => (): T => e
+export const emptyFn =
+  <T>(e: T) =>
+  (): T =>
+    e
 
 export const dateIsSelectable = (
   {

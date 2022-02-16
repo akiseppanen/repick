@@ -29,9 +29,8 @@ export type RepickState<Selected extends Date | Date[]> = {
   selected: Selected | null
 }
 
-export type RepickStateSelected<
-  State extends RepickState<any>
-> = State extends RepickState<infer Selected> ? Selected : never
+export type RepickStateSelected<State extends RepickState<any>> =
+  State extends RepickState<infer Selected> ? Selected : never
 
 export type RepickDay<Extra extends { [key: string]: any } = {}> = {
   date: Date
