@@ -9,7 +9,7 @@ export default {
 }
 
 const Component = () => {
-  const [highlighted, setDate] = React.useState(new Date('2018-01-01'))
+  const [activeDate, setActiveDate] = React.useState(new Date('2018-01-01'))
   const [selected, setSelected] = React.useState<Date | null>(null)
 
   const {
@@ -28,9 +28,9 @@ const Component = () => {
     weeks,
     year,
   } = useDatePicker({
-    highlighted,
+    activeDate,
     onSelectedChange: setSelected,
-    onHighlightedChange: setDate,
+    onActiveDateChange: setActiveDate,
     selected,
     weekStartsOn: 1,
   })

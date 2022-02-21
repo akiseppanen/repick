@@ -57,6 +57,7 @@ const buildCalendarContextDayMulti: (
   state: RepickStateMulti,
   currentMonth: Date,
   date: Date,
+  index: number,
   options: RepickOptionsMulti,
 ) => RepickDayMulti = buildCalendarDay(isSelectedMulti, () => ({}))
 

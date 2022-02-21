@@ -1,4 +1,3 @@
-import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
 import startOfMonth from 'date-fns/startOfMonth'
 import { useRef, useEffect, useMemo, useCallback, KeyboardEvent } from 'react'
@@ -24,6 +23,7 @@ import {
   actionSelectDate,
   actionSelectHighlighted,
   actionStartOfWeek,
+  getHighlightedIndexForDate,
   keyToAction,
   RepickAction,
   RepickContext,
@@ -77,20 +77,23 @@ export function useDatePickerCore<
   Selected,
   DayContext
 > {
-  const [state, dispatch] = useControlledReducer(
-    reducer,
-    {
-      activeMonth: startOfMonth(
-        props.highlighted || props.initialHighlighted || new Date(),
-      ),
-      highlighted:
-        props.highlighted || props.initialHighlighted || startOfDay(new Date()),
+  const [state, dispatch] = useControlledReducer(reducer, props, props => {
+    const activeDate =
+      props.activeDate || props.initialActiveDate || startOfDay(new Date())
+
+    return {
+      activeDate,
+      highlightedIndex:
+        props.highlightedIndex ||
+        props.initialHighlightedIndex ||
+        getHighlightedIndexForDate(startOfMonth(activeDate), activeDate, {
+          weekStartsOn: props.weekStartsOn,
+        }),
       selected: props.selected || props.initialSelected || null,
       isOpen: props.isOpen || props.initialIsOpen || false,
       inputValue: '',
-    },
-    props,
-  )
+    }
+  })
 
   const id = useMemo(() => props.id || `repick-${Date.now().toString(36)}`, [
     props.id,
@@ -103,9 +106,9 @@ export function useDatePickerCore<
   const toggleButtonRef = useRef<HTMLElement>()
   const calendarRef = useRef<HTMLElement>()
 
-  const dateRefs: Record<string, HTMLElement> = {}
+  const dateRefs: Record<number, HTMLElement> = {}
 
-  const previousHighlighted = usePrevious(state.highlighted)
+  const previousHighlightedIndex = usePrevious(state.highlightedIndex)
   const previousIsOpen = usePrevious(state.isOpen)
 
   useEffect(() => {
@@ -136,15 +139,12 @@ export function useDatePickerCore<
     }
   }, [dispatch, state.isOpen])
 
-  const formatDateRefId = (date: Date) => format(date, 'yyyy-MM-dd')
-
-  const setFocusToDate = useCallback(
-    (date: Date) => {
+  const setFocusWithIndex = useCallback(
+    (index: number) => {
       window.requestAnimationFrame(() => {
-        const id = formatDateRefId(date)
-        if (dateRefs[id]) {
+        if (dateRefs[index]) {
           shouldFocusRef.current = false
-          dateRefs[id].focus()
+          dateRefs[index].focus()
         }
       })
     },
@@ -153,13 +153,11 @@ export function useDatePickerCore<
 
   const setFocusToCalendar = useCallback(() => {
     window.requestAnimationFrame(() => {
-      const id = formatDateRefId(state.highlighted)
-
-      if (dateRefs[id]) {
-        dateRefs[id].focus()
+      if (dateRefs[state.highlightedIndex]) {
+        dateRefs[state.highlightedIndex].focus()
       }
     })
-  }, [dateRefs, state.highlighted])
+  }, [dateRefs, state.highlightedIndex])
 
   useEffect(() => {
     if (shouldFocusRef.current === true && state.isOpen && !previousIsOpen) {
@@ -176,14 +174,19 @@ export function useDatePickerCore<
   useEffect(() => {
     if (
       state.isOpen &&
-      state.highlighted !== previousHighlighted &&
+      state.highlightedIndex !== previousHighlightedIndex &&
       shouldFocusRef.current === true
     ) {
       shouldFocusRef.current = false
 
-      setFocusToDate(state.highlighted)
+      setFocusWithIndex(state.highlightedIndex)
     }
-  }, [previousHighlighted, setFocusToDate, state.highlighted, state.isOpen])
+  }, [
+    previousHighlightedIndex,
+    setFocusWithIndex,
+    state.highlightedIndex,
+    state.isOpen,
+  ])
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -354,7 +357,7 @@ export function useDatePickerCore<
           dispatch({ type: actionDateClick, date: calendarDay.date })
         },
         onMouseOver: () => {
-          dispatch({ type: actionDateMouseOver, date: calendarDay.date })
+          dispatch({ type: actionDateMouseOver, index: calendarDay.index })
         },
         'aria-label': calendarDay.date.toDateString(),
         'aria-pressed': calendarDay.selected,
@@ -363,7 +366,7 @@ export function useDatePickerCore<
         tabIndex: calendarDay.highlighted ? 0 : -1,
         ref: (el: HTMLElement | null) => {
           if (el) {
-            dateRefs[formatDateRefId(calendarDay.date)] = el
+            dateRefs[calendarDay.index] = el
           }
         },
       }
@@ -458,7 +461,6 @@ export function useDatePickerCore<
     selectCurrent,
     selectDate,
     setFocusToCalendar,
-    setFocusToDate,
     startOfWeek,
   }
 }

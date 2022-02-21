@@ -6,6 +6,8 @@ import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
 import startOfMonth from 'date-fns/startOfMonth'
+import startOfWeek from 'date-fns/startOfWeek'
+import differenceInDays from 'date-fns/differenceInDays'
 
 import {
   actionBlur,
@@ -46,6 +48,8 @@ import {
 } from '../actions'
 import { RepickState, RepickOptions } from './types'
 import {
+  getHighlightedDate,
+  getHighlightedIndexForDate,
   dateIsSelectable,
   wrapWeekDay,
   defaultOptions,
@@ -70,6 +74,31 @@ export function createReducer<Selected extends Date | Date[]>(
     const formatter = options.formatter || defaultFormatter
     const parser = options.parser || defaultParser
 
+    function reduceHighlighted(
+      state: RepickState<Selected>,
+      updateDate: (date: Date) => Date,
+    ): Partial<RepickState<Selected>> {
+      const activeDate = updateDate(
+        getHighlightedDate(state.activeDate, state.highlightedIndex, {
+          weekStartsOn: options.weekStartsOn || 0,
+        }),
+      )
+
+      const firstDayOfMonth = startOfMonth(activeDate)
+
+      const highlightedIndex = differenceInDays(
+        activeDate,
+        startOfWeek(firstDayOfMonth, {
+          weekStartsOn: options.weekStartsOn,
+        }),
+      )
+
+      return {
+        activeDate,
+        highlightedIndex,
+      }
+    }
+
     function reduceSelected(state: RepickState<Selected>, date: Date) {
       if (!dateIsSelectable(options, date)) {
         return {}
@@ -78,8 +107,11 @@ export function createReducer<Selected extends Date | Date[]>(
       const [selected, shouldClose] = selectDate(state.selected, date)
 
       return {
+        activeDate: date,
         selected,
-        highlighted: date,
+        highlightedIndex: getHighlightedIndexForDate(startOfMonth(date), date, {
+          weekStartsOn: options.weekStartsOn,
+        }),
         isOpen: !shouldClose && state.isOpen,
         inputValue: formatter(selected, options.format),
       } as Partial<RepickState<Selected>>
@@ -104,32 +136,46 @@ export function createReducer<Selected extends Date | Date[]>(
       case actionInputChange: {
         const parsedDate = parser(action.value, options.format)
 
-        const highlighted = parsedDate
-          ? Array.isArray(parsedDate)
-            ? parsedDate[0]
-            : parsedDate
-          : state.highlighted
+        const highlightedDate: Date | false =
+          !!parsedDate && Array.isArray(parsedDate) ? parsedDate[0] : parsedDate
+
+        if (!highlightedDate) {
+          return {
+            inputValue: action.value,
+          }
+        }
 
         return {
-          highlighted,
+          highlightedIndex: getHighlightedIndexForDate(
+            state.activeDate,
+            highlightedDate,
+            { weekStartsOn: options.weekStartsOn },
+          ),
           inputValue: action.value,
-        } as Partial<RepickState<Selected>>
+        }
       }
+
       case actionInputKeyEnter: {
         const parsedDate = parser(state.inputValue, options.format)
 
-        const highlighted = parsedDate
-          ? Array.isArray(parsedDate)
-            ? parsedDate[0]
-            : parsedDate
-          : state.highlighted
+        if (!parsedDate) {
+          return {
+            inputValue: formatter(state.selected, options.format),
+          }
+        }
 
-        const selected = parsedDate ? parsedDate : state.selected
+        const highlightedDate: Date = Array.isArray(parsedDate)
+          ? parsedDate[0]
+          : parsedDate
 
         return {
-          highlighted,
-          selected,
-          inputValue: formatter(selected, options.format),
+          highlightedIndex: getHighlightedIndexForDate(
+            state.activeDate,
+            highlightedDate,
+            { weekStartsOn: options.weekStartsOn },
+          ),
+          selected: parsedDate,
+          inputValue: formatter(parsedDate, options.format),
         } as Partial<RepickState<Selected>>
       }
       case actionDateClick:
@@ -145,79 +191,71 @@ export function createReducer<Selected extends Date | Date[]>(
           return {}
         }
 
-        const date =
-          action.date instanceof Date ? action.date : new Date(action.date)
-
-        return { highlighted: date }
+        return { highlightedIndex: action.index }
       }
 
       case actionKeyEnter:
       case actionSelectHighlighted: {
-        return reduceSelected(state, state.highlighted)
+        return reduceSelected(
+          state,
+          getHighlightedDate(state.activeDate, state.highlightedIndex, {
+            weekStartsOn: options.weekStartsOn,
+          }),
+        )
       }
 
       case actionKeyArrowLeft:
       case actionPrevDay: {
-        const date = subDays(state.highlighted, 1)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => subDays(date, 1))
       }
       case actionKeyArrowRight:
       case actionNextDay: {
-        const date = addDays(state.highlighted, 1)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => addDays(date, 1))
       }
       case actionKeyArrowUp:
       case actionPrevWeek: {
-        const date = subDays(state.highlighted, 7)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => subDays(date, 7))
       }
       case actionKeyArrowDown:
       case actionNextWeek: {
-        const date = addDays(state.highlighted, 7)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => addDays(date, 7))
       }
       case actionKeyPageDown:
       case actionPrevMonth: {
-        const date = subMonths(state.highlighted, 1)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => subMonths(date, 1))
       }
       case actionKeyPageUp:
       case actionNextMonth: {
-        const date = addMonths(state.highlighted, 1)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => addMonths(date, 1))
       }
       case actionKeyHome:
       case actionStartOfWeek: {
-        const date = setDay(state.highlighted, options.weekStartsOn || 0, {
-          locale: options.locale,
-          weekStartsOn: options.weekStartsOn,
-        })
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date =>
+          setDay(date, options.weekStartsOn || 0, {
+            locale: options.locale,
+            weekStartsOn: options.weekStartsOn,
+          }),
+        )
       }
 
       case actionKeyEnd:
       case actionEndOfWeek: {
-        const date = setDay(
-          state.highlighted,
-          wrapWeekDay(options.weekStartsOn + 6),
-          {
+        return reduceHighlighted(state, date =>
+          setDay(date, wrapWeekDay(options.weekStartsOn + 6), {
             locale: options.locale,
             weekStartsOn: options.weekStartsOn,
-          },
+          }),
         )
-        return { activeMonth: startOfMonth(date), highlighted: date }
       }
 
       case actionKeyShiftPageDown:
       case actionPrevYear: {
-        const date = subYears(state.highlighted, 1)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => subYears(date, 1))
       }
 
       case actionKeyShiftPageUp:
       case actionNextYear: {
-        const date = addYears(state.highlighted, 1)
-        return { activeMonth: startOfMonth(date), highlighted: date }
+        return reduceHighlighted(state, date => addYears(date, 1))
       }
 
       default: {

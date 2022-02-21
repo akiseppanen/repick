@@ -48,7 +48,7 @@ export interface ActionDateClick {
 
 export interface ActionDateMouseOver {
   type: typeof actionDateMouseOver
-  date: Date
+  index: number
 }
 
 export interface ActionInputBlur {

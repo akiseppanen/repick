@@ -48,6 +48,7 @@ export const buildCalendarDaySingle: (
   state: RepickStateSingle,
   currentMonth: Date,
   date: Date,
+  index: number,
   options: RepickOptionsSingle,
 ) => RepickDaySingle = buildCalendarDay(
   (selected: Date | null, date: Date) =>

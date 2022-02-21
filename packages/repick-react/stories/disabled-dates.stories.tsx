@@ -33,7 +33,7 @@ const Component = () => {
     year,
   } = useDatePicker({
     disabledDates,
-    initialHighlighted: date,
+    initialActiveDate: date,
     weekStartsOn: 1,
   })
 

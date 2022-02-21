@@ -31,7 +31,7 @@ const Component = () => {
     year,
   } = useDatePicker({
     filterDates,
-    initialHighlighted: date,
+    initialActiveDate: date,
     weekStartsOn: 1,
   })
 

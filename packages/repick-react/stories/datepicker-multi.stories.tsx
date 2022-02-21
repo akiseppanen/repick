@@ -29,7 +29,7 @@ const Component = () => {
     weeks,
     year,
   } = useMultiDatePicker({
-    initialHighlighted: date,
+    initialActiveDate: date,
     weekStartsOn: 1,
   })
 

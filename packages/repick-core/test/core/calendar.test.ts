@@ -30,8 +30,8 @@ describe('buildContext', () => {
 
   const buildContext = buildContextCore(buildCalendarDay)
 
-  const activeMonth = new Date('2018-01-01 00:00:00')
-  const highlighted = new Date('2018-01-01 00:00:00')
+  const activeDate = new Date('2018-01-01 00:00:00')
+  const highlightedIndex = 1
   const selected = new Date('2018-01-10 00:00:00')
   const disabledDates = [new Date('2018-01-15'), new Date('2018-01-20')]
 
@@ -39,8 +39,8 @@ describe('buildContext', () => {
     expect(
       buildContext(
         {
-          activeMonth,
-          highlighted,
+          activeDate,
+          highlightedIndex,
           inputValue: '',
           isOpen: false,
           selected,
@@ -54,8 +54,8 @@ describe('buildContext', () => {
     expect(
       buildContext(
         {
-          activeMonth,
-          highlighted,
+          activeDate,
+          highlightedIndex,
           inputValue: '',
           isOpen: false,
           selected,

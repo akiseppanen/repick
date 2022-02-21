@@ -14,7 +14,7 @@ import {
   RepickState,
   RepickOptions,
 } from './core/types'
-import { sort } from './utils'
+import { getHighlightedDate, sort } from './utils'
 
 export type RepickOptionsRange = RepickOptions<[Date] | [Date, Date]>
 export type RepickStateRange = RepickState<[Date] | [Date, Date]>
@@ -82,11 +82,16 @@ export const isSelectedRange = (
 export const buildCalendarDayRangeExtra = (
   state: RepickStateRange,
   date: Date,
+  options: Pick<RepickOptions<unknown>, 'weekStartsOn'> = {},
 ) => {
   const [rangeStart, rangeEnd] = !!state.selected
-    ? [state.selected[0], state.selected[1] || state.highlighted].sort(
-        compareAsc,
-      )
+    ? [
+        state.selected[0],
+        state.selected[1] ||
+          getHighlightedDate(state.activeDate, state.highlightedIndex, {
+            weekStartsOn: options.weekStartsOn,
+          }),
+      ].sort(compareAsc)
     : []
 
   return {
@@ -106,6 +111,7 @@ export const buildCalendarDayRange: (
   state: RepickStateRange,
   currentMonth: Date,
   date: Date,
+  index: number,
   options: RepickOptionsRange,
 ) => RepickDayRange = buildCalendarDay(
   isSelectedRange,

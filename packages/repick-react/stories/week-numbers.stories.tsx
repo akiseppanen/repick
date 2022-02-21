@@ -27,7 +27,7 @@ const Component: React.FunctionComponent = () => {
     weeks,
     year,
   } = useDatePicker({
-    initialHighlighted: date,
+    initialActiveDate: date,
     weekStartsOn: 1,
   })
 

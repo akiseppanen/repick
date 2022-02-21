@@ -14,7 +14,7 @@ const Component = () => {
   return (
     <DatePicker
       weekStartsOn={1}
-      initialHighlighted={date}
+      initialActiveDate={date}
       render={({
         getCalendarHeaderProps,
         getCalendarProps,

@@ -23,22 +23,23 @@ export type RepickProps<Selected extends Date | Date[]> = {
   stateReducer?: RepickStateReducer<Selected>
 
   // Control Props
-  activeMonth?: Date | null
-  highlighted?: Date
+  activeDate?: Date
+  highlightedDate?: Date
+  highlightedIndex?: number
   selected?: Selected | null
   inputValue?: string
   isOpen?: boolean
 
   // Initial Values
-  initialActiveMonth?: Date | null
-  initialHighlighted?: Date
+  initialActiveDate?: Date
+  initialHighlightedIndex?: number
   initialSelected?: Selected | null
   initialInputValue?: string
   initialIsOpen?: boolean
 
   // On Change Handlers
-  onActiveMonthChange?: (activeMonth: Date) => void
-  onHighlightedChange?: (highlighted: Date) => void
+  onActiveDateChange?: (activeDate: Date) => void
+  onHighlightedIndexChange?: (highlightedIndex: number) => void
   onSelectedChange?: (selected?: Selected | null) => void
   onInputValueChange?: (inputValue: string) => void
   onIsOpenChange?: (isOpen: boolean) => void
@@ -133,7 +134,6 @@ export type RepickHelpers<DayContext extends RepickDay<any>> = {
   selectCurrent: () => void
   selectDate: (date: string | number | Date) => void
   setFocusToCalendar: () => void
-  setFocusToDate: (date: Date) => void
   startOfWeek: () => void
 }
 

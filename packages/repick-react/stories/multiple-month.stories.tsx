@@ -27,7 +27,7 @@ const Component: React.FunctionComponent = () => {
     months,
     weekdays,
   } = useDatePicker({
-    initialHighlighted: date,
+    initialActiveDate: date,
     weekStartsOn: 1,
     monthCount,
     isOpen: true,

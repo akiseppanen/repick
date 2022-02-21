@@ -1,8 +1,12 @@
+import addDays from 'date-fns/addDays'
+import differenceInDays from 'date-fns/differenceInDays'
 import format from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
 import isSameDay from 'date-fns/isSameDay'
 import setDay from 'date-fns/setDay'
+import startOfMonth from 'date-fns/startOfMonth'
+import startOfWeek from 'date-fns/startOfWeek'
 
 import { RepickOptions, Weekday } from './core/types'
 import {
@@ -165,4 +169,30 @@ export const objectCopyPartial = <O extends Object>(
     }
     return res
   }, {})
+}
+
+export const getHighlightedDate = (
+  activeDate: Date,
+  highlightedIndex: number,
+  { weekStartsOn }: Pick<RepickOptions<any>, 'weekStartsOn'>,
+) => {
+  const firstDayOfMonth = startOfMonth(activeDate)
+  const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
+    weekStartsOn: weekStartsOn || defaultOptions.weekStartsOn,
+  })
+
+  return addDays(firstWeekOfMonth, highlightedIndex)
+}
+
+export const getHighlightedIndexForDate = (
+  activeMonth: Date,
+  highlightedDate: Date,
+  { weekStartsOn }: Pick<RepickOptions<any>, 'weekStartsOn'>,
+) => {
+  const firstDayOfMonth = startOfMonth(activeMonth)
+  const firstWeekOfMonth = startOfWeek(firstDayOfMonth, {
+    weekStartsOn: weekStartsOn || defaultOptions.weekStartsOn,
+  })
+
+  return differenceInDays(highlightedDate, firstWeekOfMonth)
 }

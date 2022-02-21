@@ -27,9 +27,8 @@ const Component = () => {
     weeks,
     year,
   } = useRangeDatePicker({
-    initialHighlighted: date,
+    initialActiveDate: date,
     weekStartsOn: 1,
-    updateHighlightedOnHover: false,
   })
 
   return (

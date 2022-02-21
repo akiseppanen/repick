@@ -68,8 +68,8 @@ describe('buildCalendarContextDayRange', () => {
   const range = [new Date('2018-01-01'), new Date('2018-01-31')] as [Date, Date]
 
   const state: RepickState<[Date] | [Date, Date]> = {
-    activeMonth: new Date('2018-01-01'),
-    highlighted: new Date('2018-01-01'),
+    activeDate: new Date('2018-01-01'),
+    highlightedIndex: 0,
     selected: range,
     isOpen: false,
     inputValue: '',

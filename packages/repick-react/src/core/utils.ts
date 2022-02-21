@@ -1,5 +1,6 @@
 import {
   objectCopyPartial,
+  getHighlightedIndexForDate,
   RepickAction,
   RepickOptions,
   RepickState,
@@ -46,11 +47,27 @@ function getState<Selected extends Date | Date[]>(
     Selected
   >)[]).reduce<any>(
     (prevState, key) => {
-      const isControlledProp = typeof props[key] !== 'undefined'
+      const isControlledProp = props[key] !== undefined
 
-      prevState[key] = isControlledProp ? props[key] : prevState[key]
+      if (
+        key === 'highlightedIndex' &&
+        !isControlledProp &&
+        props.highlightedDate !== undefined
+      ) {
+        const activeDate = props.activeDate || state.activeDate
 
-      return prevState
+        return {
+          ...prevState,
+          [key]: getHighlightedIndexForDate(activeDate, props.highlightedDate, {
+            weekStartsOn: props.weekStartsOn,
+          }),
+        }
+      }
+
+      return {
+        ...prevState,
+        [key]: isControlledProp ? props[key] : prevState[key],
+      }
     },
     { ...state },
   )
@@ -105,8 +122,8 @@ type RepickReducer<Selected extends Date | Date[]> = (
 
 function useEnhancedReducer<Selected extends Date | Date[]>(
   reducer: RepickReducer<Selected>,
-  initialState: RepickState<Selected>,
   props: RepickProps<Selected>,
+  stateInitializer: (props: RepickProps<Selected>) => RepickState<Selected>,
 ): [RepickState<Selected>, (action: RepickAction) => void] {
   const prevStateRef = useRef<RepickState<Selected>>()
   const actionWithPropsRef = useRef<
@@ -136,7 +153,7 @@ function useEnhancedReducer<Selected extends Date | Date[]>(
     [reducer],
   )
 
-  const [state, dispatch] = useReducer(enhancedReducer, initialState)
+  const [state, dispatch] = useReducer(enhancedReducer, props, stateInitializer)
 
   const dispatchWithProps = useCallback(
     action => dispatch({ props: props, ...action }),
@@ -166,10 +183,10 @@ function useEnhancedReducer<Selected extends Date | Date[]>(
 
 export function useControlledReducer<Selected extends Date | Date[]>(
   reducer: RepickReducer<Selected>,
-  initialState: RepickState<Selected>,
   props: RepickProps<Selected>,
+  stateInitializer: (props: RepickProps<Selected>) => RepickState<Selected>,
 ): [RepickState<Selected>, (action: RepickAction) => void] {
-  const [state, dispatch] = useEnhancedReducer(reducer, initialState, props)
+  const [state, dispatch] = useEnhancedReducer(reducer, props, stateInitializer)
 
   return [getState(state, props), dispatch]
 }

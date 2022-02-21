@@ -22,8 +22,8 @@ export type RepickOptions<Selected> = Partial<{
 }>
 
 export type RepickState<Selected extends Date | Date[]> = {
-  activeMonth: Date
-  highlighted: Date
+  activeDate: Date
+  highlightedIndex: number
   inputValue: string
   isOpen: boolean
   selected: Selected | null
@@ -36,6 +36,7 @@ export type RepickStateSelected<
 export type RepickDay<Extra extends { [key: string]: any } = {}> = {
   date: Date
   day: number
+  index: number
   nextMonth: boolean
   prevMonth: boolean
   selected: boolean
@@ -62,11 +63,11 @@ export type RepickMonth<Day extends RepickDay<any>> = {
 export type RepickCalendar<Day extends RepickDay<any>> = RepickMonth<Day>[]
 
 export type RepickContext<Selected, Day extends RepickDay<any>> = {
-  activeMonth: Date
+  activeDate: Date
   isOpen: boolean
   inputValue: string
   selected: Selected
-  highlighted: Date
+  highlightedIndex: number
   month: number
   monthLong: string
   monthShort: string

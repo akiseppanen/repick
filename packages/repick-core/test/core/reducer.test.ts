@@ -2,7 +2,13 @@ import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import { createReducer } from '../../src/core/reducer'
 import { RepickOptions, RepickState } from '../../src/core/types'
-import { dateIsSelectable, wrapWeekDay, defaultOptions } from '../../src/utils'
+import {
+  dateIsSelectable,
+  getHighlightedDate,
+  wrapWeekDay,
+  defaultOptions,
+  getHighlightedIndexForDate,
+} from '../../src/utils'
 import { RepickAction } from '../../src/actions'
 
 jest.mock('../../src/utils')
@@ -15,15 +21,29 @@ const mockedWrapWeekDay = wrapWeekDay as jest.Mock<number, [number]>
 mockedWrapWeekDay.mockImplementation(
   jest.requireActual('../../src/utils').wrapWeekDay,
 )
+const mockedGetHighlightedDate = getHighlightedDate as jest.Mock<
+  Date,
+  [Date, number, RepickOptions<Date>]
+>
+mockedGetHighlightedDate.mockImplementation(
+  jest.requireActual('../../src/utils').getHighlightedDate,
+)
+const mockedGetHighlightedIndexForDate = getHighlightedIndexForDate as jest.Mock<
+  number,
+  [Date, Date, RepickOptions<Date>]
+>
+mockedGetHighlightedIndexForDate.mockImplementation(
+  jest.requireActual('../../src/utils').getHighlightedIndexForDate,
+)
 
 describe('reducerGeneric', () => {
   const selected = new Date('2018-01-05 00:00:00')
-  const activeMonth = new Date('2018-01-01 00:00:00')
-  const highlighted = new Date('2018-01-01 00:00:00')
+  const activeDate = new Date('2018-01-01 00:00:00')
+  const highlightedIndex = 1
 
   const state: RepickState<Date> = {
-    activeMonth,
-    highlighted,
+    activeDate,
+    highlightedIndex,
     inputValue: format(selected, 'yyyy-MM-dd'),
     isOpen: false,
     selected,
@@ -66,7 +86,8 @@ describe('reducerGeneric', () => {
         type: 'SelectDate',
       },
       {
-        highlighted: expectedDate,
+        activeDate: expectedDate,
+        highlightedIndex: 10,
         selected: expectedDate,
         inputValue: format(expectedDate, 'yyyy-MM-dd'),
         isOpen: false,
@@ -102,7 +123,8 @@ describe('reducerGeneric', () => {
         type: 'DateClick',
       },
       {
-        highlighted: expectedDate,
+        activeDate: expectedDate,
+        highlightedIndex: 10,
         selected: expectedDate,
         inputValue: format(expectedDate, 'yyyy-MM-dd'),
         isOpen: false,
@@ -128,18 +150,18 @@ describe('reducerGeneric', () => {
   })
 
   it('DateMouseOver', () => {
-    const date = new Date('2018-01-05 00:00:00')
+    const highlightedIndex = 10
 
     assertAction(
       {
-        date: date,
+        index: highlightedIndex,
         type: 'DateMouseOver',
       },
-      { highlighted: date },
+      { highlightedIndex },
     )
     assertAction(
       {
-        date: date,
+        index: highlightedIndex,
         type: 'DateMouseOver',
       },
       {},
@@ -148,24 +170,23 @@ describe('reducerGeneric', () => {
   })
 
   it('SelectHighlighted', () => {
-    mockedSelectDate.mockReturnValue([highlighted, true])
-
+    mockedSelectDate.mockReturnValueOnce([activeDate, true])
     assertAction(
       {
-        type: 'SelectHighlighted',
+        type: 'KeyEnter',
       },
       {
-        highlighted,
-        selected: highlighted,
-        inputValue: format(highlighted, 'yyyy-MM-dd'),
+        activeDate,
+        selected: activeDate,
+        highlightedIndex,
+        inputValue: format(activeDate, 'yyyy-MM-dd'),
         isOpen: false,
       },
     )
-
-    expect(mockedSelectDate).toHaveBeenCalledWith(selected, highlighted)
+    expect(mockedSelectDate).toHaveBeenCalledWith(selected, activeDate)
   })
 
-  it('SelectHighlighted: unselectable', () => {
+  it('SelecthighlightedIndex: unselectable', () => {
     mockedDateIsSelectable.mockReturnValueOnce(false)
 
     assertAction(
@@ -176,7 +197,7 @@ describe('reducerGeneric', () => {
     )
     expect(mockedDateIsSelectable).toHaveBeenCalledWith(
       defaultOptions,
-      highlighted,
+      activeDate,
     )
   })
 
@@ -186,8 +207,8 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowLeft',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-31 00:00:00'),
+        activeDate: new Date('2017-12-31 00:00:00'),
+        highlightedIndex: 35,
       },
     )
   })
@@ -198,8 +219,8 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowRight',
       },
       {
-        activeMonth: new Date('2018-01-01 00:00:00'),
-        highlighted: new Date('2018-01-02 00:00:00'),
+        activeDate: new Date('2018-01-02 00:00:00'),
+        highlightedIndex: 2,
       },
     )
   })
@@ -210,8 +231,8 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowUp',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-25 00:00:00'),
+        activeDate: new Date('2017-12-25 00:00:00'),
+        highlightedIndex: 29,
       },
     )
   })
@@ -222,8 +243,8 @@ describe('reducerGeneric', () => {
         type: 'KeyArrowDown',
       },
       {
-        activeMonth: new Date('2018-01-01 00:00:00'),
-        highlighted: new Date('2018-01-08 00:00:00'),
+        activeDate: new Date('2018-01-08 00:00:00'),
+        highlightedIndex: 8,
       },
     )
   })
@@ -234,8 +255,8 @@ describe('reducerGeneric', () => {
         type: 'KeyPageDown',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-01 00:00:00'),
+        activeDate: new Date('2017-12-01 00:00:00'),
+        highlightedIndex: 5,
       },
     )
   })
@@ -246,8 +267,8 @@ describe('reducerGeneric', () => {
         type: 'KeyPageUp',
       },
       {
-        activeMonth: new Date('2018-02-01 00:00:00'),
-        highlighted: new Date('2018-02-01 00:00:00'),
+        activeDate: new Date('2018-02-01 00:00:00'),
+        highlightedIndex: 4,
       },
     )
   })
@@ -258,8 +279,8 @@ describe('reducerGeneric', () => {
         type: 'KeyHome',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-31 00:00:00'),
+        activeDate: new Date('2017-12-31 00:00:00'),
+        highlightedIndex: 35,
       },
     )
   })
@@ -270,8 +291,8 @@ describe('reducerGeneric', () => {
         type: 'KeyEnd',
       },
       {
-        activeMonth: new Date('2018-01-01 00:00:00'),
-        highlighted: new Date('2018-01-06 00:00:00'),
+        activeDate: new Date('2018-01-06 00:00:00'),
+        highlightedIndex: 6,
       },
     )
   })
@@ -282,8 +303,8 @@ describe('reducerGeneric', () => {
         type: 'KeyShiftPageDown',
       },
       {
-        activeMonth: new Date('2017-01-01 00:00:00'),
-        highlighted: new Date('2017-01-01 00:00:00'),
+        activeDate: new Date('2017-01-01 00:00:00'),
+        highlightedIndex: 0,
       },
     )
   })
@@ -294,8 +315,8 @@ describe('reducerGeneric', () => {
         type: 'KeyShiftPageUp',
       },
       {
-        activeMonth: new Date('2019-01-01 00:00:00'),
-        highlighted: new Date('2019-01-01 00:00:00'),
+        activeDate: new Date('2019-01-01 00:00:00'),
+        highlightedIndex: 2,
       },
     )
   })
@@ -306,24 +327,27 @@ describe('reducerGeneric', () => {
         type: 'PrevDay',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-31 00:00:00'),
+        activeDate: new Date('2017-12-31 00:00:00'),
+        highlightedIndex: 35,
       },
     )
   })
 
   it('KeyEnter', () => {
+    mockedSelectDate.mockReturnValueOnce([activeDate, true])
     assertAction(
       {
         type: 'KeyEnter',
       },
       {
-        selected: highlighted,
-        highlighted,
-        inputValue: format(highlighted, 'yyyy-MM-dd'),
+        activeDate,
+        selected: activeDate,
+        highlightedIndex,
+        inputValue: format(activeDate, 'yyyy-MM-dd'),
         isOpen: false,
       },
     )
+    expect(mockedSelectDate).toHaveBeenCalledWith(selected, activeDate)
   })
 
   it('NextDay', () => {
@@ -332,8 +356,8 @@ describe('reducerGeneric', () => {
         type: 'NextDay',
       },
       {
-        activeMonth: new Date('2018-01-01 00:00:00'),
-        highlighted: new Date('2018-01-02 00:00:00'),
+        activeDate: new Date('2018-01-02 00:00:00'),
+        highlightedIndex: 2,
       },
     )
   })
@@ -344,8 +368,8 @@ describe('reducerGeneric', () => {
         type: 'PrevWeek',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-25 00:00:00'),
+        activeDate: new Date('2017-12-25 00:00:00'),
+        highlightedIndex: 29,
       },
     )
   })
@@ -356,8 +380,8 @@ describe('reducerGeneric', () => {
         type: 'NextWeek',
       },
       {
-        activeMonth: new Date('2018-01-01 00:00:00'),
-        highlighted: new Date('2018-01-08 00:00:00'),
+        activeDate: new Date('2018-01-08 00:00:00'),
+        highlightedIndex: 8,
       },
     )
   })
@@ -368,8 +392,8 @@ describe('reducerGeneric', () => {
         type: 'PrevMonth',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-01 00:00:00'),
+        activeDate: new Date('2017-12-01 00:00:00'),
+        highlightedIndex: 5,
       },
     )
   })
@@ -380,8 +404,8 @@ describe('reducerGeneric', () => {
         type: 'NextMonth',
       },
       {
-        activeMonth: new Date('2018-02-01 00:00:00'),
-        highlighted: new Date('2018-02-01 00:00:00'),
+        activeDate: new Date('2018-02-01 00:00:00'),
+        highlightedIndex: 4,
       },
     )
   })
@@ -392,8 +416,8 @@ describe('reducerGeneric', () => {
         type: 'StartOfWeek',
       },
       {
-        activeMonth: new Date('2017-12-01 00:00:00'),
-        highlighted: new Date('2017-12-31 00:00:00'),
+        activeDate: new Date('2017-12-31 00:00:00'),
+        highlightedIndex: 35,
       },
     )
   })
@@ -404,8 +428,8 @@ describe('reducerGeneric', () => {
         type: 'EndOfWeek',
       },
       {
-        activeMonth: new Date('2018-01-01 00:00:00'),
-        highlighted: new Date('2018-01-06 00:00:00'),
+        activeDate: new Date('2018-01-06 00:00:00'),
+        highlightedIndex: 6,
       },
     )
   })
