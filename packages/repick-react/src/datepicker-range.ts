@@ -1,10 +1,18 @@
 import { ReactElement } from 'react'
-import { buildContextRange, reducerRange, RepickDayRange } from '@repick/core'
+import {
+  buildContextRange,
+  reducerRange,
+  RepickDayRange,
+  RepickOptionsRange,
+} from '@repick/core'
 
 import { RepickProps, RepickReturnValue } from './core/types'
 import { useDatePickerCore } from './core'
 
-export type RepickPropsRange = RepickProps<[Date] | [Date, Date]>
+export type RepickPropsRange = RepickProps<
+  [Date] | [Date, Date],
+  RepickOptionsRange
+>
 export type RepickReturnValueRange = RepickReturnValue<
   [Date] | [Date, Date],
   RepickDayRange

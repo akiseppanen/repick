@@ -159,18 +159,6 @@ export const dateIsSelectable = (
     (!!maxDate && isBefore(maxDate, date))
   )
 
-export const objectCopyPartial = <O extends Object>(
-  keys: (keyof O)[],
-  obj: O,
-): Partial<O> => {
-  return keys.reduce<Partial<O>>((res, key) => {
-    if (obj[key] !== undefined) {
-      res[key] = obj[key]
-    }
-    return res
-  }, {})
-}
-
 export const getHighlightedDate = (
   activeDate: Date,
   highlightedIndex: number,

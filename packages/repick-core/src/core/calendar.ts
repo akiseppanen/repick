@@ -57,20 +57,21 @@ export function buildCalendarDay<
 
 export function buildContext<
   State extends RepickState<any>,
-  Extra extends { [key: string]: any } = {}
+  DayContextExtra extends { [key: string]: any } = {},
+  OptionsExtra extends { [key: string]: any } = {}
 >(
   buildCalendarDay: (
     state: State,
     currentMonth: Date,
     date: Date,
     index: number,
-    options: RepickOptions<RepickStateSelected<State>>,
-  ) => RepickDay<Extra>,
+    options: RepickOptions<RepickStateSelected<State>, OptionsExtra>,
+  ) => RepickDay<DayContextExtra>,
 ) {
   return function(
     state: State,
-    options: RepickOptions<RepickStateSelected<State>> = {},
-  ): RepickContext<any, RepickDay<Extra>> {
+    options: RepickOptions<RepickStateSelected<State>, OptionsExtra> = {},
+  ): RepickContext<any, RepickDay<DayContextExtra>> {
     const { activeDate, highlightedIndex } = state
 
     const months = arrayGenerate(options.monthCount || 1, monthIndex => {
@@ -95,7 +96,7 @@ export function buildContext<
         ),
       }))
 
-      const days = weeks.reduce<RepickDay<Extra>[]>(
+      const days = weeks.reduce<RepickDay<DayContextExtra>[]>(
         (x, week) => [...x, ...week.days],
         [],
       )
@@ -110,12 +111,12 @@ export function buildContext<
       }
     })
 
-    const weeks = months.reduce<RepickWeek<RepickDay<Extra>>[]>(
+    const weeks = months.reduce<RepickWeek<RepickDay<DayContextExtra>>[]>(
       (x, month) => [...x, ...month.weeks],
       [],
     )
 
-    const days = weeks.reduce<RepickDay<Extra>[]>(
+    const days = weeks.reduce<RepickDay<DayContextExtra>[]>(
       (x, week) => [...x, ...week.days],
       [],
     )

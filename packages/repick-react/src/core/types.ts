@@ -18,7 +18,10 @@ export type RepickStateReducer<Selected extends Date | Date[]> = (
   actionAndChanges: RepickStateChangeOptions<Selected>,
 ) => RepickState<Selected>
 
-export type RepickProps<Selected extends Date | Date[]> = {
+export type RepickProps<
+  Selected extends Date | Date[],
+  Options extends RepickOptions<Selected> = RepickOptions<Selected>
+> = {
   id?: string
   stateReducer?: RepickStateReducer<Selected>
 
@@ -47,7 +50,7 @@ export type RepickProps<Selected extends Date | Date[]> = {
     action: RepickAction
     changes: Partial<RepickState<Selected>>
   }) => void
-} & RepickOptions<Selected>
+} & Options
 
 export type InputProps = {
   id: string

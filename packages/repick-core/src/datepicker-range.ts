@@ -16,7 +16,12 @@ import {
 } from './core/types'
 import { getHighlightedDate, sort } from './utils'
 
-export type RepickOptionsRange = RepickOptions<[Date] | [Date, Date]>
+export type RepickOptionsRange = RepickOptions<
+  [Date] | [Date, Date],
+  {
+    allowSelectingSameDate: boolean
+  }
+>
 export type RepickStateRange = RepickState<[Date] | [Date, Date]>
 export type RepickDayRange = RepickDay<{
   inRange: boolean
@@ -31,8 +36,11 @@ export type RepickContextRange = RepickContext<
 export const selectDateRange = (
   selected: [Date] | [Date, Date] | null,
   date: Date,
-): [[Date] | [Date, Date], boolean] =>
-  selected === null || isSameDay(selected[0], date) || selected.length === 2
+  options: RepickOptionsRange,
+): [[Date] | [Date, Date], boolean] => {
+  return selected === null ||
+    selected.length === 2 ||
+    (options.allowSelectingSameDate !== true && isSameDay(selected[0], date))
     ? [[date], false]
     : [
         sort(compareAsc, [...selected, date] as Date[]) as
@@ -40,6 +48,7 @@ export const selectDateRange = (
           | [Date, Date],
         true,
       ]
+}
 
 export const formatRange = (
   selected: [Date] | [Date, Date] | null,

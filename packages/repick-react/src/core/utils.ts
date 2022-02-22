@@ -1,5 +1,4 @@
 import {
-  objectCopyPartial,
   getHighlightedIndexForDate,
   RepickAction,
   RepickOptions,
@@ -16,27 +15,6 @@ export function usePrevious<T>(value: T | undefined): T | undefined {
   }, [value])
 
   return ref.current
-}
-
-export function optionsFromProps(props: RepickProps<any>) {
-  return objectCopyPartial(
-    [
-      'allowInput',
-      'format',
-      'formatter',
-      'parser',
-      'monthCount',
-      'locale',
-      'disabledDates',
-      'enabledDates',
-      'weekStartsOn',
-      'minDate',
-      'maxDate',
-      'filterDates',
-      'updateHighlightedOnHover',
-    ],
-    props,
-  )
 }
 
 function getState<Selected extends Date | Date[]>(
@@ -137,15 +115,14 @@ function useEnhancedReducer<Selected extends Date | Date[]>(
       actionWithPropsRef.current = actionWithProps
 
       const { props, ...action } = actionWithProps
-      const options = optionsFromProps(props)
 
       state = getState(state, props)
 
-      const changes = reducer(state, action, options)
+      const changes = reducer(state, action, props)
 
       const newState =
         typeof props.stateReducer === 'function'
-          ? props.stateReducer(state, { action, changes, options })
+          ? props.stateReducer(state, { action, changes, options: props })
           : { ...state, ...changes }
 
       return newState

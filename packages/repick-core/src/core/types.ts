@@ -5,21 +5,26 @@ export type Weekday = {
   short: string
 }
 
-export type RepickOptions<Selected> = Partial<{
-  allowInput: boolean
-  format: string
-  formatter: (selected: Selected | null, format: string) => string
-  parser: (dateString: string, format: string) => Selected | false
-  monthCount: number
-  locale: Locale
-  disabledDates: Date[]
-  enabledDates: Date[]
-  weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
-  minDate: Date
-  maxDate: Date
-  filterDates: (date: Date) => boolean
-  updateHighlightedOnHover: boolean
-}>
+export type RepickOptions<
+  Selected,
+  Extra extends { [key: string]: any } = {}
+> = Partial<
+  {
+    allowInput: boolean
+    format: string
+    formatter: (selected: Selected | null, format: string) => string
+    parser: (dateString: string, format: string) => Selected | false
+    monthCount: number
+    locale: Locale
+    disabledDates: Date[]
+    enabledDates: Date[]
+    weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
+    minDate: Date
+    maxDate: Date
+    filterDates: (date: Date) => boolean
+    updateHighlightedOnHover: boolean
+  } & Extra
+>
 
 export type RepickState<Selected extends Date | Date[]> = {
   activeDate: Date

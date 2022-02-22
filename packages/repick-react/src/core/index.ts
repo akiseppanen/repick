@@ -44,7 +44,7 @@ import {
   LabelProps,
   ToggleButtonProps,
 } from './types'
-import { optionsFromProps, useControlledReducer, usePrevious } from './utils'
+import { useControlledReducer, usePrevious } from './utils'
 
 type RepickCoreDeps<
   Selected extends Date | Date[],
@@ -436,7 +436,7 @@ export function useDatePickerCore<
   ])
 
   return {
-    ...buildContext(state, optionsFromProps(props)),
+    ...buildContext(state, props),
     closeCalendar,
     endOfWeek,
     getCalendarHeaderProps,

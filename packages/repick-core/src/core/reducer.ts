@@ -56,10 +56,14 @@ import {
   assertNever,
 } from '../utils'
 
-export function createReducer<Selected extends Date | Date[]>(
+export function createReducer<
+  Selected extends Date | Date[],
+  OptionsExtra extends { [key: string]: any } = {}
+>(
   selectDate: (
     selected: Selected | null,
     date: Date,
+    options: RepickOptions<Selected, OptionsExtra>,
   ) => [Selected | null, boolean],
   defaultFormatter: (selected: Selected | null, format: string) => string,
   defaultParser: (dateString: string, format: string) => Selected | false,
@@ -67,7 +71,7 @@ export function createReducer<Selected extends Date | Date[]>(
   return function reducer(
     state: RepickState<Selected>,
     action: RepickAction,
-    argOptions: RepickOptions<Selected>,
+    argOptions: RepickOptions<Selected, OptionsExtra>,
   ): Partial<RepickState<Selected>> {
     const options = { ...defaultOptions, ...argOptions }
 
@@ -104,7 +108,7 @@ export function createReducer<Selected extends Date | Date[]>(
         return {}
       }
 
-      const [selected, shouldClose] = selectDate(state.selected, date)
+      const [selected, shouldClose] = selectDate(state.selected, date, options)
 
       return {
         activeDate: date,
