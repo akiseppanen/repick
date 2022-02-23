@@ -107,7 +107,7 @@ export function useDatePickerCore<
   const toggleButtonRef = useRef<HTMLElement>()
   const calendarRef = useRef<HTMLElement>()
 
-  const dateRefs: Record<number, HTMLElement> = {}
+  const dateRefs = useRef<Record<number, HTMLElement>>({})
 
   const previousHighlightedIndex = usePrevious(state.highlightedIndex)
   const previousIsOpen = usePrevious(state.isOpen)
@@ -143,9 +143,9 @@ export function useDatePickerCore<
   const setFocusWithIndex = useCallback(
     (index: number) => {
       window.requestAnimationFrame(() => {
-        if (dateRefs[index]) {
+        if (dateRefs.current[index]) {
           shouldFocusRef.current = false
-          dateRefs[index].focus()
+          dateRefs.current[index].focus()
         }
       })
     },
@@ -154,8 +154,8 @@ export function useDatePickerCore<
 
   const setFocusToCalendar = useCallback(() => {
     window.requestAnimationFrame(() => {
-      if (dateRefs[state.highlightedIndex]) {
-        dateRefs[state.highlightedIndex].focus()
+      if (dateRefs.current[state.highlightedIndex]) {
+        dateRefs.current[state.highlightedIndex].focus()
       }
     })
   }, [dateRefs, state.highlightedIndex])
@@ -367,7 +367,7 @@ export function useDatePickerCore<
         tabIndex: calendarDay.highlighted ? 0 : -1,
         ref: (el: HTMLElement | null) => {
           if (el) {
-            dateRefs[calendarDay.index] = el
+            dateRefs.current[calendarDay.index] = el
           }
         },
       }
