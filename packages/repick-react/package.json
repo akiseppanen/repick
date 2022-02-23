@@ -1,6 +1,6 @@
 {
   "name": "@repick/react",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "dist/index.js",
   "module": "dist/repick-react.esm.js",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
-    "@repick/core": "^1.1.0",
+    "@repick/core": "^1.2.0",
     "date-fns": "^2.9.0"
   },
   "peerDependencies": {
