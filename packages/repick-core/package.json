@@ -23,7 +23,7 @@
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@types/jest": "^27.0.3",
     "@types/mockdate": "^3.0.0",
-    "babel-jest": "^27.5.1",
+    "babel-jest": "^28.0.1",
     "jest": "^27.5.1",
     "jest-date-serializer": "^1.0.4",
     "mockdate": "^3.0.2",
