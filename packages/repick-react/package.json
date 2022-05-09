@@ -39,7 +39,7 @@
     "classnames": "^2.3.1",
     "jest": "^27.5.1",
     "jest-date-serializer": "^1.0.4",
-    "react": "^17.0.1",
+    "react": "^18.1.0",
     "react-dom": "^17.0.1",
     "rollup": "^2.67.2",
     "rollup-plugin-typescript2": "^0.31.2",
