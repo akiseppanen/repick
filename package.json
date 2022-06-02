@@ -41,6 +41,9 @@
     "arrowParens": "avoid"
   },
   "workspaces": {
+    "nohoist": [
+      "repick-react/@types/react"
+    ],
     "packages": [
       "packages/*"
     ]

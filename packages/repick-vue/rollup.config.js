@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import ts from 'rollup-plugin-typescript2'
+import { terser } from 'rollup-plugin-terser'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-
 let hasTSChecked = false
 
 const input = path.resolve(__dirname, 'src/index.ts')
@@ -50,13 +50,27 @@ const config = {
     ),
     // Pass through the file format
     format: opts.format,
+    globals: { vue: 'Vue' },
     // Do not let Rollup call Object.freeze() on namespace import objects
     // (i.e. import * as namespaceImportObject from...) that are accessed dynamically.
     esModule: true,
     freeze: false,
     sourcemap: true,
     exports: 'named',
-    globals: { vue: 'Vue' },
+    plugins: [
+      opts.env === 'production' &&
+        terser({
+          output: { comments: false },
+          compress: {
+            keep_infinity: true,
+            pure_getters: true,
+            passes: 10,
+          },
+          ecma: 5,
+          toplevel: opts.format === 'cjs',
+          warnings: true,
+        }),
+    ],
   })),
   plugins: [
     tsPlugin,
@@ -65,6 +79,9 @@ const config = {
     {
       name: 'test',
       generateBundle() {
+        if (!fs.existsSync(path.resolve(__dirname, 'dist'))) {
+          fs.mkdirSync(path.resolve(__dirname, 'dist'))
+        }
         fs.writeFileSync(
           path.resolve(__dirname, 'dist/index.js'),
           "'use strict';\n" +
