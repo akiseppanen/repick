@@ -1,6 +1,6 @@
 {
   "name": "@repick/vue",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.0",
   "main": "dist/index.js",
   "module": "dist/repick-vue.esm.js",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
-    "@repick/core": "^1.2.0",
+    "@repick/core": "^1.2.1",
     "date-fns": "^2.9.0"
   },
   "peerDependencies": {
