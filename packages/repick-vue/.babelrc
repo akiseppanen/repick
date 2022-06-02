@@ -1,0 +1,15 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    [
+      "@babel/preset-env",
+      { "targets": { "node": "current", "browsers": "defaults" } }
+    ]
+  ],
+  "plugins": ["@vue/babel-plugin-jsx"],
+  "env": {
+    "test": {
+      "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
+    }
+  }
+}

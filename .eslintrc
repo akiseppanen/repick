@@ -1,11 +1,18 @@
 {
-  "extends": ["react-app", "prettier", "plugin:prettier/recommended"],
+  "extends": ["prettier", "plugin:prettier/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "extends": ["react-app"],
+      "files": ["packages/repick-react/*"],
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    }
+  ],
   "rules": {
     "import/no-anonymous-default-export": 0
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
   }
 }
