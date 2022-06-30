@@ -36,7 +36,7 @@
     "@vue/babel-plugin-jsx": "^1.1.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "@vue/test-utils": "^2.0.0-rc.17",
-    "babel-jest": "^27.5.1",
+    "babel-jest": "^28.1.2",
     "classnames": "^2.3.1",
     "jest": "^27.5.1",
     "jest-date-serializer": "^1.0.4",
