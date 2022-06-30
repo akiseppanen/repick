@@ -5500,16 +5500,16 @@
     resolve-from "^5.0.0"
 
 "@storybook/vue3@^6.4.18":
-  version "6.5.6"
-  resolved "https://registry.yarnpkg.com/@storybook/vue3/-/vue3-6.5.6.tgz#d61521b3e413f9d7898a37186bb335651cdde87e"
-  integrity sha512-H+TRtLcObGzTJT3Iw7CBMkE6sp3/Nttq4ijcZogP4cLGOLV6VHQn2QcWP4THm56tmnKkDr62OUWXQp/d0JBsuA==
+  version "6.5.9"
+  resolved "https://registry.yarnpkg.com/@storybook/vue3/-/vue3-6.5.9.tgz#9095f25956095643fca854ea11acfa7397fe5373"
+  integrity sha512-e8vD6lLqJ32xb1uD+D3yElKZYqpMYxJGVKWK5bqyEdlEdAwVwbBSI2n1PHaYXzflNSkAUW6z+Eg19wJzOFycVA==
   dependencies:
-    "@storybook/addons" "6.5.6"
-    "@storybook/core" "6.5.6"
-    "@storybook/core-common" "6.5.6"
+    "@storybook/addons" "6.5.9"
+    "@storybook/core" "6.5.9"
+    "@storybook/core-common" "6.5.9"
     "@storybook/csf" "0.0.2--canary.4566f4d.1"
-    "@storybook/docs-tools" "6.5.6"
-    "@storybook/store" "6.5.6"
+    "@storybook/docs-tools" "6.5.9"
+    "@storybook/store" "6.5.9"
     "@types/node" "^14.14.20 || ^16.0.0"
     "@types/webpack-env" "^1.16.0"
     core-js "^3.8.2"
