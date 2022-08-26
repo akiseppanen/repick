@@ -35,7 +35,7 @@
     "@types/jest": "^27.0.3",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^18.0.0",
-    "babel-jest": "^28.0.1",
+    "babel-jest": "^29.0.0",
     "classnames": "^2.3.1",
     "jest": "^27.5.1",
     "jest-date-serializer": "^1.0.4",
