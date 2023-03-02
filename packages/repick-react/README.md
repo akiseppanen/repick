@@ -1,4 +1,4 @@
-# repick
+# @repick/repick
 
 Primitives to build simple, flexible, WAI-ARIA compliant React date picker.
 
