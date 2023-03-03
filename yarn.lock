@@ -4755,17 +4755,17 @@
     webpack ">=4.0.0 <6.0.0"
 
 "@storybook/vue@^6.4.18":
-  version "6.5.10"
-  resolved "https://registry.yarnpkg.com/@storybook/vue/-/vue-6.5.10.tgz#9074ba517d9dbf7587319b9d3c600c2fbd6c087a"
-  integrity sha512-4MYYvRPkqTBqQUjCNXiTM/PJ6qfzKaECFtEe0H7TG+WP+TuKCCfTY2u1q4ru2qjf8BcSXUfpIWPlfEpZh7wdaQ==
+  version "6.5.16"
+  resolved "https://registry.yarnpkg.com/@storybook/vue/-/vue-6.5.16.tgz#e548995f468e1503a00c324814e3ab76cfee2c82"
+  integrity sha512-CFpBTAnOC4RZUKf5ZXQXj098D4HgZ+RyB4u45OhFbJFCDXnJQpRk0ANkJ2lyGPYr7/TgfsfZlq2FN8ilPqkk5A==
   dependencies:
-    "@storybook/addons" "6.5.10"
-    "@storybook/client-logger" "6.5.10"
-    "@storybook/core" "6.5.10"
-    "@storybook/core-common" "6.5.10"
+    "@storybook/addons" "6.5.16"
+    "@storybook/client-logger" "6.5.16"
+    "@storybook/core" "6.5.16"
+    "@storybook/core-common" "6.5.16"
     "@storybook/csf" "0.0.2--canary.4566f4d.1"
-    "@storybook/docs-tools" "6.5.10"
-    "@storybook/store" "6.5.10"
+    "@storybook/docs-tools" "6.5.16"
+    "@storybook/store" "6.5.16"
     "@types/node" "^14.14.20 || ^16.0.0"
     "@types/webpack-env" "^1.16.0"
     core-js "^3.8.2"
